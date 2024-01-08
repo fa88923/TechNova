@@ -8,6 +8,19 @@
 </head>
 <body>
     <h1>Supplier Information</h1>
-    <!-- Display supplier information here -->
+    <% console.log("here i am"); %>
+    <ul>
+        <% suppliers.forEach(supplier => { %>
+        <li>
+            <strong>Manager ID:</strong> <%= supplier.manager_id %>, 
+            <strong>Department ID:</strong> <%= supplier.department_id %>,
+            <strong>Department Name:</strong> <%= supplier.department_name %>
+        </li>
+        <% console.log(supplier.manager_id, supplier.department_id, supplier.department_name); %>
+        <% }); %>
+    </ul>
+    
+    
+    <script src="/public/js/script.js"></script>
 </body>
 </html>
