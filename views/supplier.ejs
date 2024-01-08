@@ -12,12 +12,12 @@
     <ul>
         <% suppliers.forEach(supplier => { %>
         <li>
-            <strong>Manager ID:</strong> <%= supplier.manager_id %>, 
-            <strong>Department ID:</strong> <%= supplier.department_id %>,
-            <strong>Department Name:</strong> <%= supplier.department_name %>
+            <strong>Manager ID:</strong> <%= supplier.MANAGER_ID %>, 
+            <strong>Department ID:</strong> <%= supplier.DEPARTMENT_ID %>,
+            <strong>Department Name:</strong> <%= supplier.DEPARTMENT_NAME %>
         </li>
-        <% console.log(supplier.manager_id, supplier.department_id, supplier.department_name); %>
-        <% }); %>
+        <!-- <% console.log(supplier.manager_id, supplier.department_id, supplier.department_name); %>
+        <% }); %> -->
     </ul>
     
     

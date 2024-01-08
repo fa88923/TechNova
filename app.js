@@ -34,7 +34,7 @@ app.get('/supplier', async(req, res) => {
         //close the connection
         await connection.close();
         console.log(result.rows);
-        res.render('supplier',{suppliers:result.rows});
+        res.render('supplier',{'suppliers':result.rows});
         //console.log(result.rows);
     }catch(error){
         console.error('error fetching',error);
