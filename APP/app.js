@@ -26,14 +26,18 @@ async function term()
 oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT;
 
   app.get('/',async (req,res)=>{
-    res.render("home.ejs");
+    res.render("home");
   })
    
   con();
   
-  app.use(express.static("../route"));
+  app.use(express.static("../route",{
+    setHeaders: (res, path) => {
+      if (path.endsWith('.js')) {
+        res.setHeader('Content-Type', 'application/javascript');
+      }
+    }
+  }));
   app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
   });
-
-  module.exports=sender;

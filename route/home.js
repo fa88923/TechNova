@@ -1,4 +1,4 @@
-const connection=require("../app/app.js");
+const connection=require("app.js");
 // file name is home.js
 
 document.addEventListener("DOMContentLoaded", function () {
