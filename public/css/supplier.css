@@ -1,0 +1,59 @@
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Add hover effect */
+button:hover {
+    background-color: #2980b9;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    color: white;
+    background-color:#318bc5;
+}
+
+/* Style the table header */
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th{
+    background-color:rgba(194, 227, 243, 0.5);
+}
+
+/* Alternate row background colors for better readability */
+tr:nth-child(even) {
+    background-color:rgba(194, 227, 243, 0.5);
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+
+
+/* Highlight on hover effect for rows */
+tr:hover {
+    background-color: #186291;
+}
+
+body {
+    background-image: url('https://cdn.wallpapersafari.com/59/23/G6dobw.jpg'); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
+}

@@ -3,23 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css"> -->
+    <link rel="stylesheet" type="text/css" href="/css/supplierSearch.css">
     <link rel="stylesheet" type="text/css" href="/css/supplier.css">
+    <!-- <script src="./node_modules/jquery/dist/jquery.slim.min.js"></script>
+    <script src="./node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
+    <script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script> -->
     <title>Supplier Information</title>
 </head>
 <body>
-    <h1>Supplier Information</h1>
-    <% console.log("here i am"); %>
-    <ul>
-        <% suppliers.forEach(supplier => { %>
-        <li>
-            <strong>SUPPLIER ID:</strong> <%= supplier.SUPPLIER_ID %>, 
-            <strong>NAME:</strong> <%= supplier.NAME %>,
-            <strong>CITY:</strong> <%= supplier.CITY %>
-            <strong>COUNTRY:</strong> <%= supplier.COUNTRY %>
-            <strong>EMAIL:</strong> <%= supplier.EMAIL %>
-        </li>
-        <% });
-        %>
-    </ul>
+    <div class="container mt-5">
+        <!-- <h1 class="mb-4">Supplier Information</h1> -->
+        <div id="navbar">
+            <h1 class="mb-4">Supplier Information</h1>
+            <div class="search-box">
+                <button class="btn-search"><i class="fas fa-search"></i></button>
+                <input type="text" class="input-search" placeholder="Search...">
+            </div>
+        </div>
+        
+        <% console.log("here i am"); %>
+        <br><br><br>
+        <br><br><br>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover table-dark">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>SUPPLIER ID</th>
+                        <th>NAME</th>
+                        <th>CITY</th>
+                        <th>COUNTRY</th>
+                        <th>EMAIL</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% suppliers.forEach(supplier => { %>
+                    <tr>
+                        <td><%= supplier.SUPPLIER_ID %></td>
+                        <td><a href=<%= supplier.URL %>><%= supplier.NAME %></a></td>
+                        <td><%= supplier.CITY %></td>
+                        <td><%= supplier.COUNTRY %></td>
+                        <td><%= supplier.EMAIL %></td>
+                    </tr>
+                    <% });
+                    %>
+                </tbody>
+            </table>
+        </div>
+        <div class="add_button">
+            <br><br><br>
+            <button type="button" id="add_button">Add Supplier</button>
+        </div>
+    </div>
+    <script src="/js/addScript.js"></script>
 </body>
 </html>

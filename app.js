@@ -28,7 +28,7 @@ app.get('/supplier', async(req, res) => {
         const connection= await oracledb.getConnection(dbConfig);
         //exexute sql query to get supplier info
         const result=await connection.execute(
-            `SELECT supplier_id,name,city,country,email
+            `SELECT supplier_id,name,city,country,email,url
             FROM suppliers`
         );
 
@@ -40,6 +40,10 @@ app.get('/supplier', async(req, res) => {
         res.status(500).send('Internal server error');
     }
     
+});
+
+app.get('/addSupplier', async(req, res) =>{
+    res.render('addSupplier');
 });
 
 app.listen(port, () => {
