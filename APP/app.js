@@ -1,5 +1,6 @@
 const express=require('express');
 const oracledb=require('oracledb');
+const supplierRoute=require("../route/supplier.js");
 const app=express();
 app.set("view engine","ejs");
 const port=3000;
@@ -34,9 +35,6 @@ app.use(async (req, res, next) => {
       await connectToDatabase();
     }
 
-    // Attach the database connection to the request object for use in route handlers  
-    req.db = connection;     // Eita thikthak kaj korle I guess aar connection send in korar lagbe na
-
     next();
   } catch (error) {
     res.status(500).send('Internal Server Error');
@@ -52,6 +50,11 @@ app.get('/', async (req, res) => {
  
 });
 
+app.use("/supplier", (req, res, next) => {
+  // Pass the connection object to the supplierRouter middleware
+  req.db = connection;
+  next();
+},supplierRoute);    // handover supplier route
 
   app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
