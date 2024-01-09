@@ -1,3 +1,7 @@
+*{
+  box-sizing: border-box;
+}
+
 #navbar{
     height: 60px;
     background-color: #09486c;
@@ -20,8 +24,8 @@ h1{
     position: relative;
   }
   .input-search{
-    height: 35px;
-    width: 69px;
+    height: 50px;
+    width: 50px;
     border-style: none;
     padding: 10px;
     font-size: 18px;
@@ -52,7 +56,9 @@ h1{
     right: 0px;
     color:#ffffff ;
     background-color:transparent;
-    pointer-events: painted;  
+    pointer-events: painted;
+    background-image:url('../bg/searchIcon.png') ;
+    background-size: cover;  
   }
   .btn-search:focus ~ .input-search{
     width: 300px;
