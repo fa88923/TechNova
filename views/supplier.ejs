@@ -12,9 +12,11 @@
     <ul>
         <% suppliers.forEach(supplier => { %>
         <li>
-            <strong>Manager ID:</strong> <%= supplier.MANAGER_ID %>, 
-            <strong>Department ID:</strong> <%= supplier.DEPARTMENT_ID %>,
-            <strong>Department Name:</strong> <%= supplier.DEPARTMENT_NAME %>
+            <strong>SUPPLIER ID:</strong> <%= supplier.SUPPLIER_ID %>, 
+            <strong>NAME:</strong> <%= supplier.NAME %>,
+            <strong>CITY:</strong> <%= supplier.CITY %>
+            <strong>COUNTRY:</strong> <%= supplier.COUNTRY %>
+            <strong>EMAIL:</strong> <%= supplier.EMAIL %>
         </li>
         <% });
         %>

@@ -11,8 +11,8 @@ app.use(express.static('public'));
 
 //oracle db connection details
 const dbConfig = {
-    user: 'hr',
-    password: 'hr',
+    user: 'technova',
+    password: '123',
     connectString: "localhost/ORCL",
 };
 
@@ -28,15 +28,13 @@ app.get('/supplier', async(req, res) => {
         const connection= await oracledb.getConnection(dbConfig);
         //exexute sql query to get supplier info
         const result=await connection.execute(
-            `SELECT manager_id,department_id,department_name
-            FROM departments`
+            `SELECT supplier_id,name,city,country,email
+            FROM suppliers`
         );
 
         //close the connection
         await connection.close();
-        console.log(result.rows);
         res.render('supplier',{'suppliers':result.rows});
-        //console.log(result.rows);
     }catch(error){
         console.error('error fetching',error);
         res.status(500).send('Internal server error');
