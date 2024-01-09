@@ -8,6 +8,7 @@ oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT;
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 
+
 //oracle db connection details
 const dbConfig = {
     user: 'hr',
