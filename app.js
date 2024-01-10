@@ -45,11 +45,6 @@ async function connectToDatabase() {
     }
   });
 
-  app.use("/supplier", (req, res, next) => {
-    // Pass the connection object to the supplierRouter middleware
-    req.db = connection;
-    next();
-  },supplierRouter);    // handover supplier route
   
 // Route for the home page
 app.get('/', (req, res) => {
