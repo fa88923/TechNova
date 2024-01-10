@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     {
         add_button.addEventListener('click', function(event) {
         event.preventDefault();
-        window.location.href = '/addSupplier';
+        window.location.href = '/supplier/add';
     });
     }
 });
