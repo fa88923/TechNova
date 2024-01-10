@@ -6,7 +6,8 @@ supplierRoute.get("/",async(req,res)=>{
         //exexute sql query to get supplier info
         const result=await req.db.execute(
             `SELECT supplier_id,name,city,country,email,url
-            FROM suppliers`
+            FROM suppliers
+            ORDER BY supplier_id`
         );
 
         //close the connection
@@ -53,11 +54,30 @@ supplierRoute.get("/add",(req,res)=>{
     res.render('addSupplier');
 })
 
-supplierRoute.post("/add/submit",(req,res)=>{     
-    //handle submitting a new information here
-    //Insert function called on database
-    //render the submit page with the related message
-    //the html file should have a go back to supplier list option
+supplierRoute.post("/submit",async (req,res)=>{     
+    console.log(req.body.name);  
+    const { name, street,postal_code,city, country, email, phone_no, url } = req.body;
+    const query = `
+            INSERT INTO suppliers (supplier_id,name, city, country, email, phone_no, url)
+            VALUES (10,:name, :city, :country, :email, :phone_no, :url)
+        `;
+    const binds = {
+        name,
+        city,
+        country,
+        email,
+        phone_no,
+        url
+    };
+    try{
+        const result = await req.db.execute(query, binds, { autoCommit: true });
+
+        console.log('Rows inserted:', result.rowsAffected);
+        res.redirect('/supplier');
+    }catch(error){
+        console.error('Error inserting into the database:', error);
+    }
+    
 })
 
 module.exports=supplierRoute;

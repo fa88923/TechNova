@@ -9,44 +9,44 @@
 <body>
     <div class="login-box">
         <h2>Supplier Information</h2>
-        <form>
+        <form method="post" action="/supplier/submit" id="addingForm">
             <div class="user-box">
-                <input type="text" id="name" name="" required="">
+                <input type="text" id="name" name="name" required="">
                 <label>Name</label>
             </div>
             <div class="user-box">
-                <input type="text" id="street" name="" required="">
+                <input type="text" id="street" name="street" required="">
                 <label>Street Address</label>
             </div>
             <div class="user-box">
-                <input type="text" id="postal_code" name="" required="">
+                <input type="text" id="postal_code" name="postal_code" required="">
                 <label>Postal Code</label>
             </div>
             <div class="user-box">
-                <input type="text" id="city" name="" required="">
+                <input type="text" id="city" name="city" required="">
                 <label>City</label>
             </div>
             <div class="user-box">
-                <input type="text" id="country" name="" required="">
+                <input type="text" id="country" name="country" required="">
                 <label>Country</label>
             </div>
             <div class="user-box">
-                <input type="text" id="email" name="" required="">
+                <input type="text" id="email" name="email" required="">
                 <label>Email</label>
             </div>
             <div class="user-box">
-                <input type="text" id="phone_no" name="" required="">
+                <input type="text" id="phone_no" name="phone_no" required="">
                 <label>Phone No</label>
             </div>
             <div class="user-box">
-                <input type="text" id="url" name="" required="">
+                <input type="text" id="url" name="url" required="">
                 <label>URL</label>
             </div>
             <div class="user-box">
-                <input type="text" id="avg_delivary_time" name="" required="">
+                <input type="text" id="avg_delivary_time" name="" required="avg_delivary_time">
                 <label>Average Delivery Time</label>
             </div>
-            <a href="#">
+            <a href="#" id="add_button">
             <span></span>
             <span></span>
             <span></span>
@@ -55,5 +55,6 @@
             </a>
         </form>
         </div>
+        <script src="/js/supplierSubmit.js"></script>
 </body>
 </html>

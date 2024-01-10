@@ -1,12 +1,15 @@
 const express = require('express');
 const oracledb= require('oracledb');
-const supplierRouter=require('./routeHandler/supplierRouter.js');   //path check koro
+const bodyParser = require('body-parser');
+const supplierRouter=require('./routehandler/supplierRouter.js');   //path check koro
 const app = express();
 const port = 3000;
 
 oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT;
 
-//thinks to handle, use function, link change in html
+//for parsing the info from the form
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json())
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));    //multiple users er conflict lagte pare
