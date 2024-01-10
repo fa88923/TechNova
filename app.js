@@ -1,7 +1,9 @@
 const express = require('express');
 const oracledb= require('oracledb');
 const bodyParser = require('body-parser');
-const supplierRouter=require('./routehandler/supplierRouter.js');   //path check koro
+//adri, check the path of routehandler here, age routeHandler chilo
+//but then amar ekhane dekhi, folder er nam routehandler tai change kre disi
+const supplierRouter=require('./routehandler/supplierRouter.js');
 const app = express();
 const port = 3000;
 
@@ -12,7 +14,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json())
 
 app.set('view engine', 'ejs');
-app.use(express.static('public'));    //multiple users er conflict lagte pare
+app.use(express.static('public')); 
+//multiple users er conflict lagte pare
 
 let connection;
 
@@ -35,7 +38,8 @@ async function connectToDatabase() {
     }
   }
 
-  app.use(async (req, res, next) => {        //ei functionta ager express.staticer okhane pass in kore deyar lagte pare   
+  app.use(async (req, res, next) => {        
+    //ei functionta ager express.staticer okhane pass in kore deyar lagte pare   
     try {                                  
       // Check if the database connection exists; if not, establish it
       if (!connection) {
