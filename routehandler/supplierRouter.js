@@ -19,13 +19,33 @@ supplierRoute.get("/",async(req,res)=>{
 
 
 })
+//let searchValue="";
 
-supplierRoute.post("/search",(req,res)=>{      //post, since formsubmit korbe ekhane
-    //handle searching here  
-    //extract search string from request 
-    //search in db
-    //render page with resultant string
-})
+supplierRoute.get(`/search`, async (req, res) => {
+    try {
+        // Extract the search string from the request
+        const searchString = req.query.query ||''; // Assuming the client sends the search query in the request body
+        console.log(searchString);
+        // Execute SQL query to search in the database
+        const result = await req.db.execute(
+            `SELECT supplier_id, name, city, country, email, url
+            FROM suppliers
+            WHERE UPPER(name) LIKE UPPER(:searchString)
+            OR UPPER(city) LIKE UPPER(:searchString)
+            OR UPPER(country) LIKE UPPER(:searchString)`,
+            [ `%${searchString}%` , `%${searchString}%`, `%${searchString}%` ] // Use bind variables to prevent SQL injection
+        );
+        console.log(result.rows);
+
+        // Render the page with the search results
+        res.render('supplier', { 'suppliers': result.rows });
+        //res.json({ 'suppliers': result.rows });
+    } catch (error) {
+        console.error('Error searching:', error);
+        res.status(500).send('Internal server error');
+    }
+});
+
 
 supplierRoute.get("/add",(req,res)=>{   
     //handle adding here    
