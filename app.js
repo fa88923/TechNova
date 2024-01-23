@@ -15,6 +15,7 @@ app.use(bodyParser.json())
 
 app.set('view engine', 'ejs');
 app.use(express.static('public')); 
+
 //multiple users er conflict lagte pare
 
 let connection;
