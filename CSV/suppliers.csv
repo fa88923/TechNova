@@ -1,4 +1,4 @@
-Supplier_ID,Name,Street_Address,Postal_Code,City,State_Province,Country,Email,Phone_Number,URL,Avg_Delivery_Time
+Supplier_ID,Supplier_Name,Street_Address,Postal_Code,City,State_Province,Country,Email,Phone_Number,URL,Avg_Delivery_Time
 1,Global Brand Pvt. Ltd.,19/2 West Panthapath,1205,Dhaka,,Bangladesh,info@globalbrand.com.bd,+88-09666774422,https://www.globalbrand.com.bd/,7 days
 2,Distribution Hub Ltd,114 Kazi Nazrul Islam Avenue,1217,Dhaka,,Bangladesh,info@distributionhub.com.bd,09666751751,https://distributionhub.com.bd/,8 days
 3,RP Tech India, N.S.Phadke Road,400069,Mumbai,Maharashtra,India,contactus@rptechindia.com,+91 22 6177 1771,https://www.rptechindia.com/,12 days
