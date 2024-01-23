@@ -1,4 +1,11 @@
 
+-- CREATE SEQUENCE LOCATION_ID_SEQ
+-- INCREMENT BY 1
+-- START WITH 1
+-- MAXVALUE 500
+-- NOCYCLE;
+
+
 
 -- Insert data into LOCATIONS table using the sequence for LOCATION_ID
 INSERT INTO LOCATIONS (

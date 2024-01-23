@@ -1,7 +1,7 @@
 button {
     padding: 10px 20px;
     font-size: 16px;
-    background-color: #3498db;
+    background-color: #5875ad;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -10,7 +10,7 @@ button {
 
 /* Add hover effect */
 button:hover {
-    background-color: #2980b9;
+    background-color: #2997b9bd;
 }
 
 table {
@@ -18,7 +18,7 @@ table {
     border-collapse: collapse;
     margin-bottom: 20px;
     color: white;
-    background-color:#318bc5;
+    background-color:#318ac52f;
 }
 
 /* Style the table header */
@@ -29,12 +29,13 @@ th, td {
 }
 
 th{
-    background-color:rgba(194, 227, 243, 0.5);
+    background-color:rgba(194, 227, 243, 0.096);
+    
 }
 
 /* Alternate row background colors for better readability */
 tr:nth-child(even) {
-    background-color:rgba(194, 227, 243, 0.5);
+    background-color:rgba(194, 227, 243, 0.171);
 }
 
 a {
@@ -50,7 +51,7 @@ tr:hover {
 }
 
 body {
-    background-image: url('https://cdn.wallpapersafari.com/59/23/G6dobw.jpg'); 
+    background-image: url('https://wallpapers.com/images/hd/modern-1600-x-1200-background-puat3771sn5l0bpg.jpg'); 
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

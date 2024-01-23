@@ -1,0 +1,40 @@
+/* productCatalogue.css */
+
+body {
+    background-color: #121212; /* Dark background color */
+    color: #ffffff; /* Light text color */
+}
+
+.container {
+    background-color: #1e1e1e; /* Darker container background color */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Slight box shadow */
+}
+
+.table {
+    background-color: #232323; /* Dark table background color */
+}
+
+.table th,
+.table td {
+    border-color: #343a40; /* Border color */
+}
+
+.table thead th {
+    background-color: #343a40; /* Dark header background color */
+    color: #007bff; /* Blue header text color */
+}
+
+.table-dark,
+.table-dark th,
+.table-dark td {
+    border-color: #343a40; /* Dark table border color */
+}
+
+.table-dark thead th {
+    background-color: #343a40; /* Dark header background color */
+    color: #007bff; /* Blue header text color */
+}
+
+/* Add any additional styling as needed */
