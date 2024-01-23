@@ -7,7 +7,7 @@ supplierRoute.get("/",async(req,res)=>{
     try{
         //execute sql query to get supplier info
         const result=await req.db.execute(
-            `SELECT supplier_id,name,city,country,email,url
+            `SELECT supplier_id,supplier_name,city,country,url
             FROM suppliers
             ORDER BY supplier_id`
         );
@@ -29,9 +29,9 @@ supplierRoute.get(`/search`, async (req, res) => {
 
         // Execute SQL query to search in the database
         const result = await req.db.execute(
-            `SELECT supplier_id, name, city, country, email, url
+            `SELECT supplier_id, supplier_name, city, country, url
             FROM suppliers
-            WHERE UPPER(name) LIKE UPPER(:searchString)
+            WHERE UPPER(supplier_name) LIKE UPPER(:searchString)
             OR UPPER(city) LIKE UPPER(:searchString)
             OR UPPER(country) LIKE UPPER(:searchString)`,
             [ `%${searchString}%` , `%${searchString}%`, `%${searchString}%` ] 
@@ -52,6 +52,7 @@ supplierRoute.get("/add",(req,res)=>{
     res.render('addSupplier');
 })
 
+///need to change////later/////////////////////////////////////////////////////////
 //when the form is submitted with post method 
 supplierRoute.post("/submit",async (req,res)=>{     
     //needed to give the tags name="" to access these here

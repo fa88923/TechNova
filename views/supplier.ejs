@@ -32,17 +32,17 @@
                         <th>NAME</th>
                         <th>CITY</th>
                         <th>COUNTRY</th>
-                        <th>EMAIL</th>
+                        <!-- <th>EMAIL</th> -->
                     </tr>
                 </thead>
                 <tbody>
                     <% suppliers.forEach(supplier => { %>
                     <tr>
                         <td><%= supplier.SUPPLIER_ID %></td>
-                        <td><a href=<%= supplier.URL %>><%= supplier.NAME %></a></td>
+                        <td><a href=<%= supplier.URL %>><%= supplier.SUPPLIER_NAME %></a></td>
                         <td><%= supplier.CITY %></td>
                         <td><%= supplier.COUNTRY %></td>
-                        <td><%= supplier.EMAIL %></td>
+                        <!-- <td><%= supplier.EMAIL %></td> -->
                     </tr>
                     <% });
                     %>
