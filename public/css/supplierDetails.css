@@ -1,0 +1,35 @@
+/* styles.css */
+
+body {
+    padding: 20px;
+    background-color: #343a40;
+    color: #fff;
+}
+
+.card {
+    width: 900px;
+    margin: auto;
+    margin-top: 20px;
+    background-color: #495057;
+    border: 1px solid #343a40;
+}
+
+.card-header {
+    background-color: #007bff;
+    color: #fff;
+    border-bottom: 1px solid #343a40;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+dl.row {
+    margin-bottom: 0;
+}
+
+dt.col-sm-4 {
+    color: #007bff;
+}
+
+/* Add any additional custom styles here */

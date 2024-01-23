@@ -4,7 +4,7 @@
 
 #navbar{
     height: 60px;
-    background-color: #09486c;
+    background-color: #041464;
     display: flex;
     align-items: center; /* Center items vertically */
     /* justify-content: space-between;  */
@@ -33,7 +33,7 @@ h1{
     outline: none;
     border-radius: 25px;
     transition: all .5s ease-in-out;
-    background-color: #3790ca;
+    background-color: #5875ad;
     padding-right: 40px;
     color:#fff;
   }

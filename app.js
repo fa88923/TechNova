@@ -23,8 +23,8 @@ let connection;
 
 //oracle db connection details
 const dbConfig = {
-    user: 'testdb1231996',
-    password: '123testermyfoot',
+    user: 'technova',
+    password: '123',
     connectString: "localhost/ORCL",
 };
 
@@ -64,6 +64,11 @@ app.use("/supplier", (req, res, next) => {
     req.db = connection;
     next();
   },supplierRouter);    // handover supplier route
+
+
+//   app.get('/supplierDetails/productCatalogue', (req, res) => {
+//     res.render('productCatalogue');
+// })
 
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);

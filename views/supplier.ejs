@@ -39,7 +39,8 @@
                     <% suppliers.forEach(supplier => { %>
                     <tr>
                         <td><%= supplier.SUPPLIER_ID %></td>
-                        <td><a href=<%= supplier.URL %>><%= supplier.SUPPLIER_NAME %></a></td>
+                        <!-- <td><a href=<%= supplier.URL %>><%= supplier.SUPPLIER_NAME %></a></td> -->
+                        <td><a href="#" class="supplier-details-button" data-supplier-id="<%= supplier.SUPPLIER_ID %>"><%= supplier.SUPPLIER_NAME %></a></td> 
                         <td><%= supplier.CITY %></td>
                         <td><%= supplier.COUNTRY %></td>
                         <!-- <td><%= supplier.EMAIL %></td> -->
@@ -56,5 +57,6 @@
     </div>
     <script src="/js/addScript.js"></script>
     <script src="/js/searchScript.js"></script>
+    <script src="/js/supplierClick.js"></script>
 </body>
 </html>
