@@ -1,5 +1,6 @@
 
-ALTER SEQUENCE SUPPLIER_ID_SEQ RESTART WITH 2;
+
+
 
 
 INSERT INTO SUPPLIERS (
@@ -154,4 +155,4 @@ VALUES (
     'https://ydminer.en.made-in-china.com/',
     19
 );
-.
+

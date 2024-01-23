@@ -113,3 +113,18 @@ VALUES (
     'CN78901234567890123456789012345678'
 );
 
+--own email account
+INSERT INTO PAYMENT_INFO (
+    ID,
+    ACCOUNT_NUMBER,
+    ACCOUNT_HOLDER,
+    BANK_NAME,
+    IBAN
+)
+VALUES (
+    PAYMENT_INFO_ID_SEQ.NEXTVAL,
+    '11288456', -- Replace with an actual account number
+    'Technova',
+    'Dutch Bangla Bank',
+    'BD12345678901234567890123456789011'
+);

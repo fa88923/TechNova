@@ -55,3 +55,21 @@ VALUES (
     NULL, -- Placeholder for STATE_PROVINCE, replace with actual value if available
     'Bangladesh'
 );
+--own location
+
+INSERT INTO LOCATIONS (
+    LOCATION_ID,
+    STREET_ADDRESS,
+    POSTAL_CODE,
+    CITY,
+    STATE_PROVINCE,
+    COUNTRY
+)
+VALUES (
+    LOCATION_ID_SEQ.NEXTVAL,
+    '123/5 BCS Computer City, Agargaon', -- Actual street address
+    '1207',            -- Actual postal code
+    'Dhaka',
+    'Dhaka',           -- Actual state or province
+    'Bangladesh'
+);

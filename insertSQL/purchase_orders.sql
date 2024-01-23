@@ -1,0 +1,829 @@
+-- INSERT INTO FINANCIAL_TRANSACTIONS (
+--     TRANSACTION_ID,
+--     TYPE,
+--     METHOD,
+--     FROM_ACCOUNT,
+--     TO_ACCOUNT,
+--     STATUS,
+--     CURRENCY,
+--     AMOUNT
+-- ) VALUES (
+--     1,  -- Set TRANSACTION_ID to 1
+--     'Purchase Order Payment',
+--     'Credit Card',  -- Adjusted method
+--     121,            -- FROM_ACCOUNT - Hardcoded as 121
+--     101,            -- TO_ACCOUNT - Placeholder, replace with actual value
+--     'Complete',
+--     'taka',
+--     NULL  -- Set AMOUNT to NULL
+-- );
+
+-- INSERT INTO PURCHASE_ORDERS (
+--     ORDER_ID,
+--     SUPPLIER_ID,
+--     PLACEMENT_DATE,
+--     PICKUP_DATE,
+--     TRANSACTION_ID,
+--     SHIPMENT_ID
+-- ) VALUES (
+--     1,  -- Placeholder, replace with actual value
+--     2,  -- Supplier 2
+--     TO_DATE('2023-01-23', 'YYYY-MM-DD'),  -- Adjusted order placement date
+--     TO_DATE('2023-02-04', 'YYYY-MM-DD'),  -- Adjusted pickup date
+--     1,   -- Set TRANSACTION_ID to 1
+--     NULL
+-- );
+
+-- INSERT ALL
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (1, 2, 10)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (1, 4, 5)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (1, 6, 8)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (1, 8, 12)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (1, 10, 6)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (1, 12, 4)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (1, 14, 7)
+-- SELECT * FROM DUAL;
+
+-- INSERT INTO FINANCIAL_TRANSACTIONS (
+--     TRANSACTION_ID,
+--     TYPE,
+--     METHOD,
+--     FROM_ACCOUNT,
+--     TO_ACCOUNT,
+--     STATUS,
+--     CURRENCY,
+--     AMOUNT
+-- ) VALUES (
+--     2,  -- Set TRANSACTION_ID to 2
+--     'Purchase Order Payment',
+--     'Credit Card',  -- Adjusted method
+--     121,            -- FROM_ACCOUNT - Hardcoded as 121
+--     101,            -- TO_ACCOUNT - Placeholder, replace with actual value
+--     'Complete',
+--     'taka',
+--     NULL  -- Set AMOUNT to NULL
+-- );
+-- 
+-- INSERT INTO PURCHASE_ORDERS (
+--     ORDER_ID,
+--     SUPPLIER_ID,
+--     PLACEMENT_DATE,
+--     PICKUP_DATE,
+--     TRANSACTION_ID,
+--     SHIPMENT_ID
+-- ) VALUES (
+--     2,  -- Placeholder, replace with actual value
+--     2,  -- Supplier 2
+--     TO_DATE('2022-05-15', 'YYYY-MM-DD'),  -- Adjusted order placement date
+--     TO_DATE('2022-06-01', 'YYYY-MM-DD'),  -- Adjusted pickup date
+--     2,   -- Set TRANSACTION_ID to 2
+--     NULL
+-- );
+-- 
+-- INSERT ALL
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (2, 2, 8)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (2, 4, 10)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (2, 6, 5)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (2, 8, 15)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (2, 10, 7)
+-- SELECT * FROM DUAL;
+
+-- Purchase Order 3
+-- INSERT INTO FINANCIAL_TRANSACTIONS (
+--     TRANSACTION_ID,
+--     TYPE,
+--     METHOD,
+--     FROM_ACCOUNT,
+--     TO_ACCOUNT,
+--     STATUS,
+--     CURRENCY,
+--     AMOUNT
+-- ) VALUES (
+--     3,  -- Set TRANSACTION_ID to 3
+--     'Purchase Order Payment',
+--     'Credit Card',  -- Adjusted method
+--     121,            -- FROM_ACCOUNT - Hardcoded as 121
+--     101,            -- TO_ACCOUNT - Placeholder, replace with actual value
+--     'Complete',
+--     'taka',
+--     NULL  -- Set AMOUNT to NULL
+-- );
+-- 
+-- INSERT INTO PURCHASE_ORDERS (
+--     ORDER_ID,
+--     SUPPLIER_ID,
+--     PLACEMENT_DATE,
+--     PICKUP_DATE,
+--     TRANSACTION_ID,
+--     SHIPMENT_ID
+-- ) VALUES (
+--     3,  -- Placeholder, replace with actual value
+--     2,  -- Supplier 2
+--     TO_DATE('2023-01-10', 'YYYY-MM-DD'),  -- Adjusted order placement date
+--     TO_DATE('2023-01-25', 'YYYY-MM-DD'),  -- Adjusted pickup date
+--     3,   -- Set TRANSACTION_ID to 3
+--     NULL
+-- );
+-- 
+-- INSERT ALL
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (3, 2, 12)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (3, 4, 8)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (3, 6, 6)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (3, 8, 10)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (3, 10, 9)
+-- SELECT * FROM DUAL;
+
+-- -- Purchase Order 4
+-- INSERT INTO FINANCIAL_TRANSACTIONS (
+--     TRANSACTION_ID,
+--     TYPE,
+--     METHOD,
+--     FROM_ACCOUNT,
+--     TO_ACCOUNT,
+--     STATUS,
+--     CURRENCY,
+--     AMOUNT
+-- ) VALUES (
+--     4,  -- Set TRANSACTION_ID to 4
+--     'Purchase Order Payment',
+--     'Credit Card',  -- Adjusted method
+--     121,            -- FROM_ACCOUNT - Hardcoded as 121
+--     101,            -- TO_ACCOUNT - Placeholder, replace with actual value
+--     'Complete',
+--     'taka',
+--     NULL  -- Set AMOUNT to NULL
+-- );
+-- 
+-- INSERT INTO PURCHASE_ORDERS (
+--     ORDER_ID,
+--     SUPPLIER_ID,
+--     PLACEMENT_DATE,
+--     PICKUP_DATE,
+--     TRANSACTION_ID,
+--     SHIPMENT_ID
+-- ) VALUES (
+--     4,  -- Placeholder, replace with actual value
+--     2,  -- Supplier 2
+--     TO_DATE('2022-08-10', 'YYYY-MM-DD'),  -- Adjusted order placement date
+--     TO_DATE('2022-08-25', 'YYYY-MM-DD'),  -- Adjusted pickup date
+--     4,   -- Set TRANSACTION_ID to 4
+--     NULL
+-- );
+-- 
+-- INSERT ALL
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (4, 2, 25)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (4, 4, 30)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (4, 6, 22)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (4, 8, 28)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (4, 10, 20)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (4, 12, 25)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (4, 14, 26)
+-- SELECT * FROM DUAL;
+-- 
+-- -- Purchase Order 5
+-- INSERT INTO FINANCIAL_TRANSACTIONS (
+--     TRANSACTION_ID,
+--     TYPE,
+--     METHOD,
+--     FROM_ACCOUNT,
+--     TO_ACCOUNT,
+--     STATUS,
+--     CURRENCY,
+--     AMOUNT
+-- ) VALUES (
+--     5,  -- Set TRANSACTION_ID to 5
+--     'Purchase Order Payment',
+--     'Credit Card',  -- Adjusted method
+--     121,            -- FROM_ACCOUNT - Hardcoded as 121
+--     101,            -- TO_ACCOUNT - Placeholder, replace with actual value
+--     'Complete',
+--     'taka',
+--     NULL  -- Set AMOUNT to NULL
+-- );
+-- 
+-- INSERT INTO PURCHASE_ORDERS (
+--     ORDER_ID,
+--     SUPPLIER_ID,
+--     PLACEMENT_DATE,
+--     PICKUP_DATE,
+--     TRANSACTION_ID,
+--     SHIPMENT_ID
+-- ) VALUES (
+--     5,  -- Placeholder, replace with actual value
+--     2,  -- Supplier 2
+--     TO_DATE('2022-11-20', 'YYYY-MM-DD'),  -- Adjusted order placement date
+--     TO_DATE('2022-12-05', 'YYYY-MM-DD'),  -- Adjusted pickup date
+--     5,   -- Set TRANSACTION_ID to 5
+--     NULL
+-- );
+-- 
+-- INSERT ALL
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (5, 2, 22)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (5, 4, 28)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (5, 6, 30)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (5, 8, 24)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (5, 10, 26)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (5, 12, 20)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (5, 14, 29)
+-- SELECT * FROM DUAL;
+-- 
+-- -- Purchase Order 6
+-- INSERT INTO FINANCIAL_TRANSACTIONS (
+--     TRANSACTION_ID,
+--     TYPE,
+--     METHOD,
+--     FROM_ACCOUNT,
+--     TO_ACCOUNT,
+--     STATUS,
+--     CURRENCY,
+--     AMOUNT
+-- ) VALUES (
+--     6,  -- Set TRANSACTION_ID to 6
+--     'Purchase Order Payment',
+--     'Credit Card',  -- Adjusted method
+--     121,            -- FROM_ACCOUNT - Hardcoded as 121
+--     101,            -- TO_ACCOUNT - Placeholder, replace with actual value
+--     'Complete',
+--     'taka',
+--     NULL  -- Set AMOUNT to NULL
+-- );
+-- 
+-- INSERT INTO PURCHASE_ORDERS (
+--     ORDER_ID,
+--     SUPPLIER_ID,
+--     PLACEMENT_DATE,
+--     PICKUP_DATE,
+--     TRANSACTION_ID,
+--     SHIPMENT_ID
+-- ) VALUES (
+--     6,  -- Placeholder, replace with actual value
+--     2,  -- Supplier 2
+--     TO_DATE('2023-03-15', 'YYYY-MM-DD'),  -- Adjusted order placement date
+--     TO_DATE('2023-04-01', 'YYYY-MM-DD'),  -- Adjusted pickup date
+--     6,   -- Set TRANSACTION_ID to 6
+--     NULL
+-- );
+-- 
+-- INSERT ALL
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (6, 2, 26)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (6, 4, 20)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (6, 6, 24)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (6, 8, 27)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (6, 10, 30)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (6, 12, 22)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (6, 14, 23)
+-- SELECT * FROM DUAL;
+--  
+
+-- Purchase Order 7
+-- INSERT INTO FINANCIAL_TRANSACTIONS (
+--     TRANSACTION_ID,
+--     TYPE,
+--     METHOD,
+--     FROM_ACCOUNT,
+--     TO_ACCOUNT,
+--     STATUS,
+--     CURRENCY,
+--     AMOUNT
+-- ) VALUES (
+--     7,  -- Set TRANSACTION_ID to 7
+--     'Purchase Order Payment',
+--     'Credit Card',  -- Adjusted method
+--     121,            -- FROM_ACCOUNT - Hardcoded as 121
+--     101,            -- TO_ACCOUNT - Placeholder, replace with actual value
+--     'Complete',
+--     'taka',
+--     NULL  -- Set AMOUNT to NULL
+-- );
+-- 
+-- INSERT INTO PURCHASE_ORDERS (
+--     ORDER_ID,
+--     SUPPLIER_ID,
+--     PLACEMENT_DATE,
+--     PICKUP_DATE,
+--     TRANSACTION_ID,
+--     SHIPMENT_ID
+-- ) VALUES (
+--     7,  -- Placeholder, replace with actual value
+--     2,  -- Supplier 2
+--     TO_DATE('2023-06-05', 'YYYY-MM-DD'),  -- Adjusted order placement date
+--     TO_DATE('2023-06-20', 'YYYY-MM-DD'),  -- Adjusted pickup date
+--     7,   -- Set TRANSACTION_ID to 7
+--     NULL
+-- );
+-- 
+-- INSERT ALL
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (7, 2, 28)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (7, 4, 25)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (7, 6, 30)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (7, 8, 22)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (7, 10, 27)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (7, 12, 29)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (7, 14, 26)
+-- SELECT * FROM DUAL;
+-- 
+-- -- Purchase Order 8
+-- INSERT INTO FINANCIAL_TRANSACTIONS (
+--     TRANSACTION_ID,
+--     TYPE,
+--     METHOD,
+--     FROM_ACCOUNT,
+--     TO_ACCOUNT,
+--     STATUS,
+--     CURRENCY,
+--     AMOUNT
+-- ) VALUES (
+--     8,  -- Set TRANSACTION_ID to 8
+--     'Purchase Order Payment',
+--     'Credit Card',  -- Adjusted method
+--     121,            -- FROM_ACCOUNT - Hardcoded as 121
+--     101,            -- TO_ACCOUNT - Placeholder, replace with actual value
+--     'Complete',
+--     'taka',
+--     NULL  -- Set AMOUNT to NULL
+-- );
+-- 
+-- INSERT INTO PURCHASE_ORDERS (
+--     ORDER_ID,
+--     SUPPLIER_ID,
+--     PLACEMENT_DATE,
+--     PICKUP_DATE,
+--     TRANSACTION_ID,
+--     SHIPMENT_ID
+-- ) VALUES (
+--     8,  -- Placeholder, replace with actual value
+--     2,  -- Supplier 2
+--     TO_DATE('2023-09-15', 'YYYY-MM-DD'),  -- Adjusted order placement date
+--     TO_DATE('2023-09-30', 'YYYY-MM-DD'),  -- Adjusted pickup date
+--     8,   -- Set TRANSACTION_ID to 8
+--     NULL
+-- );
+-- 
+-- INSERT ALL
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (8, 2, 23)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (8, 4, 29)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (8, 6, 20)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (8, 8, 26)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (8, 10, 22)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (8, 12, 27)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (8, 14, 24)
+-- SELECT * FROM DUAL;
+-- 
+-- -- Purchase Order 9
+-- INSERT INTO FINANCIAL_TRANSACTIONS (
+--     TRANSACTION_ID,
+--     TYPE,
+--     METHOD,
+--     FROM_ACCOUNT,
+--     TO_ACCOUNT,
+--     STATUS,
+--     CURRENCY,
+--     AMOUNT
+-- ) VALUES (
+--     9,  -- Set TRANSACTION_ID to 9
+--     'Purchase Order Payment',
+--     'Credit Card',  -- Adjusted method
+--     121,            -- FROM_ACCOUNT - Hardcoded as 121
+--     101,            -- TO_ACCOUNT - Placeholder, replace with actual value
+--     'Complete',
+--     'taka',
+--     NULL  -- Set AMOUNT to NULL
+-- );
+-- 
+-- INSERT INTO PURCHASE_ORDERS (
+--     ORDER_ID,
+--     SUPPLIER_ID,
+--     PLACEMENT_DATE,
+--     PICKUP_DATE,
+--     TRANSACTION_ID,
+--     SHIPMENT_ID
+-- ) VALUES (
+--     9,  -- Placeholder, replace with actual value
+--     2,  -- Supplier 2
+--     TO_DATE('2023-12-01', 'YYYY-MM-DD'),  -- Adjusted order placement date
+--     TO_DATE('2023-12-16', 'YYYY-MM-DD'),  -- Adjusted pickup date
+--     9,   -- Set TRANSACTION_ID to 9
+--     NULL
+-- );
+-- 
+-- INSERT ALL
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (9, 2, 27)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (9, 4, 23)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (9, 6, 28)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (9, 8, 25)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (9, 10, 21)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (9, 12, 29)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (9, 14, 30)
+-- SELECT * FROM DUAL;
+
+-- Purchase Order 10
+-- INSERT INTO FINANCIAL_TRANSACTIONS (
+--     TRANSACTION_ID,
+--     TYPE,
+--     METHOD,
+--     FROM_ACCOUNT,
+--     TO_ACCOUNT,
+--     STATUS,
+--     CURRENCY,
+--     AMOUNT
+-- ) VALUES (
+--     10,  -- Set TRANSACTION_ID to 10
+--     'Purchase Order Payment',
+--     'Credit Card',  -- Adjusted method
+--     121,            -- FROM_ACCOUNT - Hardcoded as 121
+--     102,            -- TO_ACCOUNT - Placeholder, replace with actual value
+--     'Complete',
+--     'taka',
+--     NULL  -- Set AMOUNT to NULL
+-- );
+-- 
+-- INSERT INTO PURCHASE_ORDERS (
+--     ORDER_ID,
+--     SUPPLIER_ID,
+--     PLACEMENT_DATE,
+--     PICKUP_DATE,
+--     TRANSACTION_ID,
+--     SHIPMENT_ID
+-- ) VALUES (
+--     10,  -- Placeholder, replace with actual value
+--     3,  -- Supplier 3
+--     TO_DATE('2023-02-10', 'YYYY-MM-DD'),  -- Adjusted order placement date
+--     TO_DATE('2023-02-18', 'YYYY-MM-DD'),  -- Adjusted pickup date
+--     10,   -- Set TRANSACTION_ID to 10
+--     NULL
+-- );
+-- 
+-- INSERT ALL
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (10, 1, 15)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (10, 3, 18)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (10, 5, 20)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (10, 7, 17)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (10, 9, 22)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (10, 11, 16)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (10, 13, 21)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (10, 15, 19)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (10, 17, 25)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (10, 19, 23)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (10, 21, 28)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (10, 23, 24)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (10, 25, 27)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (10, 27, 26)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (10, 29, 30)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (10, 31, 29)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (10, 33, 32)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (10, 35, 35)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (10, 37, 31)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (10, 39, 34)
+-- SELECT * FROM DUAL;
+-- 
+-- Purchase Order 11
+-- INSERT INTO FINANCIAL_TRANSACTIONS (
+--     TRANSACTION_ID,
+--     TYPE,
+--     METHOD,
+--     FROM_ACCOUNT,
+--     TO_ACCOUNT,
+--     STATUS,
+--     CURRENCY,
+--     AMOUNT
+-- ) VALUES (
+--     11,  -- Set TRANSACTION_ID to 11
+--     'Purchase Order Payment',
+--     'Credit Card',  -- Adjusted method
+--     121,            -- FROM_ACCOUNT - Hardcoded as 121
+--     102,            -- TO_ACCOUNT - Placeholder, replace with actual value
+--     'Complete',
+--     'taka',
+--     NULL  -- Set AMOUNT to NULL
+-- );
+-- 
+-- INSERT INTO PURCHASE_ORDERS (
+--     ORDER_ID,
+--     SUPPLIER_ID,
+--     PLACEMENT_DATE,
+--     PICKUP_DATE,
+--     TRANSACTION_ID,
+--     SHIPMENT_ID
+-- ) VALUES (
+--     11,  -- Placeholder, replace with actual value
+--     3,  -- Supplier 3
+--     TO_DATE('2023-05-12', 'YYYY-MM-DD'),  -- Adjusted order placement date
+--     TO_DATE('2023-05-20', 'YYYY-MM-DD'),  -- Adjusted pickup date
+--     11,   -- Set TRANSACTION_ID to 11
+--     NULL
+-- );
+-- 
+-- INSERT ALL
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (11, 1, 20)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (11, 3, 22)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (11, 5, 25)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (11, 7, 18)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (11, 9, 30)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (11, 11, 26)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (11, 13, 29)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (11, 15, 24)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (11, 17, 28)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (11, 19, 27)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (11, 21, 23)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (11, 23, 31)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (11, 25, 32)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (11, 27, 35)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (11, 29, 33)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (11, 31, 34)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (11, 33, 36)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (11, 35, 40)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (11, 37, 37)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (11, 39, 38)
+-- SELECT * FROM DUAL;
+-- 
+-- INSERT INTO FINANCIAL_TRANSACTIONS (
+--     TRANSACTION_ID,
+--     TYPE,
+--     METHOD,
+--     FROM_ACCOUNT,
+--     TO_ACCOUNT,
+--     STATUS,
+--     CURRENCY,
+--     AMOUNT
+-- ) VALUES (
+--     12,  -- Set TRANSACTION_ID to 12
+--     'Purchase Order Payment',
+--     'Credit Card',  -- Adjusted method
+--     121,            -- FROM_ACCOUNT - Hardcoded as 121
+--     102,            -- TO_ACCOUNT - Placeholder, replace with actual value
+--     'Complete',
+--     'taka',
+--     NULL  -- Set AMOUNT to NULL
+-- );
+-- 
+-- INSERT INTO PURCHASE_ORDERS (
+--     ORDER_ID,
+--     SUPPLIER_ID,
+--     PLACEMENT_DATE,
+--     PICKUP_DATE,
+--     TRANSACTION_ID,
+--     SHIPMENT_ID
+-- ) VALUES (
+--     12,  -- Placeholder, replace with actual value
+--     3,  -- Supplier 3
+--     TO_DATE('2023-08-25', 'YYYY-MM-DD'),  -- Adjusted order placement date
+--     TO_DATE('2023-09-02', 'YYYY-MM-DD'),  -- Adjusted pickup date
+--     12,   -- Set TRANSACTION_ID to 12
+--     NULL
+-- );
+-- 
+-- -- Purchase Order 12 Products
+-- INSERT ALL
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (12, 1, 18)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (12, 3, 16)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (12, 5, 24)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (12, 7, 20)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (12, 9, 29)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (12, 11, 22)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (12, 13, 26)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (12, 15, 27)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (12, 17, 30)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (12, 19, 28)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (12, 21, 32)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (12, 23, 34)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (12, 25, 35)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (12, 27, 33)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (12, 29, 38)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (12, 31, 37)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (12, 33, 39)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (12, 35, 41)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (12, 37, 40)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (12, 39, 42)
+-- SELECT * FROM DUAL;
+
+-- INSERT INTO FINANCIAL_TRANSACTIONS (
+--     TRANSACTION_ID,
+--     TYPE,
+--     METHOD,
+--     FROM_ACCOUNT,
+--     TO_ACCOUNT,
+--     STATUS,
+--     CURRENCY,
+--     AMOUNT
+-- ) VALUES (
+--     13,
+--     'Purchase Order Payment',
+--     'Credit Card',
+--     121,
+--     102,
+--     'Complete',
+--     'taka',
+--     NULL
+-- );
+-- 
+-- -- Purchase Order 13
+-- INSERT INTO PURCHASE_ORDERS (
+--     ORDER_ID,
+--     SUPPLIER_ID,
+--     PLACEMENT_DATE,
+--     PICKUP_DATE,
+--     TRANSACTION_ID,
+--     SHIPMENT_ID
+-- ) VALUES (
+--     13,
+--     3,
+--     TO_DATE('2023-03-23', 'YYYY-MM-DD'),
+--     TO_DATE('2023-04-04', 'YYYY-MM-DD'),
+--     13,
+--     NULL
+-- );
+-- 
+-- -- Purchase Order Products for Order 13
+-- INSERT ALL
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (13, 1, 15)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (13, 3, 10)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (13, 5, 8)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (13, 7, 12)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (13, 9, 6)
+-- SELECT * FROM DUAL;
+-- 
+-- -- Financial Transaction for Purchase Order 14
+-- INSERT INTO FINANCIAL_TRANSACTIONS (
+--     TRANSACTION_ID,
+--     TYPE,
+--     METHOD,
+--     FROM_ACCOUNT,
+--     TO_ACCOUNT,
+--     STATUS,
+--     CURRENCY,
+--     AMOUNT
+-- ) VALUES (
+--     14,
+--     'Purchase Order Payment',
+--     'Credit Card',
+--     121,
+--     102,
+--     'Complete',
+--     'taka',
+--     NULL
+-- );
+-- 
+-- -- Purchase Order 14
+-- INSERT INTO PURCHASE_ORDERS (
+--     ORDER_ID,
+--     SUPPLIER_ID,
+--     PLACEMENT_DATE,
+--     PICKUP_DATE,
+--     TRANSACTION_ID,
+--     SHIPMENT_ID
+-- ) VALUES (
+--     14,
+--     3,
+--     TO_DATE('2023-04-01', 'YYYY-MM-DD'),
+--     TO_DATE('2023-04-15', 'YYYY-MM-DD'),
+--     14,
+--     NULL
+-- );
+-- 
+-- -- Purchase Order Products for Order 14
+-- INSERT ALL
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (14, 11, 20)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (14, 13, 18)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (14, 15, 25)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (14, 17, 22)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (14, 19, 30)
+-- SELECT * FROM DUAL;
+
+-- INSERT INTO FINANCIAL_TRANSACTIONS (
+--     TRANSACTION_ID,
+--     TYPE,
+--     METHOD,
+--     FROM_ACCOUNT,
+--     TO_ACCOUNT,
+--     STATUS,
+--     CURRENCY,
+--     AMOUNT
+-- ) VALUES (
+--     15,
+--     'Purchase Order Payment',
+--     'Credit Card',
+--     121,
+--     102,
+--     'Complete',
+--     'taka',
+--     NULL
+-- );
+-- 
+-- -- Purchase Order 15
+-- INSERT INTO PURCHASE_ORDERS (
+--     ORDER_ID,
+--     SUPPLIER_ID,
+--     PLACEMENT_DATE,
+--     PICKUP_DATE,
+--     TRANSACTION_ID,
+--     SHIPMENT_ID
+-- ) VALUES (
+--     15,
+--     3,
+--     TO_DATE('2023-04-15', 'YYYY-MM-DD'),
+--     TO_DATE('2023-05-01', 'YYYY-MM-DD'),
+--     15,
+--     NULL
+-- );
+-- 
+-- -- Purchase Order Products for Order 15
+-- INSERT ALL
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (15, 21, 12)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (15, 23, 15)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (15, 25, 18)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (15, 27, 20)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (15, 29, 25)
+-- SELECT * FROM DUAL;
+-- 
+-- 
+-- INSERT INTO FINANCIAL_TRANSACTIONS (
+--     TRANSACTION_ID,
+--     TYPE,
+--     METHOD,
+--     FROM_ACCOUNT,
+--     TO_ACCOUNT,
+--     STATUS,
+--     CURRENCY,
+--     AMOUNT
+-- ) VALUES (
+--     16,
+--     'Purchase Order Payment',
+--     'Credit Card',
+--     121,
+--     102,
+--     'Complete',
+--     'taka',
+--     NULL
+-- );
+-- 
+-- -- Purchase Order 16
+-- INSERT INTO PURCHASE_ORDERS (
+--     ORDER_ID,
+--     SUPPLIER_ID,
+--     PLACEMENT_DATE,
+--     PICKUP_DATE,
+--     TRANSACTION_ID,
+--     SHIPMENT_ID
+-- ) VALUES (
+--     16,
+--     3,
+--     TO_DATE('2023-05-01', 'YYYY-MM-DD'),
+--     TO_DATE('2023-05-15', 'YYYY-MM-DD'),
+--     16,
+--     NULL
+-- );
+-- 
+-- -- Purchase Order Products for Order 16
+-- INSERT ALL
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (16, 31, 10)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (16, 33, 12)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (16, 35, 15)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (16, 37, 8)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (16, 39, 20)
+-- SELECT * FROM DUAL;
+-- 
+-- INSERT INTO FINANCIAL_TRANSACTIONS (
+--     TRANSACTION_ID,
+--     TYPE,
+--     METHOD,
+--     FROM_ACCOUNT,
+--     TO_ACCOUNT,
+--     STATUS,
+--     CURRENCY,
+--     AMOUNT
+-- ) VALUES (
+--     17,
+--     'Purchase Order Payment',
+--     'Credit Card',
+--     121,
+--     102,
+--     'Complete',
+--     'taka',
+--     NULL
+-- );
+-- 
+-- -- Purchase Order 17
+-- INSERT INTO PURCHASE_ORDERS (
+--     ORDER_ID,
+--     SUPPLIER_ID,
+--     PLACEMENT_DATE,
+--     PICKUP_DATE,
+--     TRANSACTION_ID,
+--     SHIPMENT_ID
+-- ) VALUES (
+--     17,
+--     3,
+--     TO_DATE('2023-05-15', 'YYYY-MM-DD'),
+--     TO_DATE('2023-06-01', 'YYYY-MM-DD'),
+--     17,
+--     NULL
+-- );
+-- 
+-- -- Purchase Order Products for Order 17
+-- INSERT ALL
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (17, 2, 15)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (17, 4, 18)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (17, 6, 22)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (17, 8, 25)
+--     INTO PURCHASE_ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY) VALUES (17, 10, 15)
+-- SELECT * FROM DUAL;
