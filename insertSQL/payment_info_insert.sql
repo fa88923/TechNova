@@ -128,3 +128,36 @@ VALUES (
     'Dutch Bangla Bank',
     'BD12345678901234567890123456789011'
 );
+
+INSERT INTO PAYMENT_INFO (
+    ID,
+    ACCOUNT_NUMBER,
+    ACCOUNT_HOLDER,
+    BANK_NAME,
+    IBAN
+)
+
+VALUES (
+    108,
+    '112343456', -- Replace with an actual account number
+    'Sundarban Courier Service',
+    'Dutch Bangla Bank',
+    'BD123456789012311'
+);
+
+INSERT INTO PAYMENT_INFO (
+    ID,
+    ACCOUNT_NUMBER,
+    ACCOUNT_HOLDER,
+    BANK_NAME,
+    IBAN
+)
+
+VALUES (
+    109,
+    '11234345677', -- Replace with an actual account number
+    ' SA Paribahan',
+    'Dutch Bangla Bank',
+    'BD12345672289012311'
+);
+

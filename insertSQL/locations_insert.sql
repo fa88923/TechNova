@@ -73,10 +73,45 @@ INSERT INTO LOCATIONS (
     COUNTRY
 )
 VALUES (
-    LOCATION_ID_SEQ.NEXTVAL,
+    4,
     '123/5 BCS Computer City, Agargaon', -- Actual street address
     '1207',            -- Actual postal code
     'Dhaka',
-    'Dhaka',           -- Actual state or province
+    NULL,           -- Actual state or province
+    'Bangladesh'
+);
+
+
+INSERT INTO LOCATIONS (
+    LOCATION_ID,
+    STREET_ADDRESS,
+    POSTAL_CODE,
+    CITY,
+    STATE_PROVINCE,
+    COUNTRY
+)
+VALUES (
+    5,
+    '24/25 Dilkusha Motijheel', -- Actual street address
+    '1000',            -- Actual postal code
+    'Dhaka',
+    NULL,           -- Actual state or provinc
+    'Bangladesh'
+);
+
+INSERT INTO LOCATIONS (
+    LOCATION_ID,
+    STREET_ADDRESS,
+    POSTAL_CODE,
+    CITY,
+    STATE_PROVINCE,
+    COUNTRY
+)
+VALUES (
+    6,
+    '22-23, Kakrail, Shantinagar Road', -- Actual street address
+    '1217',            -- Actual postal code
+    'Dhaka',
+    NULL,           -- Actual state or provinc
     'Bangladesh'
 );
