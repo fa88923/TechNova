@@ -1,3 +1,7 @@
+//linked to supplier.ejs
+//controls what happens when a particular supplier name is clicked on
+//opens the supplierDetails page
+
 document.addEventListener('DOMContentLoaded', function () {
     // Get all elements with the class 'supplier-details-button'
     var buttons = document.querySelectorAll('.supplier-details-button');

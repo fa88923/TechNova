@@ -1,4 +1,5 @@
-
+//linked to supplierDetails.ejs
+//controls what happens when view product catalogue button is clicked
 
 
 document.addEventListener('DOMContentLoaded', function() {

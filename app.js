@@ -1,8 +1,7 @@
 const express = require('express');
 const oracledb= require('oracledb');
 const bodyParser = require('body-parser');
-//adri, check the path of routehandler here, age routeHandler chilo
-//but then amar ekhane dekhi, folder er nam routehandler tai change kre disi
+
 const supplierRouter=require('./routehandler/supplierRouter.js');
 const app = express();
 const port = 3000;
@@ -66,9 +65,6 @@ app.use("/supplier", (req, res, next) => {
   },supplierRouter);    // handover supplier route
 
 
-//   app.get('/supplierDetails/productCatalogue', (req, res) => {
-//     res.render('productCatalogue');
-// })
 
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);

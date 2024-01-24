@@ -1,3 +1,7 @@
+
+//linked to addSupplier.ejs
+//controls what happens when the submit button is clicked after the form is filled
+
 document.addEventListener('DOMContentLoaded', function() {
     //listening for when the anchor tag called add_button is clicked
     document.getElementById('add_button').addEventListener('click', function(event) {

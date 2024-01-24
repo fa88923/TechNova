@@ -1,3 +1,5 @@
+
+<!--************************** supplier page ***********************************-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,18 +34,15 @@
                         <th>NAME</th>
                         <th>CITY</th>
                         <th>COUNTRY</th>
-                        <!-- <th>EMAIL</th> -->
                     </tr>
                 </thead>
                 <tbody>
                     <% suppliers.forEach(supplier => { %>
                     <tr>
                         <td><%= supplier.SUPPLIER_ID %></td>
-                        <!-- <td><a href=<%= supplier.URL %>><%= supplier.SUPPLIER_NAME %></a></td> -->
                         <td><a href="#" class="supplier-details-button" data-supplier-id="<%= supplier.SUPPLIER_ID %>"><%= supplier.SUPPLIER_NAME %></a></td> 
                         <td><%= supplier.CITY %></td>
                         <td><%= supplier.COUNTRY %></td>
-                        <!-- <td><%= supplier.EMAIL %></td> -->
                     </tr>
                     <% });
                     %>
@@ -55,8 +54,8 @@
             <button type="button" id="add_button">Add Supplier</button>
         </div>
     </div>
-    <script src="/js/addScript.js"></script>
-    <script src="/js/searchScript.js"></script>
-    <script src="/js/supplierClick.js"></script>
+    <script src="/js/supplierPageControllers/addScript.js"></script>
+    <script src="/js/supplierPageControllers/searchScript.js"></script>
+    <script src="/js/supplierPageControllers/supplierClick.js"></script>
 </body>
 </html>

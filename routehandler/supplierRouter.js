@@ -52,6 +52,7 @@ supplierRoute.get("/add",(req,res)=>{
     res.render('addSupplier');
 })
 
+//suppliers deatils page
 supplierRoute.get("/supplierDetails",async(req,res)=>{       
     //just render the addSupplier page
     const supplierId=parseInt(req.query.supplierId);
@@ -71,15 +72,13 @@ supplierRoute.get("/supplierDetails",async(req,res)=>{
         [supplierId] 
         // Use bind variables to prevent SQL injection
     );
-    // console.log(result.rows);
     res.render('supplierDetails', { 'supplierInfo': result.rows });
 })
 
 
-
+//product catalogue from supplier details
 supplierRoute.get("/supplierDetails/productCatalogue",async(req,res)=>{       
     const supplierId=parseInt(req.query.supplierId);
-    console.log(supplierId);
     // Execute SQL query to search in the database
     const result = await req.db.execute(
         `SELECT SP.PRODUCT_ID, P.PRODUCT_NAME,P.CATEGORY,P.PRICE,P.WARRANTY,P.MANUFACTURER,P.CENTRAL_STOCK
@@ -89,13 +88,12 @@ supplierRoute.get("/supplierDetails/productCatalogue",async(req,res)=>{
         [supplierId] 
         // Use bind variables to prevent SQL injection
     );
-    console.log(result.rows);
     res.render('productCatalogue', { 'productCatalogue': result.rows });
 })
 
 
 
-///need to change////later/////////////////////////////////////////////////////////
+///need to change when the schema is final////later/////////////////////////////////////////////////////////
 //when the form is submitted with post method 
 supplierRoute.post("/submit",async (req,res)=>{     
     //needed to give the tags name="" to access these here
@@ -103,7 +101,7 @@ supplierRoute.post("/submit",async (req,res)=>{
     const query = `
             INSERT INTO suppliers (supplier_id,name, city, country, email, phone_no, url)
             VALUES (11,:name, :city, :country, :email, :phone_no, :url)
-        `;//here i am hardcoding and sending supplier id
+        `;//here i am hardcoding and sending supplier id//use sequence instead
     const binds = {
         name,
         city,
