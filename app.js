@@ -22,8 +22,8 @@ let connection;
 
 //oracle db connection details
 const dbConfig = {
-    user: 'technova',
-    password: '123',
+    user: 'testdb1231996',
+    password: '123testermyfoot',
     connectString: "localhost/ORCL",
 };
 

@@ -72,6 +72,7 @@ supplierRoute.get("/supplierDetails",async(req,res)=>{
         [supplierId] 
         // Use bind variables to prevent SQL injection
     );
+    console.log(result.rows);
     res.render('supplierDetails', { 'supplierInfo': result.rows });
 })
 
