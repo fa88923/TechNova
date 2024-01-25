@@ -61,15 +61,16 @@
                 <dd class="col-sm-8"><%= supplierInfo[0].EMAIL %></dd>
             </dl>
             <a href="#" class="btn btn-primary" id="productCatalogueButton" supplierId=<%=supplierInfo[0].SUPPLIER_ID %>>View Product Catalogue</a>
+            <a href="#" class="btn btn-primary" id="purchaseOrderButton" supplierId=<%=supplierInfo[0].SUPPLIER_ID %>>View Purchase Orders</a>
         </div>
     </div>
 
     <!-- Bootstrap JS and jQuery scripts (required for Bootstrap) -->
-    <script src="/js/supplierDetailsControllers/productCatButton.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-
-
+    <!-- controller -->
+    <script src="/js/supplierDetailsControllers/productCatButton.js"></script>
+    <script src="/js/supplierDetailsControllers/purchaseOrderButton.js"></script>
 </body>
 </html>

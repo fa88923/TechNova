@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purchase Orders</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/path/to/your/custom/style.css">
+</head>
+<body class="bg-dark text-light">
+    <div class="container mt-5">
+        <h2 class="mb-4">Purchase Orders</h2>
+        <% if (purchaseOrders.length > 0) { %>
+            <table class="table table-bordered table-dark">
+                <thead>
+                    <tr>
+                        <th scope="col">Order ID</th>
+                        <th scope="col">Placement Date</th>
+                        <th scope="col">Pickup Date</th>
+                        <th scope="col">Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% purchaseOrders.forEach(order => { %>
+                        <tr>
+                            <td><%= order.ORDER_ID %></td>
+                            <td><%= order.PLACEMENT_DATE %></td>
+                            <td><%= order.PICKUP_DATE %></td>
+                            <td>
+                                <a href="#" class="btn btn-primary btn-sm view-details-button" supplierId="<%= order.SUPPLIER_ID %>" orderId="<%= order.ORDER_ID %>">View Details</a>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        <% } else { %>
+            <p>No purchase orders found for the supplier.</p>
+        <% } %>
+    </div>
+    <!-- Bootstrap JS and dependencies (jQuery, Popper.js) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!-- controllers -->
+    <script src="/js/POpageControllers/viewDetailsButton.js"></script>
+</body>
+</html>

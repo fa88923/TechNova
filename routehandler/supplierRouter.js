@@ -91,6 +91,65 @@ supplierRoute.get("/supplierDetails/productCatalogue",async(req,res)=>{
     res.render('productCatalogue', { 'productCatalogue': result.rows });
 })
 
+//purchase orders from supplier details
+supplierRoute.get("/supplierDetails/purchaseOrders",async(req,res)=>{       
+    const supplierId=parseInt(req.query.supplierId);
+    // Execute SQL query to search in the database
+    const result = await req.db.execute(
+        `SELECT SUPPLIER_ID, ORDER_ID, PLACEMENT_DATE,PICKUP_DATE
+        FROM PURCHASE_ORDERS
+        WHERE SUPPLIER_ID= :supplierId
+        ORDER BY ORDER_ID`,
+        [supplierId] 
+        // Use bind variables to prevent SQL injection
+    );
+   // console.log(result.rows);
+    res.render('purchaseOrders', { 'purchaseOrders': result.rows });
+})
+
+supplierRoute.get("/supplierDetails/purchaseOrders/POdetails",async(req,res)=>{       
+    const supplierId=parseInt(req.query.supplierId);
+    const orderId=parseInt(req.query.orderId);
+    // Execute SQL query to search in the database
+    const result = await req.db.execute(
+        `SELECT *
+        FROM (
+            SELECT ORDER_ID,PLACEMENT_DATE,PICKUP_DATE,TRANSACTION_ID,SHIPMENT_ID
+            FROM PURCHASE_ORDERS
+            WHERE SUPPLIER_ID=:supplierId AND ORDER_ID=:orderId
+        ) PO 
+            JOIN 
+            (
+            SELECT FT.TRANSACTION_ID, FT.METHOD, PI1.ACCOUNT_HOLDER AS SENT_FROM_ACOOUNT, PI2.ACCOUNT_HOLDER AS RECEIVED_TO_ACCOUNT,FT.STATUS, (FT.AMOUNT || ' ' || UPPER(FT.CURRENCY)) AS AMOUNT, FT.PLACEMENT_DATE AS PAYMENT_DATE
+            FROM FINANCIAL_TRANSACTIONS FT 
+                JOIN PAYMENT_INFO PI1 ON (FT.FROM_ACCOUNT=PI1.ID)
+                JOIN PAYMENT_INFO PI2 ON (FT.TO_ACCOUNT=PI2.ID)
+            --WHERE FT.TRANSACTION_ID=4
+            ) F USING(TRANSACTION_ID)--ON F.TRANSACTION_ID=PO.TRANSACTION_ID
+            JOIN
+            (
+            SELECT S.SHIPMENT_ID,TC.NAME AS PICKED_UP_BY, (L1.STREET_ADDRESS||', '||L1.CITY|| ', '||L1.COUNTRY) AS PICKED_UP_FROM,(S.DEPARTURE_DATE) AS PICKED_UP_ON,(S.DEPARTURE_TIME) AS PICKED_UP_AT,(L2.STREET_ADDRESS||', '||L2.CITY|| ', '||L2.COUNTRY) AS RECEIVED_AT, (S.ARRIVAL_DATE) AS RECEIVED_ON, S.ARRIVAL_TIME AS RECEIVED_AT_TIME, S.VEHICLE_NO AS VEHICLE_USED, S.CURRENT_LOCATION
+            FROM SHIPMENTS S 
+                JOIN TRANSPORT_COMPANIES TC ON TC.COMPANY_ID=S.TRANSPORT_COMPANY_ID
+                JOIN LOCATIONS L1 ON S.START_LOCATION=L1.LOCATION_ID
+                JOIN LOCATIONS L2 ON S.DESTINATION=L2.LOCATION_ID
+            ) SI USING(SHIPMENT_ID)`,
+        [supplierId, orderId] 
+        // Use bind variables to prevent SQL injection
+    );
+    const result2 = await req.db.execute(
+        `SELECT P.PRODUCT_NAME,P.PRICE AS PRICE_EACH,POP.QUANTITY, (POP.QUANTITY*P.PRICE) AS TOTAL_DUE
+        FROM PURCHASE_ORDER_PRODUCTS POP 
+            JOIN PRODUCTS P ON POP.PRODUCT_ID=P.PRODUCT_ID
+        WHERE POP.ORDER_ID=:orderId`,
+        [orderId] 
+        // Use bind variables to prevent SQL injection
+    );
+
+    res.render('POdetails', { 'details': result.rows, 'purchaseList': result2.rows });
+})
+
+
 
 
 ///need to change when the schema is final////later/////////////////////////////////////////////////////////
