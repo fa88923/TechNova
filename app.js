@@ -3,6 +3,8 @@ const oracledb= require('oracledb');
 const bodyParser = require('body-parser');
 
 const supplierRouter=require('./routehandler/supplierRouter.js');
+const productRouter=require('./routehandler/productRouter.js');
+const branchRouter=require('./routehandler/branchRouter.js');
 const app = express();
 const port = 3000;
 
@@ -57,13 +59,24 @@ async function connectToDatabase() {
 app.get('/', (req, res) => {
     res.render('home');
 });
-
+   
 app.use("/supplier", (req, res, next) => {
     // Pass the connection object to the supplierRouter middleware
     req.db = connection;
     next();
   },supplierRouter);    // handover supplier route
 
+  /*app.use("/products", (req, res, next) => {
+    // Pass the connection object to the supplierRouter middleware
+    req.db = connection;
+    next();
+  },productRouter);    // handover supplier route
+
+  app.use("/branches", (req, res, next) => {
+    // Pass the connection object to the supplierRouter middleware
+    req.db = connection;
+    next();
+  },branchRouter);    // handover supplier route*/
 
 
 app.listen(port, () => {

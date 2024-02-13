@@ -12,7 +12,7 @@ supplierRoute.get("/",async(req,res)=>{
             ORDER BY supplier_id`
         );
 
-        res.render('supplier',{'suppliers':result.rows});
+        res.render('./suppliers/supplier',{'suppliers':result.rows});
     }catch(error){
         console.error('error fetching',error);
         res.status(500).send('Internal server error');
@@ -39,7 +39,7 @@ supplierRoute.get(`/search`, async (req, res) => {
         );
 
         // Render the page with the search results
-        res.render('supplier', { 'suppliers': result.rows });
+        res.render('./suppliers/supplier', { 'suppliers': result.rows });
     } catch (error) {
         console.error('Error searching:', error);
         res.status(500).send('Internal server error');
@@ -49,7 +49,7 @@ supplierRoute.get(`/search`, async (req, res) => {
 
 supplierRoute.get("/add",(req,res)=>{       
     //just render the addSupplier page
-    res.render('addSupplier');
+    res.render('./suppliers/addSupplier');
 })
 
 //suppliers deatils page
@@ -73,7 +73,7 @@ supplierRoute.get("/supplierDetails",async(req,res)=>{
         // Use bind variables to prevent SQL injection
     );
     console.log(result.rows);
-    res.render('supplierDetails', { 'supplierInfo': result.rows });
+    res.render('./suppliers/supplierDetails', { 'supplierInfo': result.rows });
 })
 
 
@@ -89,7 +89,7 @@ supplierRoute.get("/supplierDetails/productCatalogue",async(req,res)=>{
         [supplierId] 
         // Use bind variables to prevent SQL injection
     );
-    res.render('productCatalogue', { 'productCatalogue': result.rows });
+    res.render('./suppliers/productCatalogue', { 'productCatalogue': result.rows });
 })
 
 //purchase orders from supplier details
@@ -105,7 +105,7 @@ supplierRoute.get("/supplierDetails/purchaseOrders",async(req,res)=>{
         // Use bind variables to prevent SQL injection
     );
    // console.log(result.rows);
-    res.render('purchaseOrders', { 'purchaseOrders': result.rows });
+    res.render('./suppliers/purchaseOrders', { 'purchaseOrders': result.rows });
 })
 
 supplierRoute.get("/supplierDetails/purchaseOrders/POdetails",async(req,res)=>{       
@@ -147,7 +147,7 @@ supplierRoute.get("/supplierDetails/purchaseOrders/POdetails",async(req,res)=>{
         // Use bind variables to prevent SQL injection
     );
 
-    res.render('POdetails', { 'details': result.rows, 'purchaseList': result2.rows });
+    res.render('./suppliers/POdetails', { 'details': result.rows, 'purchaseList': result2.rows });
 })
 
 

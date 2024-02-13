@@ -1,0 +1,21 @@
+/* styles.css */
+
+/* Add some spacing around the categories */
+.navbar-nav .nav-link {
+    margin: 0 10px;
+}
+
+/* Optionally, you can add some styling to the active category */
+.navbar-nav .nav-item.active {
+    background-color: #007bff;
+    border-radius: 5px;
+}
+
+/* Adjustments for the product list */
+.table-responsive {
+    margin-top: 20px;
+}
+
+.add_button {
+    margin-top: 20px;
+}
