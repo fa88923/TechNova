@@ -1,0 +1,84 @@
+/* details.css */
+
+body {
+    padding: 20px;
+    background-color: #343a40;
+    color: #fff;
+}
+
+.card {
+    width: 900px;
+    margin: auto;
+    margin-top: 20px;
+    background-color: #495057;
+    border: 1px solid #343a40;
+}
+
+.card-header {
+    background-color: #007bff;
+    color: #fff;
+    border-bottom: 1px solid #343a40;
+}
+
+
+.form-row {
+    margin-bottom: 10px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+dl.row {
+    margin-bottom: 0;
+}
+
+dt.col-sm-4 {
+    color: #007bff;
+}
+
+.table {
+    color: #fff;
+}
+
+.table th,
+.table td {
+    border-color: #343a40;
+}
+
+.table thead th {
+    background-color: #343a40;
+    color: #fff;
+}
+
+.table-dark {
+    background-color: #495057;
+    color: #fff;
+}
+
+.table-dark th,
+.table-dark td {
+    border-color: #343a40;
+}
+.form-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-group {
+    flex: 0 0 30%; /* Adjust the width based on your preference */
+}
+
+.btn-primary {
+    margin-top: 35px; /* Adjust the margin-top based on your preference */
+}

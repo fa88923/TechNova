@@ -1,4 +1,4 @@
-<!--************************** branches page ***********************************-->
+<!--************************** clients page ***********************************-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,13 +9,13 @@
     <link rel="stylesheet" type="text/css" href="/css/supplierSearch.css">
     <link rel="stylesheet" type="text/css" href="/css/supplier.css">
 
-    <title>Branches</title>
+    <title>Clients</title>
 </head>
 
 <body>
     <div class="container mt-5">
         <div id="navbar">
-            <h1 class="mb-4">Branches</h1>
+            <h1 class="mb-4">Clients</h1>
             <div class="search-box">
                 <form id="searchForm">
                     <button class="btn-search" type="submit"><i class="fas fa-search"></i></button>
@@ -31,40 +31,37 @@
         <!--product list-->
 
         <div class="table-responsive">
-            <% if (branches.length > 0) { %>
+            <% if (clients.length > 0) { %>
                 <table class="table table-bordered table-hover table-dark">
                     <thead class="thead-dark">
                         <tr>
-                            <th>BRANCH ID</th>
-                            <th>BRANCH NAME</th>
-                            <th>MANAGER</th>
+                            <th>CLIENT ID</th>
+                            <th>CLIENT NAME</th>
+                            <th>URL</th>
                             <th>ADDRESS</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <% branches.forEach(branch => { %>
+                        <% clients.forEach(client => { %>
                         <tr>
-                            <td><%= branch.BRANCH_ID %></td>
-                            <td><a href="#" class="branch-details-button" data-branch-id="<%= branch.BRANCH_ID %>"><%= branch.NAME %></a></td> 
-                            <td><%= branch.MANAGER %></td>
-                            <td><%= branch.BRANCH_ADDRESS %></td>
+                            <td><%= client.CLIENT_ID %></td>
+                            <td><a href="#" class="client-details-button" data-client-id="<%= client.CLIENT_ID %>"><%= client.NAME %></a></td>
+                            <td><a href="<%= client.URL %>"><%= client.URL %></a></td> 
+                            <td><%= client.ADDRESS %></td>
+                            
                         </tr>
                         <% });
                         %>
                     </tbody>
                 </table>
             <% } else { %>
-                <p>        No branches found.</p>
+                <p>        No clients found.</p>
             <% } %>
-        </div>
-        <div class="add_button">
-            <br><br><br>
-            <button type="button" id="add_button">Add Branch</button>
         </div>
     </div>
     <!--<script src="/js/supplierPageControllers/addScript.js"></script>
     <script src="/js/supplierPageControllers/searchScript.js"></script>-->
-    <script src="/js/branches/branchController.js"></script>
+    <script src="/js/clients/clientControllers.js"></script>
 </body>
 </html>
 

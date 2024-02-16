@@ -13,22 +13,21 @@ document.addEventListener('DOMContentLoaded', function () {
         //access the search key word inserted in the input tag
         const searchValue = searchInput.value;
         //send it to get(/search) route with the searchkey as query
-        window.location.href =`/branches?searchkey=${searchValue}` ;
+        window.location.href =`/clients?searchkey=${searchValue}` ;
     });
     }
 
     //product details reroute
-    var buttons = document.querySelectorAll('.branch-details-button');
+    var buttons = document.querySelectorAll('.client-details-button');
 
     // Add a click event listener to each button
     buttons.forEach(function (button) {
         button.addEventListener('click', function () {
             // Get the productId from the 'data-product-id' attribute
-            var branchId = button.getAttribute('data-branch-id');
-            console.log(branchId);
+            var clientId = button.getAttribute('data-client-id');
 
             // Redirect to the 'supplierDetails' page with the supplierId
-            window.location.href = '/branches/details?branchId=' + branchId;
+            window.location.href = '/clients/details?clientId=' + clientId;
         });
     });
 
