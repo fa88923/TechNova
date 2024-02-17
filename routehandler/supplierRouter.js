@@ -158,15 +158,13 @@ supplierRoute.post("/submit",async (req,res)=>{
     //needed to give the tags name="" to access these here
     const { name, city, country, email, phone_no, url } = req.body;
     const query = `
-            INSERT INTO suppliers (supplier_id,name, city, country, email, phone_no, url)
-            VALUES (11,:name, :city, :country, :email, :phone_no, :url)
+            INSERT INTO suppliers (supplier_id,supplier_name, city, country, url)
+            VALUES (supplier_id_seq.nextval,:name, :city, :country, :url)
         `;//here i am hardcoding and sending supplier id//use sequence instead
     const binds = {
         name,
         city,
         country,
-        email,
-        phone_no,
         url
     };
     try{
