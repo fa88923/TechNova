@@ -1,0 +1,99 @@
+<!--************************** details of a product page ***********************************-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details</title>
+    <!-- Bootstrap CSS link -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS link -->
+    <link rel="stylesheet" href="/css/products/details.css">
+</head>
+
+<body>
+    <h1 class="text-center">Product Details</h1>
+
+    <div class="container mt-5">
+
+        <!-- Section 1: Product Information -->
+        <div class="card mb-4">
+            <div class="card-header">
+                Product Information
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">Product ID:</dt>
+                    <dd class="col-sm-8"><%= productinfo[0].PRODUCT_ID %></dd>
+
+                    <dt class="col-sm-4">Product Name:</dt>
+                    <dd class="col-sm-8"><%= productinfo[0].PRODUCT_NAME %></dd>
+
+                    <dt class="col-sm-4">Category:</dt>
+                    <dd class="col-sm-8"><%= productinfo[0].CATEGORY %></dd>
+
+                    <dt class="col-sm-4">Retail Price:</dt>
+                    <dd class="col-sm-8">Tk. <%= productinfo[0].RETAIL_PRICE %></dd>
+
+                    <dt class="col-sm-4">Warranty:</dt>
+                    <dd class="col-sm-8"><%= productinfo[0].WARRANTY %> years</dd>
+
+                    <dt class="col-sm-4">Manufacturer:</dt>
+                    <dd class="col-sm-8"><%= productinfo[0].MANUFACTURER_ID %></dd>
+
+                    <dt class="col-sm-4">Stock:</dt>
+                    <dd class="col-sm-8"><%= productinfo[0].CENTRAL_STOCK %></dd>
+                </dl>
+            </div>
+        </div>
+
+        <!-- Section 2: Product Features -->
+        <div class="card mb-4">
+            <div class="card-header">
+                Product Features
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <% features.forEach(feature => { %>
+                        <dt class="col-sm-4"><%= feature.FEATURE_NAME %>:</dt>
+                        <dd class="col-sm-8"><%= feature.VALUE %></dd>
+                    <% }); %>
+                </dl>
+                <a href="#" class="btn btn-primary view-suppliers-btn" id="SuppliersButton" data-toggle="collapse" data-target="#supplierList">View Suppliers</a>
+                <div class="collapse mt-3" id="supplierList">
+                    <table class="table table-bordered table-dark">
+                        <thead>
+                            <tr>
+                                <th scope="col">Supplier Id</th>
+                                <th scope="col">Supplier Name</th>
+                                <th scope="col">Average Delivery Time</th>
+                                <th scope="col">Offering Price</th>
+                                <!-- <th scope="col">Total Due</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% suppliers.forEach(supplier => { %>
+                                <tr>
+                                    <td><%= supplier.SUPPLIER_ID %></td>
+                                    <td><%= supplier.SUPPLIER_NAME %></td>
+                                    <td><%= supplier.AVG_DELIVERY_TIME %> days</td>
+                                    <td>Tk. <%= supplier.OFFERING_PRICE%></td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bootstrap JS and dependencies (jQuery, Popper.js) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

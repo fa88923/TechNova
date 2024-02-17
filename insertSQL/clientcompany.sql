@@ -1,0 +1,471 @@
+
+INSERT INTO LOCATIONS (LOCATION_ID, STREET_ADDRESS, POSTAL_CODE, CITY, STATE_PROVINCE, COUNTRY)
+VALUES (18, NULL, '1000', 'Dhaka', NULL, 'Bangladesh');
+
+INSERT INTO ORGANIZATIONS (ORGANIZATION_ID, NAME, ADDRESS, URL, TYPE)
+VALUES (17, 'Bangladesh University of Engineering and Technology', 18, 'https://www.buet.ac.bd/web/#/', 'CLIENT');
+
+INSERT INTO CLIENT_COMPANIES (CLIENT_ID, TYPE)
+VALUES (17, 'EDUCATION');
+
+INSERT INTO CONTACTS (OWNER_ID, TYPE, VALUE)
+VALUES (17, 'PHONE_NUMBER', '8618344-49');
+
+INSERT INTO CONTACTS (OWNER_ID, TYPE, VALUE)
+VALUES (17, 'PHONE_NUMBER', '8616833-38');
+
+-- Insert email address
+INSERT INTO CONTACTS (OWNER_ID, TYPE, VALUE)
+VALUES (17, 'EMAIL', 'regtr@regtr.buet.ac.bd');
+
+INSERT INTO PAYMENT_INFO (
+    ID,
+    OWNER_ID, -- Considered as equivalent to ID for now
+    ACCOUNT_NUMBER,
+    ACCOUNT_HOLDER,
+    BANK_NAME,
+    IBAN
+)
+VALUES (
+    17,
+    17,
+    '1128494956', -- Replace with an actual account number
+    'BUET',
+    'SONALI BANK LTD',
+    'BD1234567890167890123456789011'
+);
+
+INSERT INTO LOCATIONS (LOCATION_ID, STREET_ADDRESS, POSTAL_CODE, CITY, STATE_PROVINCE, COUNTRY)
+VALUES (19, '19 Dhanmondi R/A Road No. 7', '1205', 'Dhaka', NULL, 'Bangladesh');
+
+INSERT INTO ORGANIZATIONS (ORGANIZATION_ID, NAME, ADDRESS, URL, TYPE)
+VALUES (18, 'Beximco Pharmaceuticals Ltd.', 19, 'https://www.beximcopharma.com/', 'CLIENT');
+
+INSERT INTO CLIENT_COMPANIES (CLIENT_ID, TYPE)
+VALUES (18, 'PHARMACEUTICALS');
+
+INSERT INTO CONTACTS (OWNER_ID, TYPE, VALUE)
+VALUES (18, 'PHONE_NUMBER', '+880-2-58611001-7');
+
+INSERT INTO CONTACTS (OWNER_ID, TYPE, VALUE)
+VALUES (18, 'PHONE_NUMBER', '+880-2-58614601');
+
+-- Insert email address
+INSERT INTO CONTACTS (OWNER_ID, TYPE, VALUE)
+VALUES (18, 'EMAIL', 'info@bpl.net');
+
+INSERT INTO PAYMENT_INFO (
+    ID,
+    OWNER_ID, -- Considered as equivalent to ID for now
+    ACCOUNT_NUMBER,
+    ACCOUNT_HOLDER,
+    BANK_NAME,
+    IBAN
+)
+VALUES (
+    18,
+    18,
+    '11838428494956', -- Replace with an actual account number
+    'Beximco Pharma',
+    'BRAC BANK',
+    'BD890167890123456789011'
+);
+
+
+
+INSERT INTO LOCATIONS (LOCATION_ID, STREET_ADDRESS, POSTAL_CODE, CITY, STATE_PROVINCE, COUNTRY)
+VALUES (20, 'House 93, Road 6C, New DOHS, Banani', '1205', 'Dhaka', NULL, 'Bangladesh');
+
+INSERT INTO ORGANIZATIONS (ORGANIZATION_ID, NAME, ADDRESS, URL, TYPE)
+VALUES (19, 'SILT', 20, 'https://www.facebook.com/silt.studio/', 'CLIENT');
+
+INSERT INTO CLIENT_COMPANIES (CLIENT_ID, TYPE)
+VALUES (19, 'ARCHITECTURE');
+
+INSERT INTO CONTACTS (OWNER_ID, TYPE, VALUE)
+VALUES (19, 'PHONE_NUMBER', '+880-2-58221001-7');
+
+-- Insert email address
+INSERT INTO CONTACTS (OWNER_ID, TYPE, VALUE)
+VALUES (19, 'EMAIL', '
+silt.studio@gmail.com');
+
+INSERT INTO PAYMENT_INFO (
+    ID,
+    OWNER_ID, -- Considered as equivalent to ID for now
+    ACCOUNT_NUMBER,
+    ACCOUNT_HOLDER,
+    BANK_NAME,
+    IBAN
+)
+VALUES (
+    19,
+    19,
+    '1183847556', -- Replace with an actual account number
+    'SILT',
+    'BRAC BANK',
+    'BD89890123456789011'
+);
+
+
+INSERT INTO LOCATIONS (LOCATION_ID, STREET_ADDRESS, POSTAL_CODE, CITY, STATE_PROVINCE, COUNTRY)
+VALUES (21, 'HOUSE # 59/A (2ND FLOOR), ROAD # 12/A, DHANMONDI R/A', '1205', 'Dhaka', NULL, 'Bangladesh');
+
+INSERT INTO ORGANIZATIONS (ORGANIZATION_ID, NAME, ADDRESS, URL, TYPE)
+VALUES (20, ' STUDIO DHAKA LIMITED', 21, 'https://studiodhakaltd.com/', 'CLIENT');
+
+INSERT INTO CLIENT_COMPANIES (CLIENT_ID, TYPE)
+VALUES (20, 'ARCHITECTURE');
+
+INSERT INTO CONTACTS (OWNER_ID, TYPE, VALUE)
+VALUES (20, 'PHONE_NUMBER', '+880 130-9003100');
+
+-- Insert email address
+INSERT INTO CONTACTS (OWNER_ID, TYPE, VALUE)
+VALUES (20, 'EMAIL', '
+STUDIODHAKALTD@gmail.com');
+
+INSERT INTO PAYMENT_INFO (
+    ID,
+    OWNER_ID, -- Considered as equivalent to ID for now
+    ACCOUNT_NUMBER,
+    ACCOUNT_HOLDER,
+    BANK_NAME,
+    IBAN
+)
+VALUES (
+    20,
+    20,
+    '118384387586', -- Replace with an actual account number
+    'Studio Dhaka',
+    'Rupali Bank',
+    'BD89890783458384789011'
+);
+
+INSERT INTO LOCATIONS (LOCATION_ID, STREET_ADDRESS, POSTAL_CODE, CITY, STATE_PROVINCE, COUNTRY)
+VALUES (22, '15/1, Iqbal Road,Mohammadpur', '1205', 'Dhaka', NULL, 'Bangladesh');
+
+INSERT INTO ORGANIZATIONS (ORGANIZATION_ID, NAME, ADDRESS, URL, TYPE)
+VALUES (21, 'Mohammadpur Preparatory School & College', 22, 'https://www.mpsc.edu.bd/', 'CLIENT');
+
+INSERT INTO CLIENT_COMPANIES (CLIENT_ID, TYPE)
+VALUES (21, 'EDUCATION');
+
+INSERT INTO CONTACTS (OWNER_ID, TYPE, VALUE)
+VALUES (21, 'PHONE_NUMBER', '0241022959');
+
+-- Insert email address
+INSERT INTO CONTACTS (OWNER_ID, TYPE, VALUE)
+VALUES (21, 'EMAIL', 'mphss08@yahoo.com');
+
+INSERT INTO PAYMENT_INFO (
+    ID,
+    OWNER_ID, -- Considered as equivalent to ID for now
+    ACCOUNT_NUMBER,
+    ACCOUNT_HOLDER,
+    BANK_NAME,
+    IBAN
+)
+VALUES (
+    21,
+    21,
+    '11854486', -- Replace with an actual account number
+    'MPSC',
+    'Rupali Bank',
+    'BD898903458384789011'
+);
+
+INSERT INTO LOCATIONS (LOCATION_ID, STREET_ADDRESS, POSTAL_CODE, CITY, STATE_PROVINCE, COUNTRY)
+VALUES (23, 'Road No. 02, Dhanmondi R/A', '1205', 'Dhaka', NULL, 'Bangladesh');
+
+INSERT INTO ORGANIZATIONS (ORGANIZATION_ID, NAME, ADDRESS, URL, TYPE)
+VALUES (22, 'DHAKA CITY COLLEGE', 23, 'https://www.dhakacitycollege.edu.bd/', 'CLIENT');
+
+INSERT INTO CLIENT_COMPANIES (CLIENT_ID, TYPE)
+VALUES (22, 'EDUCATION');
+
+INSERT INTO CONTACTS (OWNER_ID, TYPE, VALUE)
+VALUES (22, 'PHONE_NUMBER', '+88-02-223364115');
+
+-- Insert email address
+INSERT INTO CONTACTS (OWNER_ID, TYPE, VALUE)
+VALUES (22, 'EMAIL', 'dhakacitycollege1250@gmail.com');
+
+INSERT INTO PAYMENT_INFO (
+    ID,
+    OWNER_ID, -- Considered as equivalent to ID for now
+    ACCOUNT_NUMBER,
+    ACCOUNT_HOLDER,
+    BANK_NAME,
+    IBAN
+)
+VALUES (
+    22,
+    22,
+    '11384987586', -- Replace with an actual account number
+    'Dhaka City College',
+    'Asia Bank',
+    'BD3845794875789011'
+);
+
+INSERT INTO LOCATIONS (LOCATION_ID, STREET_ADDRESS, POSTAL_CODE, CITY, STATE_PROVINCE, COUNTRY)
+VALUES (23, 'Road No. 02, Dhanmondi R/A', '1205', 'Dhaka', NULL, 'Bangladesh');
+
+INSERT INTO ORGANIZATIONS (ORGANIZATION_ID, NAME, ADDRESS, URL, TYPE)
+VALUES (22, 'DHAKA CITY COLLEGE', 23, 'https://www.dhakacitycollege.edu.bd/', 'CLIENT');
+
+INSERT INTO CLIENT_COMPANIES (CLIENT_ID, TYPE)
+VALUES (22, 'EDUCATION');
+
+INSERT INTO CONTACTS (OWNER_ID, TYPE, VALUE)
+VALUES (22, 'PHONE_NUMBER', '+88-02-223364115');
+
+-- Insert email address
+INSERT INTO CONTACTS (OWNER_ID, TYPE, VALUE)
+VALUES (22, 'EMAIL', 'dhakacitycollege1250@gmail.com');
+
+INSERT INTO PAYMENT_INFO (
+    ID,
+    OWNER_ID, -- Considered as equivalent to ID for now
+    ACCOUNT_NUMBER,
+    ACCOUNT_HOLDER,
+    BANK_NAME,
+    IBAN
+)
+VALUES (
+    22,
+    22,
+    '11384987586', -- Replace with an actual account number
+    'Dhaka City College',
+    'Asia Bank',
+    'BD3845794875789011'
+);
+
+INSERT INTO LOCATIONS (LOCATION_ID, STREET_ADDRESS, POSTAL_CODE, CITY, STATE_PROVINCE, COUNTRY)
+VALUES (23, 'Road No. 02, Dhanmondi R/A', '1205', 'Dhaka', NULL, 'Bangladesh');
+
+INSERT INTO ORGANIZATIONS (ORGANIZATION_ID, NAME, ADDRESS, URL, TYPE)
+VALUES (22, 'DHAKA CITY COLLEGE', 23, 'https://www.dhakacitycollege.edu.bd/', 'CLIENT');
+
+INSERT INTO CLIENT_COMPANIES (CLIENT_ID, TYPE)
+VALUES (22, 'EDUCATION');
+
+INSERT INTO CONTACTS (OWNER_ID, TYPE, VALUE)
+VALUES (22, 'PHONE_NUMBER', '+88-02-223364115');
+
+-- Insert email address
+INSERT INTO CONTACTS (OWNER_ID, TYPE, VALUE)
+VALUES (22, 'EMAIL', 'dhakacitycollege1250@gmail.com');
+
+INSERT INTO PAYMENT_INFO (
+    ID,
+    OWNER_ID, -- Considered as equivalent to ID for now
+    ACCOUNT_NUMBER,
+    ACCOUNT_HOLDER,
+    BANK_NAME,
+    IBAN
+)
+VALUES (
+    22,
+    22,
+    '11384987586', -- Replace with an actual account number
+    'Dhaka City College',
+    'Asia Bank',
+    'BD3845794875789011'
+);
+
+INSERT INTO LOCATIONS (LOCATION_ID, STREET_ADDRESS, POSTAL_CODE, CITY, STATE_PROVINCE, COUNTRY)
+VALUES (24, 'Road No. 02, Dhanmondi R/A', '1205', 'Dhaka', NULL, 'Bangladesh');
+
+INSERT INTO ORGANIZATIONS (ORGANIZATION_ID, NAME, ADDRESS, URL, TYPE)
+VALUES (23, 'DHAKA CITY COLLEGE', 24, 'https://www.dhakacitycollege.edu.bd/', 'CLIENT');
+
+INSERT INTO CLIENT_COMPANIES (CLIENT_ID, TYPE)
+VALUES (23, 'EDUCATION');
+
+INSERT INTO CONTACTS (OWNER_ID, TYPE, VALUE)
+VALUES (23, 'PHONE_NUMBER', '+88-02-223364115');
+
+-- Insert email address
+INSERT INTO CONTACTS (OWNER_ID, TYPE, VALUE)
+VALUES (23, 'EMAIL', 'dhakacitycollege1250@gmail.com');
+
+INSERT INTO PAYMENT_INFO (
+    ID,
+    OWNER_ID, -- Considered as equivalent to ID for now
+    ACCOUNT_NUMBER,
+    ACCOUNT_HOLDER,
+    BANK_NAME,
+    IBAN
+)
+VALUES (
+    23,
+    23,
+    '11384987586', -- Replace with an actual account number
+    'Dhaka City College',
+    'Asia Bank',
+    'BD3845794875789011'
+);
+
+
+INSERT INTO LOCATIONS (LOCATION_ID, STREET_ADDRESS, POSTAL_CODE, CITY, STATE_PROVINCE, COUNTRY)
+VALUES (25, 'Tejgaon', '1215', 'Dhaka', NULL, 'Bangladesh');
+
+INSERT INTO ORGANIZATIONS (ORGANIZATION_ID, NAME, ADDRESS, URL, TYPE)
+VALUES (24, 'HOLY CROSS COLLEGE', 25, 'http://www.hcc.edu.bd/', 'CLIENT');
+
+INSERT INTO CLIENT_COMPANIES (CLIENT_ID, TYPE)
+VALUES (24, 'EDUCATION');
+
+INSERT INTO CONTACTS (OWNER_ID, TYPE, VALUE)
+VALUES (24, 'PHONE_NUMBER', '02-58152516');
+
+INSERT INTO PAYMENT_INFO (
+    ID,
+    OWNER_ID, -- Considered as equivalent to ID for now
+    ACCOUNT_NUMBER,
+    ACCOUNT_HOLDER,
+    BANK_NAME,
+    IBAN
+)
+VALUES (
+    24,
+    24,
+    '7847840486', -- Replace with an actual account number
+    'Holy Cross College',
+    'Asia Bank',
+    'BD84848875789011'
+);
+
+INSERT INTO LOCATIONS (LOCATION_ID, STREET_ADDRESS, POSTAL_CODE, CITY, STATE_PROVINCE, COUNTRY)
+VALUES (26, 'Dhaka Cantonment', '1206', 'Dhaka', NULL, 'Bangladesh');
+
+INSERT INTO ORGANIZATIONS (ORGANIZATION_ID, NAME, ADDRESS, URL, TYPE)
+VALUES (25, ' Adamjee Cantonment Public School', 26, 'https://www.acps.edu.bd/', 'CLIENT');
+
+INSERT INTO CLIENT_COMPANIES (CLIENT_ID, TYPE)
+VALUES (25, 'EDUCATION');
+
+INSERT INTO CONTACTS (OWNER_ID, TYPE, VALUE)
+VALUES (25, 'PHONE_NUMBER', '8711111-8104');
+
+-- Insert email address
+INSERT INTO CONTACTS (OWNER_ID, TYPE, VALUE)
+VALUES (25, 'EMAIL', 'adamjeeschool@gmail.com');
+
+INSERT INTO PAYMENT_INFO (
+    ID,
+    OWNER_ID, -- Considered as equivalent to ID for now
+    ACCOUNT_NUMBER,
+    ACCOUNT_HOLDER,
+    BANK_NAME,
+    IBAN
+)
+VALUES (
+    25,
+    25,
+    '7838337586', -- Replace with an actual account number
+    'Adamjee Cantonment Public School',
+    'Asia Bank',
+    'BD38457837495789011'
+);
+
+
+INSERT INTO LOCATIONS (LOCATION_ID, STREET_ADDRESS, POSTAL_CODE, CITY, STATE_PROVINCE, COUNTRY)
+VALUES (27, 'Adamjee Cantonment College, Dhaka Cantonment', '1206', 'Dhaka', NULL, 'Bangladesh');
+
+INSERT INTO ORGANIZATIONS (ORGANIZATION_ID, NAME, ADDRESS, URL, TYPE)
+VALUES (26, ' Adamjee Cantonment College', 27, 'https://acc.edu.bd/', 'CLIENT');
+
+INSERT INTO CLIENT_COMPANIES (CLIENT_ID, TYPE)
+VALUES (26, 'EDUCATION');
+
+INSERT INTO CONTACTS (OWNER_ID, TYPE, VALUE)
+VALUES (26, 'PHONE_NUMBER', '880-2-8872446');
+
+-- Insert email address
+INSERT INTO CONTACTS (OWNER_ID, TYPE, VALUE)
+VALUES (26, 'EMAIL', 'info@acc.edu.bd');
+
+INSERT INTO PAYMENT_INFO (
+    ID,
+    OWNER_ID, -- Considered as equivalent to ID for now
+    ACCOUNT_NUMBER,
+    ACCOUNT_HOLDER,
+    BANK_NAME,
+    IBAN
+)
+VALUES (
+    26,
+    26,
+    '2238337586', -- Replace with an actual account number
+    'Adamjee Cantonment College',
+    'Asia Bank',
+    'BD99457837495789011'
+);
+
+INSERT INTO LOCATIONS (LOCATION_ID, STREET_ADDRESS, POSTAL_CODE, CITY, STATE_PROVINCE, COUNTRY)
+VALUES (29, '110, Motijheel Commercial Area', '1000', 'Dhaka', NULL, 'Bangladesh');
+
+INSERT INTO ORGANIZATIONS (ORGANIZATION_ID, NAME, ADDRESS, URL, TYPE)
+VALUES (28, ' Janata Bank PLC', 29, 'www.jb.com.bd', 'CLIENT');
+
+INSERT INTO CLIENT_COMPANIES (CLIENT_ID, TYPE)
+VALUES (28, 'BANK');
+
+INSERT INTO CONTACTS (OWNER_ID, TYPE, VALUE)
+VALUES (28, 'PHONE_NUMBER', '+88 02-223380029');
+
+-- Insert email address
+INSERT INTO CONTACTS (OWNER_ID, TYPE, VALUE)
+VALUES (28, 'EMAIL', 'janata_bank@bdbl.com.bd');
+
+INSERT INTO PAYMENT_INFO (
+    ID,
+    OWNER_ID, -- Considered as equivalent to ID for now
+    ACCOUNT_NUMBER,
+    ACCOUNT_HOLDER,
+    BANK_NAME,
+    IBAN
+)
+VALUES (
+    28,
+    28,
+    '94954943', -- Replace with an actual account number
+    'Janata Bank',
+    'Janata Bank',
+    'BD8588784789011'
+);
+
+INSERT INTO LOCATIONS (LOCATION_ID, STREET_ADDRESS, POSTAL_CODE, CITY, STATE_PROVINCE, COUNTRY)
+VALUES (28, 'BDBL Bhaban, 8, Rajuk Avenue', '1000', 'Dhaka', NULL, 'Bangladesh');
+
+INSERT INTO ORGANIZATIONS (ORGANIZATION_ID, NAME, ADDRESS, URL, TYPE)
+VALUES (27, ' Bangladesh Development Bank PLC', 28, 'bdbl.portal.gov.bd', 'CLIENT');
+
+INSERT INTO CLIENT_COMPANIES (CLIENT_ID, TYPE)
+VALUES (27, 'BANK');
+
+INSERT INTO CONTACTS (OWNER_ID, TYPE, VALUE)
+VALUES (27, 'PHONE_NUMBER', '02-223388326');
+
+-- Insert email address
+INSERT INTO CONTACTS (OWNER_ID, TYPE, VALUE)
+VALUES (27, 'EMAIL', 'principal@bdbl.com.bd');
+
+INSERT INTO PAYMENT_INFO (
+    ID,
+    OWNER_ID, -- Considered as equivalent to ID for now
+    ACCOUNT_NUMBER,
+    ACCOUNT_HOLDER,
+    BANK_NAME,
+    IBAN
+)
+VALUES (
+    27,
+    27,
+    '22383343', -- Replace with an actual account number
+    'Bangladesh Development Bank PLC',
+    'Bangladesh Development Bank PLC',
+    'BD9995840789011'
+);

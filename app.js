@@ -3,6 +3,10 @@ const oracledb= require('oracledb');
 const bodyParser = require('body-parser');
 
 const supplierRouter=require('./routehandler/supplierRouter.js');
+const productRouter=require('./routehandler/productRouter.js');
+const branchRouter=require('./routehandler/branchRouter.js');
+const clientRouter=require('./routehandler/clientRouter.js');
+const transportRouter=require('./routehandler/transportRouter.js');
 const app = express();
 const port = 3000;
 
@@ -21,10 +25,16 @@ let connection;
 
 
 //oracle db connection details
-const dbConfig = {
-    user: 'technova',
-    password: '123',
+/*const dbConfig = {
+    user: 'testdb1231996',
+    password: '123testermyfoot',
     connectString: "localhost/ORCL",
+};*/
+
+const dbConfig = {
+  user: 'technova',
+  password: '123',
+  connectString: "localhost/ORCL",
 };
 
 async function connectToDatabase() {
@@ -57,14 +67,36 @@ async function connectToDatabase() {
 app.get('/', (req, res) => {
     res.render('home');
 });
-
+   
 app.use("/supplier", (req, res, next) => {
     // Pass the connection object to the supplierRouter middleware
     req.db = connection;
     next();
   },supplierRouter);    // handover supplier route
 
+  app.use("/products", (req, res, next) => {
+    // Pass the connection object to the supplierRouter middleware
+    req.db = connection;
+    next();
+  },productRouter);    // handover supplier route
 
+  app.use("/branches", (req, res, next) => {
+    // Pass the connection object to the supplierRouter middleware
+    req.db = connection;
+    next();
+  },branchRouter);    // handover supplier route*/
+
+  app.use("/clients", (req, res, next) => {
+    // Pass the connection object to the supplierRouter middleware
+    req.db = connection;
+    next();
+  },clientRouter); 
+
+  app.use("/transports", (req, res, next) => {
+    // Pass the connection object to the supplierRouter middleware
+    req.db = connection;
+    next();
+  },transportRouter); 
 
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);

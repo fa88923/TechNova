@@ -2,7 +2,5 @@
 BUET CSE 216 course project for Batch 21  
 hellooooo adriiii i am hereeeee
 
-*Create table first
-* in ctl, chnage the csv file path
-* open cmd
-* enter following command:sqlldr username/password@your_database control='path/to/your/controlfile.ctl'
+to do:
+--in case of client comapnies, it would be better to also show the total number of orders from them, how many pending and how many completed and such, and also 

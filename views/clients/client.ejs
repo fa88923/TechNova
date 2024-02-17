@@ -1,0 +1,67 @@
+<!--************************** clients page ***********************************-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- stylesheet to handle the searchbar specially -->
+
+    <link rel="stylesheet" type="text/css" href="/css/supplierSearch.css">
+    <link rel="stylesheet" type="text/css" href="/css/supplier.css">
+
+    <title>Clients</title>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <div id="navbar">
+            <h1 class="mb-4">Clients</h1>
+            <div class="search-box">
+                <form id="searchForm">
+                    <button class="btn-search" type="submit"><i class="fas fa-search"></i></button>
+                    <input type="text" class="input-search" id="searchkey" placeholder="Search...">
+                </form>
+            </div>
+        </div>
+  
+
+        <br><br><br>
+        <br><br><br>
+         
+        <!--product list-->
+
+        <div class="table-responsive">
+            <% if (clients.length > 0) { %>
+                <table class="table table-bordered table-hover table-dark">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>CLIENT ID</th>
+                            <th>CLIENT NAME</th>
+                            <th>URL</th>
+                            <th>ADDRESS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% clients.forEach(client => { %>
+                        <tr>
+                            <td><%= client.CLIENT_ID %></td>
+                            <td><a href="#" class="client-details-button" data-client-id="<%= client.CLIENT_ID %>"><%= client.NAME %></a></td>
+                            <td><a href="<%= client.URL %>"><%= client.URL %></a></td> 
+                            <td><%= client.ADDRESS %></td>
+                            
+                        </tr>
+                        <% });
+                        %>
+                    </tbody>
+                </table>
+            <% } else { %>
+                <p>        No clients found.</p>
+            <% } %>
+        </div>
+    </div>
+    <!--<script src="/js/supplierPageControllers/addScript.js"></script>
+    <script src="/js/supplierPageControllers/searchScript.js"></script>-->
+    <script src="/js/clients/clientControllers.js"></script>
+</body>
+</html>
+

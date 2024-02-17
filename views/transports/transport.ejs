@@ -1,0 +1,69 @@
+<!--************************** transports page ***********************************-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- stylesheet to handle the searchbar specially -->
+
+    <link rel="stylesheet" type="text/css" href="/css/supplierSearch.css">
+    <link rel="stylesheet" type="text/css" href="/css/supplier.css">
+
+    <title>Shipping Companies</title>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <div id="navbar">
+            <h1 class="mb-4">Shipping Companies</h1>
+            <div class="search-box">
+                <form id="searchForm">
+                    <button class="btn-search" type="submit"><i class="fas fa-search"></i></button>
+                    <input type="text" class="input-search" id="searchkey" placeholder="Search...">
+                </form>
+            </div>
+        </div>
+  
+
+        <br><br><br>
+        <br><br><br>
+         
+        <!--product list-->
+
+        <div class="table-responsive">
+            <% if (transporters.length > 0) { %>
+                <table class="table table-bordered table-hover table-dark">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>COMPANY ID</th>
+                            <th>COMPANY NAME</th>
+                            <th>URL</th>
+                            <th>ADDRESS</th>
+                            <th>CAPACITY</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% transporters.forEach(transporter => { %>
+                        <tr>
+                            <td><%= transporter.COMPANY_ID %></td>
+                            <td><a href="#" class="transporter-details-button" data-transporter-id="<%= transporter.COMPANY_ID %>"><%= transporter.NAME %></a></td>
+                            <td><a href="<%= transporter.URL %>"><%= transporter.URL %></a></td> 
+                            <td><%= transporter.ADDRESS %></td>
+                            <td><%= transporter.CAPACITY %> TEU</td>
+                            
+                        </tr>
+                        <% });
+                        %>
+                    </tbody>
+                </table>
+            <% } else { %>
+                <p>        No such shipping companies found.</p>
+            <% } %>
+        </div>
+    </div>
+    <!--<script src="/js/supplierPageControllers/addScript.js"></script>
+    <script src="/js/supplierPageControllers/searchScript.js"></script>-->
+    <script src="/js/transporters/transporterController.js"></script>
+</body>
+</html>
+

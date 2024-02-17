@@ -1,0 +1,105 @@
+<!--************************** products page ***********************************-->
+<!--to do:  'no products found message ta boojha jachhe na'-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- stylesheet to handle the searchbar specially -->
+
+    <link rel="stylesheet" type="text/css" href="/css/supplierSearch.css">
+    <link rel="stylesheet" type="text/css" href="/css/supplier.css">
+    <link rel="stylesheet" type="text/css" href="/css/products/productpage.css">
+
+    <title>Products</title>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <div id="navbar">
+            <h1 class="mb-4">Products</h1>
+            <div class="search-box">
+                <form id="searchForm">
+                    <button class="btn-search" type="submit"><i class="fas fa-search"></i></button>
+                    <input type="text" class="input-search" id="searchkey" placeholder="Search...">
+                </form>
+            </div>
+        </div>
+       
+        <div class="categories">           <!--add the css for this-->
+
+            <!-- category Bar -->
+           <!-- Category Bar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <ul class="navbar-nav">
+            <% categories.forEach(category => { %>
+                <li class="nav-item">
+                    <a class="nav-link" href="/products?category=<%= category.CATEGORY %>">
+                        <%= category.CATEGORY %>s
+                    </a>
+                </li>
+            <% }); %>
+        </ul>
+        </nav>
+        <br>
+        <br>
+        <p> Check Availability</p>
+        <br>
+        <a  href="/products?stock=out_of_stock">
+            Out Of Stock
+        </a>
+        <br><br>
+        <a  href="/products?stock=in_stock">
+            In Stock
+        </a>
+        </div>
+
+        <br><br><br>
+        <br><br><br>
+         
+        <!--product list-->
+
+        <div class="table-responsive">
+            <% if (products.length > 0) { %>
+                <table class="table table-bordered table-hover table-dark">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>PRODUCT ID</th>
+                            <th>PRODUCT NAME</th>
+                            <th>CATEGORY</th>
+                            <th>RETAIL PRICE</th>
+                            <th>WARRANTY</th>
+                            <th>MANUFACTURER</th>
+                            <th>STOCK</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% products.forEach(product => { %>
+                        <tr>
+                            <td><%= product.PRODUCT_ID %></td>
+                            <td><a href="#" class="product-details-button" data-product-id="<%= product.PRODUCT_ID %>"><%= product.PRODUCT_NAME %></a></td> 
+                            <td><%= product.CATEGORY %></td>
+                            <td>Tk. <%= product.RETAIL_PRICE %></td>
+                            <td><%= product.WARRANTY %> years</td>
+                            <td><%= product.MANUFACTURER_ID %></td>
+                            <td><%= product.CENTRAL_STOCK %></td>
+                        </tr>
+                        <% });
+                        %>
+                    </tbody>
+                </table>
+            <% } else { %>
+                <p>        No products found.</p>
+            <% } %>
+        </div>
+        <div class="add_button">
+            <br><br><br>
+            <button type="button" id="add_button">Add Supplier</button>
+        </div>
+    </div>
+    <!--<script src="/js/supplierPageControllers/addScript.js"></script>
+    <script src="/js/supplierPageControllers/searchScript.js"></script>-->
+    <script src="/js/products/productController.js"></script>
+</body>
+</html>
+

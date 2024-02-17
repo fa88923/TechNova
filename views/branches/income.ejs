@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Income Statements</title>
+    <!-- Bootstrap CSS link -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS link -->
+    <link rel="stylesheet" href="/css/branches/income.css">
+</head>
+
+<body>
+    <h1 class="text-center">Income Statements</h1>
+
+    <div class="container mt-5">
+
+        <!-- Section 1: Branch Information -->
+        <div class="card mb-4">
+           
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">Branch Name:</dt>
+                    <dd class="col-sm-8"><%= branchinfo[0].NAME %></dd>
+                </dl>
+            </div>
+        </div>
+
+        <!-- Section 2: Income Statements -->
+        <div class="card mb-4">
+            <div class="card-header">
+                Filter Statements
+            </div>
+            <div class="card-body">
+                <form id="filterForm">
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="inputMonth">Month</label>
+                            <select id="inputMonth" class="form-control" name="month">
+                                <option value="" selected>Choose...</option>
+                                <option value="1">January</option>
+                                <option value="2">February</option>
+                                <option value="3">March</option>
+                                <option value="4">April</option>
+                                <option value="5">May</option>
+                                <option value="6">June</option>
+                                <option value="7">July</option>
+                                <option value="8">August</option>
+                                <option value="9">September</option>
+                                <option value="10">October</option>
+                                <option value="11">Novemeber</option>
+                                <option value="12">December</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputYear">Year</label>
+                            <select id="inputYear" class="form-control" name="year">
+                                <option value="" selected>Choose...</option>
+                                <!-- Add options for the year range (2019 to 2024) -->
+                                <% for (let i = 2019; i <= 2024; i++) { %>
+                                    <option value="<%= i %>"><%= i %></option>
+                                <% } %>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <button type="button" class="btn btn-primary" onclick="filterStatements()">Apply Filter</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="card mb-4">
+            <div class="card-header">
+                Income Statements
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-dark">
+                    <thead>
+                        <tr>
+                            <th scope="col">Start Date</th>
+                            <th scope="col">End Date</th>
+                            <th scope="col">Earnings</th>
+                            <th scope="col">Overhead</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% income.forEach(statement => { %>
+                            <tr>
+                                <td><%= statement.START_DATE %></td>
+                                <td><%= statement.END_DATE %></td>
+                                <td>Tk. <%= statement.EARNINGS %></td>
+                                <td>Tk. <%= statement.OVERHEAD %></td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+    <script>
+        function filterStatements() {
+            var selectedMonth = document.getElementById('inputMonth').value;
+            var selectedYear = document.getElementById('inputYear').value;
+            var branchId = '<%= branchinfo[0].BRANCH_ID %>'; // Change this line based on your actual object structure
+    
+            var url = '/branches/details/incomeStatement';
+    
+            if (branchId) {
+                url += '?branchId=' + branchId;
+            }
+    
+            if (selectedMonth) {
+                url += (branchId ? '&' : '?') + 'month=' + selectedMonth;
+            }
+    
+            if (selectedYear) {
+                url += (branchId || selectedMonth ? '&' : '?') + 'year=' + selectedYear;
+            }
+    
+            window.location.href = url;
+        }
+    </script>
+    
+
+    <!-- Bootstrap JS and dependencies (jQuery, Popper.js) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    
+    
+
+</body>
+
+</html>
