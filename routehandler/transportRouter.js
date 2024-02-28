@@ -16,7 +16,7 @@ transportRoute.get("/", async (req, res) => {
               transports = await req.db.execute(
                 `SELECT T.COMPANY_ID, O.NAME, O.URL, STREET_ADDRESS||', '||CITY||'-'||POSTAL_CODE ADDRESS,T.CAPACITY FROM
                 ORGANIZATIONS O JOIN TRANSPORT_COMPANIES T ON (O.ORGANIZATION_ID=T.COMPANY_ID)
-                LEFT OUTER JOIN LOCATIONS L ON (O.ADDRESS=L.LOCATION_ID)
+                LEFT OUTER JOIN LOCATIONS L ON (O.ORGANIZATION_ID=L.ORGANIZATION_ID)
                 WHERE UPPER(O.NAME) LIKE :searchPattern OR UPPER(STREET_ADDRESS) LIKE :searchPattern OR UPPER(CITY) LIKE :searchPattern
                 OR UPPER(POSTAL_CODE) LIKE :searchPattern
                 OR UPPER(COUNTRY) LIKE :searchPattern
@@ -31,7 +31,7 @@ transportRoute.get("/", async (req, res) => {
                 transports = await req.db.execute(
                 `SELECT T.COMPANY_ID, O.NAME, O.URL, STREET_ADDRESS||', '||CITY||'-'||POSTAL_CODE ADDRESS,T.CAPACITY FROM
                 ORGANIZATIONS O JOIN TRANSPORT_COMPANIES T ON (O.ORGANIZATION_ID=T.COMPANY_ID)
-                LEFT OUTER JOIN LOCATIONS L ON (O.ADDRESS=L.LOCATION_ID)
+                LEFT OUTER JOIN LOCATIONS L ON (O.ORGANIZATION_ID=L.ORGANIZATION_ID)
                 ORDER BY O.ORGANIZATION_ID`
             );
             }

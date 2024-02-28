@@ -16,7 +16,7 @@ clientRoute.get("/", async (req, res) => {
               clients = await req.db.execute(
                 `SELECT C.CLIENT_ID, O.NAME, O.URL, STREET_ADDRESS||', '||CITY||'-'||POSTAL_CODE ADDRESS FROM
                 ORGANIZATIONS O JOIN CLIENT_COMPANIES C ON (O.ORGANIZATION_ID=C.CLIENT_ID)
-                LEFT OUTER JOIN LOCATIONS L ON (O.ADDRESS=L.LOCATION_ID)
+                LEFT OUTER JOIN LOCATIONS L ON (O.ORGANIZATION_ID=L.ORGANIZATION_ID)
                 WHERE UPPER(NAME) LIKE :searchPattern OR UPPER(STREET_ADDRESS) LIKE :searchPattern OR 
                 UPPER(POSTAL_CODE) LIKE :searchPattern 
                 OR UPPER(CITY) LIKE :searchPattern
@@ -32,7 +32,7 @@ clientRoute.get("/", async (req, res) => {
                 clients = await req.db.execute(
                 `SELECT C.CLIENT_ID, O.NAME, O.URL, STREET_ADDRESS||', '||CITY||'-'||POSTAL_CODE ADDRESS FROM
                 ORGANIZATIONS O JOIN CLIENT_COMPANIES C ON (O.ORGANIZATION_ID=C.CLIENT_ID)
-                LEFT OUTER JOIN LOCATIONS L ON (O.ADDRESS=L.LOCATION_ID)
+                LEFT OUTER JOIN LOCATIONS L ON (O.ORGANIZATION_ID=L.ORGANIZATION_ID)
                 ORDER BY O.ORGANIZATION_ID`
             );
             }
@@ -53,7 +53,7 @@ clientRoute.get("/details",async(req,res)=>{
     const clientId=parseInt(req.query.clientId);
     // Execute SQL query to search in the database
     const clientinfo = await req.db.execute(
-        'SELECT C.CLIENT_ID, O.NAME, O.URL, C.TYPE,STREET_ADDRESS||\', \'||CITY||\'-\'||POSTAL_CODE ADDRESS,P.ACCOUNT_NUMBER,P.ACCOUNT_HOLDER,P.BANK_NAME,P.IBAN FROM ORGANIZATIONS O JOIN CLIENT_COMPANIES C ON (O.ORGANIZATION_ID=C.CLIENT_ID) LEFT OUTER JOIN LOCATIONS L ON (O.ADDRESS=L.LOCATION_ID)  LEFT OUTER JOIN PAYMENT_INFO P ON (C.CLIENT_ID=P.OWNER_ID) WHERE C.CLIENT_ID=:clientId ORDER BY O.ORGANIZATION_ID', [clientId] 
+        'SELECT C.CLIENT_ID, O.NAME, O.URL, C.TYPE,STREET_ADDRESS||\', \'||CITY||\'-\'||POSTAL_CODE ADDRESS,P.ACCOUNT_NUMBER,P.ACCOUNT_HOLDER,P.BANK_NAME,P.IBAN FROM ORGANIZATIONS O JOIN CLIENT_COMPANIES C ON (O.ORGANIZATION_ID=C.CLIENT_ID) LEFT OUTER JOIN LOCATIONS L ON (O.ORGANIZATION_ID=L.ORGANIZATION_ID)  LEFT OUTER JOIN PAYMENT_INFO P ON (C.CLIENT_ID=P.OWNER_ID) WHERE C.CLIENT_ID=:clientId ORDER BY O.ORGANIZATION_ID', [clientId] 
         // Use bind variables to prevent SQL injection
     );
 

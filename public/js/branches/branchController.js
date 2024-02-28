@@ -32,4 +32,13 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
+    var add_button = document.getElementById('add_button');
+    if (add_button) 
+    {
+        add_button.addEventListener('click', function(event) {
+        event.preventDefault();
+        window.location.href = '/branches/add';
+    });
+    }
+
 });
