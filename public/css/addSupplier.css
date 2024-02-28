@@ -1,27 +1,37 @@
 html {
     height: 100%;
+    
   }
   body {
-    margin:0;
-    padding:0;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
     font-family: sans-serif;
     background: linear-gradient(#141e30, #243b55);
   }
   
   .login-box {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 700px;
-    padding: 40px;
-    transform: translate(-50%, -50%);
-    background: rgba(0,0,0,.5);
-    box-sizing: border-box;
-    box-shadow: 0 15px 25px rgba(0,0,0,.6);
-    border-radius: 10px;
+  top: 50%;
+  left: 50%;
+  width: 700px;
+  padding: 40px;
+  margin-top: -240px; /* Adjust this value to half of the login-box height */
+  margin-left: -350px; /* Adjust this value to half of the login-box width */
+  background: rgba(0,0,0,.5);
+  box-sizing: border-box;
+  box-shadow: 0 15px 25px rgba(0,0,0,.6);
+  border-radius: 10px;
   }
   
   .login-box h2 {
+    margin: 0 0 30px;
+    padding: 0;
+    color: #fff;
+    text-align: center;
+  }
+
+  .login-box h3 {
     margin: 0 0 30px;
     padding: 0;
     color: #fff;
@@ -165,4 +175,20 @@ html {
       bottom: 100%;
     }
   }
-  
+  /* Add these styles to your existing CSS */
+
+  .user-box button {
+    background: none;
+    color: #03e9f4;
+    border: none;
+    padding: 10px 0;
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: underline;
+    margin-top: 10px;
+    outline: none;
+}
+
+.user-box input:not(:first-child) {
+    margin-top: 10px;
+}

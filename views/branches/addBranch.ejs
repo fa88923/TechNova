@@ -1,0 +1,105 @@
+<!--************************** add branch page ***********************************-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Branch</title>
+    <link rel="stylesheet" type="text/css" href="/css/addSupplier.css">
+</head>
+<body>
+    <div class="login-box">
+        <h2>Branch Information</h2>
+        <form method="post" action="/branches/submit" id="addingForm">
+            <div class="user-box">
+                <input type="text" id="name" name="name" required="">
+                <label>Name</label>
+            </div>
+            <div class="user-box">
+                <input type="text" id="street" name="street" required="">
+                <label>Street Address</label>
+            </div>
+            <div class="user-box">
+                <input type="text" id="postal_code" name="postal_code" required="">
+                <label>Postal Code</label>
+            </div>
+            <div class="user-box">
+                <input type="text" id="city" name="city" required="">
+                <label>City</label>
+            </div>
+            <div class="user-box">
+                <input type="text" id="country" name="country" required="">
+                <label>Country</label>
+            </div>
+            <!-- Add these lines to your HTML form -->
+
+             <div class="user-box">
+                <input type="text" id="manager" name="manager" required="manager">
+                <label>Manager</label>
+            </div>
+
+            <!-- Phone Numbers -->
+            <div id="phone_container" class="contact-container">
+                <div class="user-box">
+                    <input type="text" name="phone_number[]" required="">
+                    <label>Phone Number</label>
+                </div>
+                <button type="button" class="add_contact" data-container="phone_container">Add Another Phone Number</button>
+            </div>
+            
+            <!-- Emails -->
+            <div id="email_container" class="contact-container">
+                <div class="user-box">
+                    <input type="text" name="email[]" required="">
+                    <label>Email</label>
+                </div>
+                <button type="button" class="add_contact" data-container="email_container">Add Another Email</button>
+            </div>
+            
+
+            <div class="user-box">
+                <input type="text" id="square_footage" name="square_footage" required="square_footage">
+                <label>Square Footage</label>
+            </div>
+
+            <div class="user-box">
+                <input type="text" id="avg_shipping_duration" name="avg_shipping_duration" required="avg_shipping_duration">
+                <label>Average Shipping Duration(in days)</label>
+            </div>
+            
+            <h3>Payment Information</h3>
+
+            <div class="user-box">
+                <input type="text" id="account_number" name="account_number" required="account_number">
+                <label>Account Number</label>
+            </div>
+
+            <div class="user-box">
+                <input type="text" id="account_holder" name="account_holder" required="account_holder">
+                <label>Account Holder</label>
+            </div>
+
+            <div class="user-box">
+                <input type="text" id="bank" name="bank" required="bank">
+                <label>Bank</label>
+            </div>
+
+            <div class="user-box">
+                <input type="text" id="iban" name="iban" required="iban">
+                <label>IBAN</label>
+            </div>
+
+            <a href="#" id="add_button">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            Add
+            </a>
+        </form>
+        </div>
+        <script src="/js/branches/addBranchController.js"></script>
+</body>
+</html>
