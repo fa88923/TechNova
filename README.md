@@ -11,3 +11,5 @@ log 29/02/24
 logging plan changed that is why the following changes are made:
 drop trigger ORG_INSERT_TRIGGER;      
 rerun function INSERT_ORGANIZATION- has slight changes
+rerun procedure update_organization- slight changes
+rerun procedure add_contacts -slight changes
