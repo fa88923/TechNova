@@ -13,22 +13,22 @@ document.addEventListener('DOMContentLoaded', function () {
         //access the search key word inserted in the input tag
         const searchValue = searchInput.value;
         //send it to get(/search) route with the searchkey as query
-        window.location.href =`/branches?searchkey=${searchValue}` ;
+        window.location.href =`/suppliers?searchkey=${searchValue}` ;
     });
     }
 
     //product details reroute
-    var buttons = document.querySelectorAll('.branch-details-button');
+    var buttons = document.querySelectorAll('.supplier-details-button');
 
     // Add a click event listener to each button
     buttons.forEach(function (button) {
         button.addEventListener('click', function () {
             // Get the productId from the 'data-product-id' attribute
-            var branchId = button.getAttribute('data-branch-id');
-            console.log(branchId);
+            var supplierId = button.getAttribute('data-supplier-id');
+            console.log(supplierId);
 
             // Redirect to the 'supplierDetails' page with the supplierId
-            window.location.href = '/branches/details?branchId=' + branchId;
+            window.location.href = '/suppliers/details?supplierId=' + supplierId;
         });
     });
 
@@ -37,16 +37,16 @@ document.addEventListener('DOMContentLoaded', function () {
     {
         add_button.addEventListener('click', function(event) {
         event.preventDefault();
-        window.location.href = '/branches/add';
+        window.location.href = '/suppliers/add';
     });
     }
 
     var deleteButtons = document.querySelectorAll('.delete-button');
     deleteButtons.forEach(function (button) {
         button.addEventListener('click', function () {
-            var branchId = button.getAttribute('data-branch-id');
+            var supplierId = button.getAttribute('data-supplier-id');
             // Redirect to /branches with the delete parameter
-            window.location.href = '/branches?delete=' + branchId;
+            window.location.href = '/suppliers?delete=' + supplierId;
         });
     });
 

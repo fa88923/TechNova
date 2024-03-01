@@ -1,76 +1,93 @@
 <!--************************** details of a supplier page ***********************************-->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Supplier Details</title>
     <!-- Bootstrap CSS link -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
-    <!-- External CSS link -->
-    <link rel="stylesheet" href="/css/supplierDetails.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS link -->
+    <link rel="stylesheet" href="/css/products/details.css">     <!--might change the css later-->
+    
 </head>
+
 <body>
     <h1 class="text-center">Supplier Details</h1>
 
-    <div class="card">
-        <div class="card-header">
-            Supplier Information
+    <div class="container mt-5">
+        
+        <!-- Section 1: Product Information -->
+        <div class="card mb-4">
+            <div class="card-header">
+                Supplier Information
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">Supplier ID:</dt>
+                    <dd class="col-sm-8"><%= supplierinfo[0].SUPPLIER_ID%></dd>
+                    <dt class="col-sm-4">Supplier Name:</dt>
+                    <dd class="col-sm-8"><%= supplierinfo[0].NAME %></dd>
+                    <dt class="col-sm-4">Address:</dt>
+                    <dd class="col-sm-8"><%= supplierinfo[0].ADDRESS %></dd>
+                    <dt class="col-sm-4">Pickup Location:</dt>
+                    <dd class="col-sm-8"><%= supplierinfo[0].PICKUP_LOCATION %></dd>
+                    
+                    
+                    <dt class="col-sm-4">Mobile Phone:</dt>
+                    <dd class="col-sm-8"><%if(phone_numbers.length>0)
+                       { phone_numbers.forEach(number => { %>
+                         <%= number.VALUE %>,            <!--extra akta comma print hoy, fix it-->
+                    <% }); }%></dd>
+                    <%if(emails.length>0){%>
+                    <dt class="col-sm-4">Email:</dt>
+                    <dd class="col-sm-8">
+                       <% emails.forEach(email => { %>
+                         <%= email.VALUE %>,            <!--extra akta comma print hoy, fix it-->
+                    <% }); }%></dd>
+                    
+                    <dt class="col-sm-4">Average Shipping Duration:</dt>
+                    <dd class="col-sm-8"><%= supplierinfo[0].AVG_DELIVERY_TIME %> days</dd>
+                    
+
+                </dl>
+            </div>
         </div>
-        <div class="card-body">
-            <dl class="row">
-                <dt class="col-sm-4">Supplier ID:</dt>
-                <dd class="col-sm-8"><%= supplierInfo[0].SUPPLIER_ID %></dd>
 
-                <dt class="col-sm-4">Supplier Name:</dt>
-                <dd class="col-sm-8"><%= supplierInfo[0].SUPPLIER_NAME %></dd>
+        <!-- Section 2: Product Features -->
+        <div class="card mb-4">
+            <div class="card-header">
+                Payment Information
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">Account Number:</dt>
+                    <dd class="col-sm-8"><%= supplierinfo[0].ACCOUNT_NUMBER %></dd>
 
-                <dt class="col-sm-4">City:</dt>
-                <dd class="col-sm-8"><%= supplierInfo[0].CITY %></dd>
+                    <dt class="col-sm-4">Account Holder:</dt>
+                    <dd class="col-sm-8"><%= supplierinfo[0].ACCOUNT_HOLDER %></dd>
 
-                <dt class="col-sm-4">Country:</dt>
-                <dd class="col-sm-8"><%= supplierInfo[0].COUNTRY %></dd>
+                    <dt class="col-sm-4">Bank:</dt>
+                    <dd class="col-sm-8"><%= supplierinfo[0].BANK_NAME %></dd>
 
-                <dt class="col-sm-4">URL:</dt>
-                <dd class="col-sm-8"><%= supplierInfo[0].URL %></dd>
+                    <dt class="col-sm-4">Iban:</dt>
+                    <dd class="col-sm-8"><%= supplierinfo[0].IBAN %></dd>
 
-                <dt class="col-sm-4">Average Delivery Time:</dt>
-                <dd class="col-sm-8"><%= supplierInfo[0].AVG_DELIVERY_TIME %></dd>
+                </dl>
+              </div>
+              
+             </div>
+             <a href="/suppliers/products?supplierId=<%=supplierinfo[0].SUPPLIER_ID%>" class="btn btn-primary">Product Catalogue</a>
+             
+             <a href="/suppliers/details/edit?supplierId=<%=supplierinfo[0].SUPPLIER_ID%>" class="btn btn-primary">Edit</a>
+        
+    <!-- Bootstrap JS and dependencies (jQuery, Popper.js) -->
+    <script src="/js/suppliers/supplierDetailsController.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-                <dt class="col-sm-4">Account Number:</dt>
-                <dd class="col-sm-8"><%= supplierInfo[0].ACCOUNT_NUMBER %></dd>
-
-                <dt class="col-sm-4">Account Holder:</dt>
-                <dd class="col-sm-8"><%= supplierInfo[0].ACCOUNT_HOLDER %></dd>
-
-                <dt class="col-sm-4">Bank Name:</dt>
-                <dd class="col-sm-8"><%= supplierInfo[0].BANK_NAME %></dd>
-
-                <dt class="col-sm-4">IBAN:</dt>
-                <dd class="col-sm-8"><%= supplierInfo[0].IBAN %></dd>
-
-                <dt class="col-sm-4">Pickup Location:</dt>
-                <dd class="col-sm-8">
-                    <%= supplierInfo[0].PICKUP_LOC_CITY %>, <%= supplierInfo[0].PICKUP_LOC_COUNTRY %>
-                </dd>
-
-                <dt class="col-sm-4">Phone Number:</dt>
-                <dd class="col-sm-8"><%= supplierInfo[0].PHONE_NO %></dd>
-
-                <dt class="col-sm-4">Email:</dt>
-                <dd class="col-sm-8"><%= supplierInfo[0].EMAIL %></dd>
-            </dl>
-            <a href="#" class="btn btn-primary" id="productCatalogueButton" supplierId=<%=supplierInfo[0].SUPPLIER_ID %>>View Product Catalogue</a>
-            <a href="#" class="btn btn-primary" id="purchaseOrderButton" supplierId=<%=supplierInfo[0].SUPPLIER_ID %>>View Purchase Orders</a>
-        </div>
-    </div>
-
-    <!-- Bootstrap JS and jQuery scripts (required for Bootstrap) -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <!-- controller -->
-    <script src="/js/supplierDetailsControllers/productCatButton.js"></script>
-    <script src="/js/supplierDetailsControllers/purchaseOrderButton.js"></script>
 </body>
+
 </html>

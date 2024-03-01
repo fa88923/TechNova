@@ -1,0 +1,110 @@
+<!--************************** add branch page ***********************************-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Branch</title>
+    <link rel="stylesheet" type="text/css" href="/css/addSupplier.css">
+</head>
+<body>
+    <div class="login-box">
+        <h2>Branch Information</h2>
+        <form method="post" action="/branches/edit/submit?branchId=<%= branchinfo[0].BRANCH_ID %>" id="editingForm">
+
+            <div class="user-box">
+                <input type="text" id="name" name="name" required="" value="<%= branchinfo[0].NAME %>">
+                <label>Name</label>
+            </div>
+            <div class="user-box">
+                <input type="text" id="street" name="street" required="" value="<%= branchinfo[0].STREET_ADDRESS %>">
+                <label>Street Address</label>
+            </div>
+            <div class="user-box">
+                <input type="text" id="postal_code" name="postal_code" required="" value="<%= branchinfo[0].POSTAL_CODE %>">
+                <label>Postal Code</label>
+            </div>
+            <div class="user-box">
+                <input type="text" id="city" name="city" required="" value="<%= branchinfo[0].CITY %>">
+                <label>City</label>
+            </div>
+            <div class="user-box">
+                <input type="text" id="country" name="country" required="" value="<%= branchinfo[0].COUNTRY %>">
+                <label>Country</label>
+            </div>
+            <!-- Add these lines to your HTML form -->
+
+             <div class="user-box">
+                <input type="text" id="manager" name="manager" required="manager" value="<%= branchinfo[0].MANAGER %>">
+                <label>Manager</label>
+            </div>
+
+            <!-- Phone Numbers -->
+            <div id="phone_container" class="contact-container">
+                <% phone_numbers.forEach(function(phone) { %>
+                    <div class="user-box">
+                        <input type="text" name="phone_number[]" required="" value="<%= phone.VALUE %>">
+                        <label>Phone Number</label>
+                    </div>
+                <% }); %>
+                <button type="button" class="add_contact" data-container="phone_container">Add Another Phone Number</button>
+            </div>
+            
+            <!-- Emails -->
+            <div id="email_container" class="contact-container">
+                <% emails.forEach(function(email) { %>
+                    <div class="user-box">
+                        <input type="text" name="email[]" required="" value="<%= email.VALUE %>">
+                        <label>Email</label>
+                    </div>
+                <% }); %>
+                <button type="button" class="add_contact" data-container="email_container">Add Another Email</button>
+            </div>
+            
+
+            <div class="user-box">
+                <input type="text" id="square_footage" name="square_footage" required="square_footage" value="<%= branchinfo[0].SQUARE_FOOTAGE %>">
+                <label>Square Footage</label>
+            </div>
+
+            <div class="user-box">
+                <input type="text" id="avg_shipping_duration" name="avg_shipping_duration" required="avg_shipping_duration" value="<%= branchinfo[0].AVG_SHIPPING_DURATION %>">
+                <label>Average Shipping Duration(in days)</label>
+            </div>
+            
+            <h3>Payment Information</h3>
+
+            <div class="user-box">
+                <input type="text" id="account_number" name="account_number" required="account_number" value="<%= branchinfo[0].ACCOUNT_NUMBER %>">
+                <label>Account Number</label>
+            </div>
+
+            <div class="user-box">
+                <input type="text" id="account_holder" name="account_holder" required="account_holder" value="<%= branchinfo[0].ACCOUNT_HOLDER %>">
+                <label>Account Holder</label>
+            </div>
+
+            <div class="user-box">
+                <input type="text" id="bank" name="bank" required="bank" value="<%= branchinfo[0].BANK_NAME %>">
+                <label>Bank</label>
+            </div>
+
+            <div class="user-box">
+                <input type="text" id="iban" name="iban" required="iban" value="<%= branchinfo[0].IBAN %>">
+                <label>IBAN</label>
+            </div>
+
+            <a href="#" id="edit_button">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            Edit
+            </a>
+        </form>
+        </div>
+        <script src="/js/branches/editBranchController.js"></script>
+</body>
+</html>
