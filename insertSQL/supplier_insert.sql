@@ -4,84 +4,84 @@
 -- Insert data for Global Brand Pvt. Ltd.
 INSERT INTO SUPPLIERS (
     SUPPLIER_ID,
-    PICKUP_LOCATION_ID,
+    --PICKUP_LOCATION_ID,
     AVG_DELIVERY_TIME
 )
 VALUES (
     2,
-    2, -- Replace with actual value
+   -- 2, -- Replace with actual value
     7
 );
 
 -- Insert data for Distribution Hub Ltd
 INSERT INTO SUPPLIERS (
     SUPPLIER_ID,
-    PICKUP_LOCATION_ID,
+    --PICKUP_LOCATION_ID,
     AVG_DELIVERY_TIME
 )
 VALUES (
     3,
-    3, -- Replace with actual value
+    --3, -- Replace with actual value
     8
 );
 
 -- Insert data for RP Tech India
 INSERT INTO SUPPLIERS (
     SUPPLIER_ID,
-    PICKUP_LOCATION_ID,
+    --PICKUP_LOCATION_ID,
     AVG_DELIVERY_TIME
 )
 VALUES (
     4,
-    11, -- Replace with actual value
+   -- 11, -- Replace with actual value
     12
 );
 
 -- Insert data for Retrotech Business Solutions PVT LTD
 INSERT INTO SUPPLIERS (
     SUPPLIER_ID,
-    PICKUP_LOCATION_ID,
+   -- PICKUP_LOCATION_ID,
     AVG_DELIVERY_TIME
 )
 VALUES (
     5,
-    11, -- Replace with actual value
+    --11, -- Replace with actual value
     14
 );
 
 -- Insert data for BenQ India Pvt. Ltd
 INSERT INTO SUPPLIERS (
     SUPPLIER_ID,
-    PICKUP_LOCATION_ID,
+   -- PICKUP_LOCATION_ID,
     AVG_DELIVERY_TIME
 )
 VALUES (
     6,
-    11, -- Replace with actual value
+   -- 11, -- Replace with actual value
     18
 );
 
 -- Insert data for Beijing Guangtian Runze Technology Co. Ltd.
 INSERT INTO SUPPLIERS (
     SUPPLIER_ID,
-    PICKUP_LOCATION_ID,
+   -- PICKUP_LOCATION_ID,
     AVG_DELIVERY_TIME
 )
 VALUES (
     7,
-    11, -- Replace with actual value
+  --  11, -- Replace with actual value
     20
 );
 
 -- Insert data for Shenzhen Jingang Zhuoyue Technology Limited
 INSERT INTO SUPPLIERS (
     SUPPLIER_ID,
-    PICKUP_LOCATION_ID,
+  --  PICKUP_LOCATION_ID,
     AVG_DELIVERY_TIME
 )
 VALUES (
     8,
-    11, -- Replace with actual value
+   -- 11, -- Replace with actual value
     19
 );
 

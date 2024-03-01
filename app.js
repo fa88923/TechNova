@@ -31,8 +31,14 @@ let connection;
     connectString: "localhost/ORCL",
 };*/
 
+// const dbConfig = {
+//   user: 'technova',
+//   password: '123',
+//   connectString: "localhost/ORCL",
+// };
+
 const dbConfig = {
-  user: 'technova',
+  user: 'newtechnova',
   password: '123',
   connectString: "localhost/ORCL",
 };
