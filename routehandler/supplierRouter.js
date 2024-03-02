@@ -1,181 +1,480 @@
 const express=require("express");
+const oracledb=require("oracledb");
 const supplierRoute=express.Router();
 
-//for the /supplier route
-supplierRoute.get("/",async(req,res)=>{
-    // Fetch and pass supplier data to the view 
-    try{
-        //execute sql query to get supplier info
-        const result=await req.db.execute(
-            `SELECT supplier_id,supplier_name,city,country,url
-            FROM suppliers
-            ORDER BY supplier_id`
-        );
 
-        res.render('./suppliers/supplier',{'suppliers':result.rows});
-    }catch(error){
-        console.error('error fetching',error);
-        res.status(500).send('Internal server error');
-    }
+supplierRoute.get("/", async (req, res) => {
+   
 
-
-})
-
-//get search
-supplierRoute.get(`/search`, async (req, res) => {
     try {
-        // Extract the search string from the request
-        const searchString = req.query.query ||''; 
+        let suppliers;
+        const searchkey=req.query.searchkey;
+        //category wise filtering
 
-        // Execute SQL query to search in the database
-        const result = await req.db.execute(
-            `SELECT supplier_id, supplier_name, city, country, url
-            FROM suppliers
-            WHERE UPPER(supplier_name) LIKE UPPER(:searchString)
-            OR UPPER(city) LIKE UPPER(:searchString)
-            OR UPPER(country) LIKE UPPER(:searchString)`,
-            [ `%${searchString}%` , `%${searchString}%`, `%${searchString}%` ] 
-            // Use bind variables to prevent SQL injection
-        );
+        const deletekey=req.query.delete;
 
-        // Render the page with the search results
-        res.render('./suppliers/supplier', { 'suppliers': result.rows });
+        if(deletekey)
+        {
+        
+            await req.db.execute(
+                `DELETE FROM ORGANIZATIONS WHERE ORGANIZATION_ID=:deletekey`, { deletekey }
+            );
+
+            await req.db.execute(
+                `COMMIT`
+            );
+        }
+        
+         if (searchkey) {
+            const searchPattern = `%${searchkey.toUpperCase()}%`;
+        
+            suppliers = await req.db.execute(
+                `SELECT S.SUPPLIER_ID, O.NAME, O.URL,S.AVG_DELIVERY_TIME, L1.STREET_ADDRESS||', '||L1.CITY||'-'||L1.POSTAL_CODE||','||L1.COUNTRY ADDRESS,L2.STREET_ADDRESS||', '||L2.CITY||'-'||L2.POSTAL_CODE||','||L2.COUNTRY PICKUP_LOCATION  FROM
+                ORGANIZATIONS O JOIN SUPPLIERS S ON (O.ORGANIZATION_ID=S.SUPPLIER_ID)
+                LEFT OUTER JOIN LOCATIONS L1 ON (O.ORGANIZATION_ID=L1.ORGANIZATION_ID AND (UPPER(L1.TYPE) IN ('DUAL','ADDRESS')))
+                LEFT OUTER JOIN LOCATIONS L2 ON (O.ORGANIZATION_ID=L2.ORGANIZATION_ID AND (UPPER(L2.TYPE) IN ('DUAL','PICKUP')))
+                WHERE UPPER(NAME) LIKE :searchPattern OR UPPER(l1.STREET_ADDRESS) LIKE :searchPattern OR 
+                UPPER(L1.POSTAL_CODE) LIKE :searchPattern 
+                OR UPPER(L1.CITY) LIKE :searchPattern
+                OR UPPER(L1.COUNTRY) LIKE :searchPattern
+                OR UPPER(l2.STREET_ADDRESS) LIKE :searchPattern OR 
+                UPPER(L2.POSTAL_CODE) LIKE :searchPattern 
+                OR UPPER(L2.CITY) LIKE :searchPattern
+                OR UPPER(L2.COUNTRY) LIKE :searchPattern
+                OR UPPER(URL) LIKE :searchPattern
+                ORDER BY O.ORGANIZATION_ID`, { searchPattern }
+            );
+        }
+
+        else
+            {
+                suppliers = await req.db.execute(
+                `SELECT S.SUPPLIER_ID, O.NAME, O.URL,S.AVG_DELIVERY_TIME, L1.STREET_ADDRESS||', '||L1.CITY||'-'||L1.POSTAL_CODE||','||L1.COUNTRY ADDRESS,L2.STREET_ADDRESS||', '||L2.CITY||'-'||L2.POSTAL_CODE||','||L2.COUNTRY PICKUP_LOCATION  FROM
+                ORGANIZATIONS O JOIN SUPPLIERS S ON (O.ORGANIZATION_ID=S.SUPPLIER_ID)
+                LEFT OUTER JOIN LOCATIONS L1 ON (O.ORGANIZATION_ID=L1.ORGANIZATION_ID AND (UPPER(L1.TYPE) IN ('DUAL','ADDRESS')))
+                LEFT OUTER JOIN LOCATIONS L2 ON (O.ORGANIZATION_ID=L2.ORGANIZATION_ID AND (UPPER(L2.TYPE) IN ('DUAL','PICKUP')))
+                ORDER BY O.ORGANIZATION_ID`
+            );
+            }
+
+       
+
+        res.render('./suppliers/supplier', {
+            'suppliers': suppliers.rows
+        });
     } catch (error) {
-        console.error('Error searching:', error);
+        console.error('error fetching', error);
         res.status(500).send('Internal server error');
     }
 });
 
+
+
+supplierRoute.get("/details",async(req,res)=>{       
+    //just render the addSupplier page
+    const supplierId=parseInt(req.query.supplierId);
+    // Execute SQL query to search in the database
+    const supplierinfo = await req.db.execute(
+        'SELECT S.SUPPLIER_ID, O.NAME, O.URL,S.AVG_DELIVERY_TIME, L1.STREET_ADDRESS||\',\'||L1.CITY||\'-\'||L1.POSTAL_CODE||\',\'||L1.COUNTRY ADDRESS,L2.STREET_ADDRESS||\',\'||L2.CITY||\'-\'||L2.POSTAL_CODE||\',\'||L2.COUNTRY PICKUP_LOCATION,P.ACCOUNT_NUMBER,P.ACCOUNT_HOLDER,P.BANK_NAME,P.IBAN  FROM ORGANIZATIONS O JOIN SUPPLIERS S ON (O.ORGANIZATION_ID=S.SUPPLIER_ID) LEFT OUTER JOIN LOCATIONS L1 ON (O.ORGANIZATION_ID=L1.ORGANIZATION_ID AND (UPPER(L1.TYPE) IN (\'DUAL\',\'ADDRESS\'))) LEFT OUTER JOIN LOCATIONS L2 ON (O.ORGANIZATION_ID=L2.ORGANIZATION_ID AND (UPPER(L2.TYPE) IN (\'DUAL\',\'PICKUP\'))) LEFT OUTER JOIN PAYMENT_INFO P ON (S.SUPPLIER_ID=P.OWNER_ID) WHERE S.SUPPLIER_ID=:supplierId ORDER BY S.SUPPLIER_ID',
+        [supplierId] 
+        // Use bind variables to prevent SQL injection
+    );
+
+
+    const supplierphone = await req.db.execute(
+        'SELECT * FROM CONTACTS WHERE OWNER_ID = :supplierId AND UPPER(TYPE) = \'PHONE_NUMBER\' ORDER BY VALUE',
+        [supplierId]
+        // Use bind variables to prevent SQL injection
+    );
+
+    const suppliermail = await req.db.execute(
+        'SELECT * FROM CONTACTS WHERE OWNER_ID = :supplierId AND UPPER(TYPE) = \'EMAIL\' ORDER BY VALUE',
+        [supplierId]
+        // Use bind variables to prevent SQL injection
+    );
+
+
+    res.render('./suppliers/supplierDetails', { 'supplierinfo': supplierinfo.rows, 'phone_numbers':supplierphone.rows, 'emails':suppliermail.rows });
+})
+
+supplierRoute.get("/details/incomeStatement",async(req,res)=>{       
+    //just render the addSupplier page
+    const branchId=parseInt(req.query.branchId);
+    const month=parseInt(req.query.month);
+    const year=parseInt(req.query.year);
+    // Execute SQL query to search in the database
+    const branchinfo = await req.db.execute(
+        'SELECT O.NAME,B.BRANCH_ID FROM ORGANIZATIONS O JOIN BRANCHES B ON (O.ORGANIZATION_ID=B.BRANCH_ID) WHERE B.BRANCH_ID=:branchId',[branchId]
+        // Use bind variables to prevent SQL injection
+    );
+    let branchIncome;
+    if(month)
+    {
+        branchIncome = await req.db.execute(
+        'SELECT * FROM BRANCH_INCOME_STATEMENT WHERE EXTRACT(MONTH FROM START_DATE) = :month AND EXTRACT(YEAR FROM START_DATE) = :year AND BRANCH_ID = :branchId',
+        [month, year, branchId]  // Pass an array of bind variables in the correct order
+    );
+    }
+    else if(year)
+    {
+        branchIncome = await req.db.execute(
+            'SELECT * FROM BRANCH_INCOME_STATEMENT where  EXTRACT(YEAR FROM START_DATE)=:year AND BRANCH_ID=:branchId',[year,branchId]
+            // Use bind variables to prevent SQL injection
+        );
+    }
+    else
+    {
+        branchIncome = await req.db.execute(
+        'SELECT * FROM BRANCH_INCOME_STATEMENT WHERE BRANCH_ID=:branchId',[branchId]
+        // Use bind variables to prevent SQL injection
+    );
+    }
+    res.render('./branches/income', { 'branchinfo': branchinfo.rows, 'income':branchIncome.rows});
+})
+
+/*supplierRoute.get("/details/edit",async(req,res)=>{       
+    //just render the addSupplier page
+    const supplierId=parseInt(req.query.supplierId);
+    // Execute SQL query to search in the database
+    const supplierinfo = await req.db.execute(
+        'SELECT B.BRANCH_ID,O.NAME, B.MANAGER,STREET_ADDRESS,CITY,POSTAL_CODE,COUNTRY,B.SQUARE_FOOTAGE,B.AVG_SHIPPING_DURATION,P.ACCOUNT_NUMBER,P.ACCOUNT_HOLDER,P.BANK_NAME,P.IBAN FROM ORGANIZATIONS O JOIN BRANCHES B ON (O.ORGANIZATION_ID=B.BRANCH_ID) LEFT OUTER JOIN LOCATIONS L ON (O.ORGANIZATION_ID=L.ORGANIZATION_ID) LEFT OUTER JOIN PAYMENT_INFO P ON (B.BRANCH_ID=P.OWNER_ID) WHERE B.BRANCH_ID=:branchId ORDER BY B.BRANCH_ID',
+        [branchId] 
+        // Use bind variables to prevent SQL injection
+    );
+
+
+    const branchphone = await req.db.execute(
+        'SELECT * FROM CONTACTS WHERE OWNER_ID = :branchId AND UPPER(TYPE) = \'PHONE_NUMBER\' ORDER BY VALUE',
+        [branchId]
+        // Use bind variables to prevent SQL injection
+    );
+
+    const branchmail = await req.db.execute(
+        'SELECT * FROM CONTACTS WHERE OWNER_ID = :branchId AND UPPER(TYPE) = \'EMAIL\' ORDER BY VALUE',
+        [branchId]
+        // Use bind variables to prevent SQL injection
+    );
+
+
+    res.render('./branches/edit', { 'branchinfo': branchinfo.rows, 'phone_numbers':branchphone.rows, 'emails':branchmail.rows });
+})*/
+
+supplierRoute.post("/edit/submit", async (req, res) => {
+    try {
+        // Extract form data from request body
+        let errorflag=0;
+        const branchId=req.query.branchId;
+        const { name, street, postal_code, city, country, manager, square_footage, avg_shipping_duration, account_number, account_holder, bank, iban } = req.body;
+        
+        // Initialize error message
+        let message = "";
+
+        // Start a database transaction
+        try {
+            // Call the PL/SQL function to insert into BRANCHES
+              await req.db.execute(
+                `BEGIN UPDATE_BRANCH(:branchId,:name,:url,:manager, :square_footage, :avg_shipping_duration); END;`,
+                {   
+                    branchId,
+                    name,
+                    url: '',
+                    manager,
+                    square_footage,
+                    avg_shipping_duration
+                }
+            );
+            
+             
+
+            // Call the PL/SQL procedure to insert into LOCATIONS
+        
+            try {
+                await req.db.execute(
+                    `BEGIN UPDATE_LOCATION(:street_address, :postal_code, :city, :state_province, :country, :organization_id,:type); END;`,
+                    {
+                        street_address: street,
+                        postal_code,
+                        city,
+                        state_province: '', // Replace with the actual value if available
+                        country,
+                        organization_id: branchId,
+                        type: 'DUAL' // Replace with the actual type
+                    }
+                );
+
+            } catch (locationError) {
+                errorflag=1;
+                message += ` Location Error: ${locationError.message};`;
+            }
+
+            const phoneNumbers = req.body.phone_number || [];
+        for (const phoneNumber of phoneNumbers) {
+            try {
+                await req.db.execute(
+                    'BEGIN add_contact(:organization_id, :contact_type, :contact_value); END;',
+                    {
+                        organization_id: branchId,
+                        contact_type: 'PHONE_NUMBER',
+                        contact_value: phoneNumber
+                    }
+                );
+            } catch (error) {
+                // Handle contact insertion errors
+                console.error('Phone Number Insertion Error:', error.message);
+                errorflag=1;
+                res.status(500).send('Error adding phone numbers.');
+            }
+        }
+
+        // Call the PL/SQL procedure to add emails
+        const emails = req.body.email || [];
+        for (const email of emails) {
+            try {
+                await req.db.execute(
+                    'BEGIN add_contact(:organization_id, :contact_type, :contact_value); END;',
+                    {
+                        organization_id: branchId,
+                        contact_type: 'EMAIL',
+                        contact_value: email
+                    }
+                );
+            } catch (error) {
+                // Handle contact insertion errors
+                console.error('Email Insertion Error:', error.message);
+                // Rollback the transaction if needed
+                errorflag=1;
+                res.status(500).send('Error adding emails.');
+            }
+        }
+
+            // Call the PL/SQL procedure to insert into PAYMENT_INFO
+            if(account_number && bank)
+            try {
+                await req.db.execute(
+                    `BEGIN UPDATE_PAYMENT_INFO(:owner_id, :account_number, :account_holder, :bank_name, :iban); END;`,
+                    {
+                        owner_id: branchId,
+                        account_number,
+                        account_holder,
+                        bank_name: bank,
+                        iban
+                    }
+                );
+
+            } catch (paymentInfoError) {
+                message += ` Payment Info Error: ${paymentInfoError.message};`;
+                errorflag=1;
+            }
+            
+            // Commit the transaction
+        if(errorflag===0)
+           {
+            await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'BRANCH '||:branchId ||' '|| :name || ' UPDATED','UPDATE')",{branchId,name});
+            await req.db.execute("COMMIT");
+           }
+            
+        else
+            {
+                await req.db.execute("ROLLBACK");
+                await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'BRANCH '||:branchId ||' '|| :name || ' UPDATE FAILED','UPDATE')",{branchId,name});
+                await req.db.execute("COMMIT");
+            }
+
+            console.log(message);
+            // Send a success response
+            res.status(200).send(message);
+        } catch (error) {
+            // Rollback the transaction in case of an error
+
+            // Capture the error message
+            message = ` Internal Server Error: ${error.message}`;
+            
+            await req.db.execute("ROLLBACK");
+            await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'BRANCH '||:branchId ||' '|| :name || ' UPDATE FAILED','UPDATE')",{branchId,name});
+            await req.db.execute("COMMIT");
+            // Send an error response
+            res.status(500).send(message);
+        } 
+    } catch (error) {
+        console.error(error);
+        // Send an error response
+        
+        await req.db.execute("ROLLBACK");
+        await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'BRANCH '||:branchId ||' '|| :name || ' UPDATE FAILED','UPDATE')",{branchId,name});
+        await req.db.execute("COMMIT");
+        res.status(500).send("Internal Server Error;"+message);
+    }
+});
 
 supplierRoute.get("/add",(req,res)=>{       
     //just render the addSupplier page
     res.render('./suppliers/addSupplier');
 })
 
-//suppliers deatils page
-supplierRoute.get("/supplierDetails",async(req,res)=>{       
-    //just render the addSupplier page
-    const supplierId=parseInt(req.query.supplierId);
-    console.log(supplierId);
-    // Execute SQL query to search in the database
-    const result = await req.db.execute(
-        `SELECT S.SUPPLIER_ID,S.SUPPLIER_NAME,S.CITY,S.COUNTRY,S.URL,S.AVG_DELIVERY_TIME,P.ACCOUNT_NUMBER,P.ACCOUNT_HOLDER,P.BANK_NAME,
-        P.IBAN, L.STREET_ADDRESS,L.POSTAL_CODE,L.CITY AS PICKUP_LOC_CITY,L.COUNTRY AS PICKUP_LOC_COUNTRY,C.PHONE_NO,C.EMAIL
-        FROM SUPPLIERS S 
-                JOIN PAYMENT_INFO P ON S.PAYMENT_INFO_ID=P.ID
-                JOIN LOCATIONS L ON L.LOCATION_ID=S.PICKUP_LOCATION_ID
-                JOIN (
-                SELECT DISTINCT C1.OWNER_ID AS SUPPLIER_ID, C1.VALUE AS PHONE_NO, C2.VALUE AS EMAIL
-                FROM CONTACTS C1 JOIN CONTACTS C2 ON (C1.OWNER_ID=C2.OWNER_ID	AND C1.TYPE <> C2.TYPE AND C1.TYPE='PHONE')
-                ) C ON C.SUPPLIER_ID=S.SUPPLIER_ID 
-        WHERE S.SUPPLIER_ID=:supplierId`,
-        [supplierId] 
-        // Use bind variables to prevent SQL injection
-    );
-    console.log(result.rows);
-    res.render('./suppliers/supplierDetails', { 'supplierInfo': result.rows });
-})
+supplierRoute.post("/submit", async (req, res) => {
+    try {
+        // Extract form data from request body
+        const { name, a_street, a_postal_code, a_city, a_country, p_street, p_postal_code, p_city, p_country,url, avg_shipping_duration, account_number, account_holder, bank, iban } = req.body;
+        
+        // Initialize error message
+        let message = "";
+        let errorflag=0;
 
+        // Start a database transaction
+        try {
+            // Call the PL/SQL function to insert into BRANCHES
+            const result = await req.db.execute(
+                `BEGIN :supplier_id := INSERT_SUPPLIER(:name,:url,:avg_shipping_duration); END;`,
+                {
+                    name,
+                    url,
+                    avg_shipping_duration,
+                    supplier_id: { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
+                }
+            );
+            
 
-//product catalogue from supplier details
-supplierRoute.get("/supplierDetails/productCatalogue",async(req,res)=>{       
-    const supplierId=parseInt(req.query.supplierId);
-    // Execute SQL query to search in the database
-    const result = await req.db.execute(
-        `SELECT SP.PRODUCT_ID, P.PRODUCT_NAME,P.CATEGORY,P.PRICE,P.WARRANTY,P.MANUFACTURER,P.CENTRAL_STOCK
-        FROM SUPPLIER_PRODUCT SP JOIN PRODUCTS P ON SP.PRODUCT_ID=P.PRODUCT_ID
-        WHERE SP.SUPPLIER_ID=:supplierId
-        ORDER BY SP.PRODUCT_ID`,
-        [supplierId] 
-        // Use bind variables to prevent SQL injection
-    );
-    res.render('./suppliers/productCatalogue', { 'productCatalogue': result.rows });
-})
+            const supplierId = result.outBinds.branch_id;
 
-//purchase orders from supplier details
-supplierRoute.get("/supplierDetails/purchaseOrders",async(req,res)=>{       
-    const supplierId=parseInt(req.query.supplierId);
-    // Execute SQL query to search in the database
-    const result = await req.db.execute(
-        `SELECT SUPPLIER_ID, ORDER_ID, PLACEMENT_DATE,PICKUP_DATE
-        FROM PURCHASE_ORDERS
-        WHERE SUPPLIER_ID= :supplierId
-        ORDER BY ORDER_ID`,
-        [supplierId] 
-        // Use bind variables to prevent SQL injection
-    );
-   // console.log(result.rows);
-    res.render('./suppliers/purchaseOrders', { 'purchaseOrders': result.rows });
-})
+            // Call the PL/SQL procedure to insert into LOCATIONS
+        
+            try {
+                await req.db.execute(
+                    `BEGIN INSERT_LOCATION(:a_street_address, :a_postal_code, :a_city, :a_state_province, :a_country, :organization_id, :type); END;`,
+                    {
+                        street_address: a_street,
+                        a_postal_code,
+                        a_city,
+                        a_state_province: '', // Replace with the actual value if available
+                        a_country,
+                        organization_id: supplierId,
+                        type: 'ADDRESS' // Replace with the actual type
+                    }
+                );
 
-supplierRoute.get("/supplierDetails/purchaseOrders/POdetails",async(req,res)=>{       
-    const supplierId=parseInt(req.query.supplierId);
-    const orderId=parseInt(req.query.orderId);
-    // Execute SQL query to search in the database
-    const result = await req.db.execute(
-        `SELECT *
-        FROM (
-            SELECT ORDER_ID,PLACEMENT_DATE,PICKUP_DATE,TRANSACTION_ID,SHIPMENT_ID
-            FROM PURCHASE_ORDERS
-            WHERE SUPPLIER_ID=:supplierId AND ORDER_ID=:orderId
-        ) PO 
-            JOIN 
-            (
-            SELECT FT.TRANSACTION_ID, FT.METHOD, PI1.ACCOUNT_HOLDER AS SENT_FROM_ACOOUNT, PI2.ACCOUNT_HOLDER AS RECEIVED_TO_ACCOUNT,FT.STATUS, (FT.AMOUNT || ' ' || UPPER(FT.CURRENCY)) AS AMOUNT, FT.PLACEMENT_DATE AS PAYMENT_DATE
-            FROM FINANCIAL_TRANSACTIONS FT 
-                JOIN PAYMENT_INFO PI1 ON (FT.FROM_ACCOUNT=PI1.ID)
-                JOIN PAYMENT_INFO PI2 ON (FT.TO_ACCOUNT=PI2.ID)
-            --WHERE FT.TRANSACTION_ID=4
-            ) F USING(TRANSACTION_ID)--ON F.TRANSACTION_ID=PO.TRANSACTION_ID
-            JOIN
-            (
-            SELECT S.SHIPMENT_ID,TC.NAME AS PICKED_UP_BY, (L1.STREET_ADDRESS||', '||L1.CITY|| ', '||L1.COUNTRY) AS PICKED_UP_FROM,(S.DEPARTURE_DATE) AS PICKED_UP_ON,(S.DEPARTURE_TIME) AS PICKED_UP_AT,(L2.STREET_ADDRESS||', '||L2.CITY|| ', '||L2.COUNTRY) AS RECEIVED_AT, (S.ARRIVAL_DATE) AS RECEIVED_ON, S.ARRIVAL_TIME AS RECEIVED_AT_TIME, S.VEHICLE_NO AS VEHICLE_USED, S.CURRENT_LOCATION
-            FROM SHIPMENTS S 
-                JOIN TRANSPORT_COMPANIES TC ON TC.COMPANY_ID=S.TRANSPORT_COMPANY_ID
-                JOIN LOCATIONS L1 ON S.START_LOCATION=L1.LOCATION_ID
-                JOIN LOCATIONS L2 ON S.DESTINATION=L2.LOCATION_ID
-            ) SI USING(SHIPMENT_ID)`,
-        [supplierId, orderId] 
-        // Use bind variables to prevent SQL injection
-    );
-    const result2 = await req.db.execute(
-        `SELECT P.PRODUCT_NAME,P.PRICE AS PRICE_EACH,POP.QUANTITY, (POP.QUANTITY*P.PRICE) AS TOTAL_DUE
-        FROM PURCHASE_ORDER_PRODUCTS POP 
-            JOIN PRODUCTS P ON POP.PRODUCT_ID=P.PRODUCT_ID
-        WHERE POP.ORDER_ID=:orderId`,
-        [orderId] 
-        // Use bind variables to prevent SQL injection
-    );
+            } catch (locationError) {
+                errorflag=1;
+                message += ` Location Error: ${locationError.message};`;
+            }
 
-    res.render('./suppliers/POdetails', { 'details': result.rows, 'purchaseList': result2.rows });
-})
+            try {
+                await req.db.execute(
+                    `BEGIN INSERT_LOCATION(:p_street_address, :p_postal_code, :p_city, :p_state_province, :p_country, :organization_id, :type); END;`,
+                    {
+                        p_street_address: p_street,
+                        p_postal_code,
+                        p_city,
+                        p_state_province: '', // Replace with the actual value if available
+                        p_country,
+                        organization_id: supplierId,
+                        type: 'PICKUP' // Replace with the actual type
+                    }
+                );
 
+            } catch (locationError) {
+                errorflag=1;
+                message += ` Location Error: ${locationError.message};`;
+            }
 
+            const phoneNumbers = req.body.phone_number || [];
+        for (const phoneNumber of phoneNumbers) {
+            try {
+                await req.db.execute(
+                    'BEGIN add_contact(:organization_id, :contact_type, :contact_value); END;',
+                    {
+                        organization_id: supplierId,
+                        contact_type: 'PHONE_NUMBER',
+                        contact_value: phoneNumber
+                    }
+                );
+            } catch (error) {
+                // Handle contact insertion errors
+                console.error('Phone Number Insertion Error:', error.message);
+                // Rollback the transaction if needed
+                errorflag=1;
+                res.status(500).send('Error adding phone numbers.');
+            }
+        }
 
+        // Call the PL/SQL procedure to add emails
+        const emails = req.body.email || [];
+        for (const email of emails) {
+            try {
+                await req.db.execute(
+                    'BEGIN add_contact(:organization_id, :contact_type, :contact_value); END;',
+                    {
+                        organization_id: supplierId,
+                        contact_type: 'EMAIL',
+                        contact_value: email
+                    }
+                );
+            } catch (error) {
+                // Handle contact insertion errors
+                console.error('Email Insertion Error:', error.message);
+                errorflag=1;
+                res.status(500).send('Error adding emails.');
+            }
+        }
 
-///need to change when the schema is final////later/////////////////////////////////////////////////////////
-//when the form is submitted with post method 
-supplierRoute.post("/submit",async (req,res)=>{     
-    //needed to give the tags name="" to access these here
-    const { name, city, country, email, phone_no, url } = req.body;
-    const query = `
-            INSERT INTO suppliers (supplier_id,supplier_name, city, country, url)
-            VALUES (supplier_id_seq.nextval,:name, :city, :country, :url)
-        `;//here i am hardcoding and sending supplier id//use sequence instead
-    const binds = {
-        name,
-        city,
-        country,
-        url
-    };
-    try{
-        const result = await req.db.execute(query, binds, { autoCommit: true });
-        //goes back to the supplier page
-        res.redirect('/supplier');
-    }catch(error){
-        console.error('Error inserting into the database:', error);
+            // Call the PL/SQL procedure to insert into PAYMENT_INFO
+            if(account_number && bank)
+            try {
+                await req.db.execute(
+                    `BEGIN ADD_PAYMENT_INFO(:owner_id, :account_number, :account_holder, :bank_name, :iban); END;`,
+                    {
+                        owner_id: supplierId,
+                        account_number,
+                        account_holder,
+                        bank_name: bank,
+                        iban
+                    }
+                );
+
+            } catch (paymentInfoError) {
+                message += ` Payment Info Error: ${paymentInfoError.message};`;
+                errorflag=1;
+            }
+
+            // Commit the transaction
+            if(errorflag===0)
+            {
+             await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'SUPPLIER '||:supplierId ||' '|| :name || ' INSERTED','INSERT')",{supplierId,name});
+             await req.db.execute("COMMIT");
+            }
+             
+         else
+             {
+                 await req.db.execute("ROLLBACK");
+                 await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'SUPPLIER '|| :name || ' INSERT FAILED','INSERT')",[name]);
+                 await req.db.execute("COMMIT");
+             }
+
+            console.log(message);
+            // Send a success response
+            res.status(200).send(message);
+        } catch (error) {
+            // Rollback the transaction in case of an error
+
+            // Capture the error message
+            message += ` Internal Server Error: ${error.message}`;
+            
+            await req.db.execute("ROLLBACK");
+            await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'SUPPLIER '|| :name || ' INSERT FAILED','INSERT')",[name]);
+            await req.db.execute("COMMIT");
+
+            // Send an error response
+            res.status(500).send(message);
+        } 
+    } catch (error) {
+        console.error(error);
+        // Send an error response
+        
+        await req.db.execute("ROLLBACK");
+        await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'BRANCH '|| :name || ' INSERT FAILED','INSERT')",[name]);
+        await req.db.execute("COMMIT");
+        res.status(500).send("Internal Server Error;"+message);
     }
-    
-})
+});
+
 
 module.exports=supplierRoute;

@@ -52,18 +52,13 @@ BEGIN
 				
         RETURN v_organization_id;
     ELSE
-        INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE)
-        VALUES (CURRENT_TIMESTAMP, UPPER(p_type) || ' ' || p_name || ' ADDITION FAILED','INSERT');
-				COMMIT;
-
-        RAISE_APPLICATION_ERROR(-20001, 'Organization already exists');
+						RAISE_APPLICATION_ERROR(-20001, 'Organization already exists');
     END IF;
 END ;
 
 CREATE OR REPLACE FUNCTION INSERT_BRANCH(
     p_name VARCHAR2,
     p_url VARCHAR2,
-    p_type VARCHAR2,
     p_manager VARCHAR2,
     p_square_footage NUMBER,
     p_avg_shipping_duration NUMBER
@@ -71,7 +66,7 @@ CREATE OR REPLACE FUNCTION INSERT_BRANCH(
     v_branch_id NUMBER;
 BEGIN
     -- Insert organization data and get the organization ID
-    v_branch_id := INSERT_ORGANIZATION(p_name, p_url, p_type);
+    v_branch_id := INSERT_ORGANIZATION(p_name, p_url, 'BRANCH');
 
     -- Insert branch-specific data into the BRANCHES table
     INSERT INTO BRANCHES (
@@ -90,6 +85,32 @@ BEGIN
     RETURN v_branch_id;
 END INSERT_BRANCH;
 /
+
+CREATE OR REPLACE FUNCTION INSERT_SUPPLIER (
+    p_name VARCHAR2,
+    p_url VARCHAR2,
+    p_avg_shipping_duration NUMBER
+) RETURN NUMBER IS
+    v_supplier_id NUMBER;
+BEGIN
+    -- Insert organization data and get the organization ID
+    v_supplier_id := INSERT_ORGANIZATION(p_name, p_url, 'SUPPLIER');
+
+    -- Insert branch-specific data into the BRANCHES table
+    INSERT INTO SUPPLIERS (
+        SUPPLIER_ID,
+        AVG_DELIVERY_TIME
+    ) VALUES (
+        v_supplier_id,
+        p_avg_shipping_duration
+    );
+
+    -- Return the ID of the created branch
+    RETURN v_supplier_id;
+END;
+/
+
+
 
 CREATE OR REPLACE FUNCTION INSERT_TRANSPORT_COMPANY(
     p_name VARCHAR2,

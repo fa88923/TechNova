@@ -107,12 +107,9 @@ BEGIN
       AND VALUE = p_value;
 
     -- If no existing contact, then add the contact
-    IF v_count = 0 THEN
+    IF v_count = 0 AND P_VALUE<>'' THEN
         INSERT INTO CONTACTS (OWNER_ID, TYPE, VALUE)
         VALUES (p_organization_id, UPPER(p_type), p_value);
-    ELSE
-        -- If contact already exists, raise an error
-        RAISE_APPLICATION_ERROR(-20001, 'Contact with the same values already exists.');
     END IF;
 EXCEPTION
     WHEN OTHERS THEN
@@ -121,3 +118,92 @@ EXCEPTION
 END add_contact;
 /
 
+CREATE OR REPLACE PROCEDURE UPDATE_ORGANIZATION(
+    p_id number,
+    p_name VARCHAR2,
+    p_url VARCHAR2
+)  IS
+		COUNTER NUMBER;
+		p_type varchar2(20);
+BEGIN
+
+    SELECT COUNT(*) INTO COUNTER FROM ORGANIZATIONS O WHERE UPPER(P_NAME)=UPPER(O.NAME) AND O.ORGANIZATION_ID<>P_ID; 
+
+    IF COUNTER=0 THEN
+
+        UPDATE ORGANIZATIONS SET NAME=P_NAME, URL=P_URL WHERE ORGANIZATION_ID=P_ID;
+				
+    ELSE
+        RAISE_APPLICATION_ERROR(-20001, 'Organization  with same name already exists');
+    END IF;
+END ;
+
+CREATE OR REPLACE PROCEDURE UPDATE_BRANCH(
+    P_ID NUMBER,
+    p_name VARCHAR2,
+    p_url VARCHAR2,
+    p_manager VARCHAR2,
+    p_square_footage NUMBER,
+    p_avg_shipping_duration NUMBER
+)  IS
+   
+BEGIN
+    -- Insert organization data and get the organization ID
+    UPDATE_ORGANIZATION(P_ID,p_name, p_url);
+
+    -- Insert branch-specific data into the BRANCHES table
+    UPDATE BRANCHES SET MANAGER=P_MANAGER,SQUARE_FOOTAGE=p_square_footage, AVG_SHIPPING_DURATION= p_avg_shipping_duration WHERE BRANCH_ID=P_ID;
+
+END;
+/
+
+CREATE OR REPLACE PROCEDURE UPDATE_PAYMENT_INFO(
+    p_owner_id NUMBER,
+    p_account_number VARCHAR2,
+    p_account_holder VARCHAR2,
+    p_bank_name VARCHAR2,
+    p_iban VARCHAR2
+) IS
+COUNTER NUMBER;
+BEGIN
+SELECT COUNT(*) INTO COUNTER FROM PAYMENT_INFO P WHERE UPPER(P.BANK_NAME) =UPPER( P_BANK_NAME) AND P.ACCOUNT_NUMBER=P_ACCOUNT_NUMBER AND P.OWNER_ID<>P_OWNER_ID;
+    IF COUNTER=0 THEN
+        -- Insert data into the PAYMENT_INFO table
+        UPDATE PAYMENT_INFO SET ACCOUNT_NUMBER=p_account_number,ACCOUNT_HOLDER= p_account_holder, BANK_NAME=p_bank_name,IBAN= p_iban WHERE OWNER_ID=P_OWNER_ID;
+    ELSE
+        -- Raise an error if the payment information already exists
+        RAISE_APPLICATION_ERROR(-20001, 'DUPLICATE ACCOUNT ALREADY EXISTS');
+    END IF;
+END;
+/
+
+CREATE OR REPLACE PROCEDURE UPDATE_LOCATION(
+    p_street_address VARCHAR2,
+    p_postal_code VARCHAR2,
+    p_city VARCHAR2,
+    p_state_province VARCHAR2,
+    p_country VARCHAR2,
+    p_organization_id NUMBER,
+    p_type VARCHAR2
+) IS
+    v_org_count NUMBER;
+BEGIN
+    -- Check if the organization_id exists in the ORGANIZATIONS table
+    SELECT COUNT(*) INTO v_org_count
+    FROM ORGANIZATIONS
+    WHERE ORGANIZATION_ID = p_organization_id;
+
+    IF v_org_count = 0 THEN
+        -- Raise an exception if the organization does not exist
+        RAISE_APPLICATION_ERROR(-20001, 'Organization does not exist.');
+    END IF;
+
+    UPDATE LOCATIONS SET STREET_ADDRESS=p_street_address, POSTAL_CODE=p_postal_code, CITY=p_city, STATE_PROVINCE=p_state_province,COUNTRY= p_country WHERE ORGANIZATION_ID=p_organization_id AND TYPE=p_type;
+
+    -- No need to return a value in a procedure
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Handle exceptions (you may customize this part as needed)
+        DBMS_OUTPUT.PUT_LINE('Error: ' || SQLERRM);
+END;
+/

@@ -1,0 +1,1 @@
+before_insert_location trigger should also be called for location update: jhamela kortesilo

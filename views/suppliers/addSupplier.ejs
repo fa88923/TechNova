@@ -6,49 +6,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add supplier</title>
+    <title>Add Supplier</title>
     <link rel="stylesheet" type="text/css" href="/css/addSupplier.css">
 </head>
 <body>
     <div class="login-box">
         <h2>Supplier Information</h2>
-        <form method="post" action="/supplier/submit" id="addingForm">
+        <form method="post" action="/suppliers/submit" id="addingForm">
             <div class="user-box">
                 <input type="text" id="name" name="name" required="">
                 <label>Name</label>
             </div>
-            <!-- <div class="user-box">
-                <input type="text" id="street" name="street" required="">
+            
+            <div class="user-box">
+                <input type="text" id="avg_shipping_duration" name="avg_shipping_duration" required="avg_shipping_duration">
+                <label>Average Shipping Duration(in days)</label>
+            </div>
+
+            <div class="user-box">
+                <input type="text" id="url" name="url" required="url">
+                <label>URL</label>
+            </div>
+
+            <h3>Address</h3>
+            <div class="user-box">
+                <input type="text" id="a_street" name="a_street" required="">
                 <label>Street Address</label>
             </div>
             <div class="user-box">
-                <input type="text" id="postal_code" name="postal_code" required="">
+                <input type="text" id="a_postal_code" name="a_postal_code" required="">
                 <label>Postal Code</label>
-            </div> -->
+            </div>
             <div class="user-box">
-                <input type="text" id="city" name="city" required="">
+                <input type="text" id="a_city" name="a_city" required="">
                 <label>City</label>
             </div>
             <div class="user-box">
-                <input type="text" id="country" name="country" required="">
+                <input type="text" id="a_country" name="a_country" required="">
                 <label>Country</label>
             </div>
+            <!-- Add these lines to your HTML form -->
+            <h3>Pickup Location:</h3>
             <div class="user-box">
-                <input type="text" id="email" name="email" required="">
-                <label>Email</label>
+                <input type="text" id="p_street" name="p_street" required="">
+                <label>Street Address</label>
             </div>
             <div class="user-box">
-                <input type="text" id="phone_no" name="phone_no" required="">
-                <label>Phone No</label>
+                <input type="text" id="p_postal_code" name="p_postal_code" required="">
+                <label>Postal Code</label>
             </div>
             <div class="user-box">
-                <input type="text" id="url" name="url" required="">
-                <label>URL</label>
+                <input type="text" id="p_city" name="p_city" required="">
+                <label>City</label>
             </div>
-            <!-- <div class="user-box">
-                <input type="text" id="avg_delivary_time" name="" required="avg_delivary_time">
-                <label>Average Delivery Time</label>
-            </div> -->
+            <div class="user-box">
+                <input type="text" id="p_country" name="p_country" required="">
+                <label>Country</label>
+            </div>
+            <h3>Contacts</h3>
+            <!-- Phone Numbers -->
+            <div id="phone_container" class="contact-container">
+                <div class="user-box">
+                    <input type="text" name="phone_number[]" required="">
+                    <label>Phone Number</label>
+                </div>
+                <button type="button" class="add_contact" data-container="phone_container">Add Another Phone Number</button>
+            </div>
+            
+            <!-- Emails -->
+            <div id="email_container" class="contact-container">
+                <div class="user-box">
+                    <input type="text" name="email[]" required="">
+                    <label>Email</label>
+                </div>
+                <button type="button" class="add_contact" data-container="email_container">Add Another Email</button>
+            </div>
+
+            
+            <h3>Payment Information</h3>
+
+            <div class="user-box">
+                <input type="text" id="account_number" name="account_number" required="account_number">
+                <label>Account Number</label>
+            </div>
+
+            <div class="user-box">
+                <input type="text" id="account_holder" name="account_holder" required="account_holder">
+                <label>Account Holder</label>
+            </div>
+
+            <div class="user-box">
+                <input type="text" id="bank" name="bank" required="bank">
+                <label>Bank</label>
+            </div>
+
+            <div class="user-box">
+                <input type="text" id="iban" name="iban" required="iban">
+                <label>IBAN</label>
+            </div>
+
             <a href="#" id="add_button">
             <span></span>
             <span></span>
@@ -58,6 +114,6 @@
             </a>
         </form>
         </div>
-        <script src="/js/addSupplierControllers/supplierSubmit.js"></script>
+        <script src="/js/suppliers/addSupplierController.js"></script>
 </body>
 </html>

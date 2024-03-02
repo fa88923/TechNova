@@ -74,7 +74,7 @@ app.get('/', (req, res) => {
     res.render('home');
 });
    
-app.use("/supplier", (req, res, next) => {
+app.use("/suppliers", (req, res, next) => {
     // Pass the connection object to the supplierRouter middleware
     req.db = connection;
     next();

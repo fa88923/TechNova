@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     {
         supplierLink.addEventListener('click', function(event) {
         event.preventDefault();
-        window.location.href = '/supplier';
+        window.location.href = '/suppliers';
     });
     }
 });

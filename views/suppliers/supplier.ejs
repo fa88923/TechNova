@@ -1,21 +1,21 @@
-
-<!--************************** supplier page ***********************************-->
+<!--************************** suppliers page ***********************************-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- stylesheet to handle the searchbar specially -->
+
     <link rel="stylesheet" type="text/css" href="/css/supplierSearch.css">
     <link rel="stylesheet" type="text/css" href="/css/supplier.css">
 
-    <title>Supplier Information</title>
+    <title>Suppliers</title>
 </head>
 
 <body>
     <div class="container mt-5">
         <div id="navbar">
-            <h1 class="mb-4">Supplier Information</h1>
+            <h1 class="mb-4">Suppliers</h1>
             <div class="search-box">
                 <form id="searchForm">
                     <button class="btn-search" type="submit"><i class="fas fa-search"></i></button>
@@ -23,39 +23,56 @@
                 </form>
             </div>
         </div>
-        
+  
+
         <br><br><br>
         <br><br><br>
+         
+        <!--product list-->
+
         <div class="table-responsive">
-            <table class="table table-bordered table-hover table-dark">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>SUPPLIER ID</th>
-                        <th>NAME</th>
-                        <th>CITY</th>
-                        <th>COUNTRY</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% suppliers.forEach(supplier => { %>
-                    <tr>
-                        <td><%= supplier.SUPPLIER_ID %></td>
-                        <td><a href="#" class="supplier-details-button" data-supplier-id="<%= supplier.SUPPLIER_ID %>"><%= supplier.SUPPLIER_NAME %></a></td> 
-                        <td><%= supplier.CITY %></td>
-                        <td><%= supplier.COUNTRY %></td>
-                    </tr>
-                    <% });
-                    %>
-                </tbody>
-            </table>
+            <% if (suppliers.length > 0) { %>
+                <table class="table table-bordered table-hover table-dark">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>SUPPLIER ID</th>
+                            <th>SUPPLIER NAME</th>
+                            <th>AVERAGE SHIPPING DURATION</th>
+                            <th>ADDRESS</th>
+                            <th>PICKUP LOCATION</th>
+                            <th>URL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% suppliers.forEach(supplier => { %>
+                        <tr>
+                            <td><%= supplier.SUPPLIER_ID %></td>
+                            <td><a href="#" class="supplier-details-button" data-supplier-id="<%= supplier.SUPPLIER_ID %>"><%= supplier.NAME %></a></td> 
+                            <td><%= supplier.AVG_DELIVERY_TIME %> days</td>
+                            <td><%= supplier.ADDRESS %></td>
+                            <td><%= supplier.PICKUP_LOCATION %></td>
+                            <td><a href="<%= supplier.URL %>"><%= supplier.URL %></a></td> 
+                            <td>
+                                <!-- Delete button with a link to /branches with the delete parameter -->
+                                <button class="delete-button" data-supplier-id="<%= supplier.SUPPLIER_ID %>">Delete</button>
+                            </td>
+                        </tr>
+                        <% });
+                        %>
+                    </tbody>
+                </table>
+            <% } else { %>
+                <p>        No suppliers found.</p>
+            <% } %>
         </div>
         <div class="add_button">
             <br><br><br>
             <button type="button" id="add_button">Add Supplier</button>
         </div>
     </div>
-    <script src="/js/supplierPageControllers/addScript.js"></script>
-    <script src="/js/supplierPageControllers/searchScript.js"></script>
-    <script src="/js/supplierPageControllers/supplierClick.js"></script>
+    <!--<script src="/js/supplierPageControllers/addScript.js"></script>
+    <script src="/js/supplierPageControllers/searchScript.js"></script>-->
+    <script src="/js/suppliers/supplierController.js"></script>
 </body>
 </html>
+
