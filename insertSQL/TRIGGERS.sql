@@ -21,20 +21,20 @@ DECLARE
 BEGIN
     -- Check if a similar location already exists in the table
     FOR existing_location IN (SELECT * FROM LOCATIONS
-                              WHERE upper(STREET_ADDRESS) LIKE :NEW.STREET_ADDRESS
+                            WHERE upper(STREET_ADDRESS) LIKE :NEW.STREET_ADDRESS
                                 AND upper(CITY) LIKE :NEW.CITY
                                 AND upper(COUNTRY) LIKE :NEW.COUNTRY
                                 AND ORGANIZATION_ID = :NEW.ORGANIZATION_ID
-                              )
+                            )
     LOOP
         v_old_location_type := existing_location.TYPE;
 
         IF v_old_location_type = 'DUAL' OR :NEW.TYPE = 'DUAL' THEN
             location_type := 'DUAL';
         ELSIF v_old_location_type IS NOT NULL AND :NEW.TYPE IS NOT NULL AND v_old_location_type <> :NEW.TYPE THEN
-					  location_type :='DUAL';
+					location_type :='DUAL';
         ELSIF v_old_location_type IS NULL or v_old_location_type=:NEW.TYPE THEN
-					  location_type := :NEW.TYPE;
+				    location_type := :NEW.TYPE;
 					
 				END IF;
             UPDATE LOCATIONS

@@ -55,6 +55,7 @@ BEGIN
 						RAISE_APPLICATION_ERROR(-20001, 'Organization already exists');
     END IF;
 END ;
+/
 
 CREATE OR REPLACE FUNCTION INSERT_BRANCH(
     p_name VARCHAR2,

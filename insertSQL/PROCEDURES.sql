@@ -103,8 +103,8 @@ BEGIN
     INTO v_count
     FROM CONTACTS
     WHERE OWNER_ID = p_organization_id
-      AND upper(TYPE) = UPPER(p_type)
-      AND VALUE = p_value;
+        AND upper(TYPE) = UPPER(p_type)
+        AND VALUE = p_value;
 
     -- If no existing contact, then add the contact
     IF v_count = 0 AND P_VALUE<>'' THEN
@@ -137,7 +137,7 @@ BEGIN
         RAISE_APPLICATION_ERROR(-20001, 'Organization  with same name already exists');
     END IF;
 END ;
-
+/
 CREATE OR REPLACE PROCEDURE UPDATE_BRANCH(
     P_ID NUMBER,
     p_name VARCHAR2,

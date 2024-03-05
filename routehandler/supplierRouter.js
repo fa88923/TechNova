@@ -4,9 +4,8 @@ const supplierRoute=express.Router();
 
 
 supplierRoute.get("/", async (req, res) => {
-   
-
-    try {
+    try 
+    {
         let suppliers;
         const searchkey=req.query.searchkey;
         //category wise filtering
@@ -25,7 +24,7 @@ supplierRoute.get("/", async (req, res) => {
             );
         }
         
-         if (searchkey) {
+        if (searchkey) {
             const searchPattern = `%${searchkey.toUpperCase()}%`;
         
             suppliers = await req.db.execute(
@@ -57,7 +56,6 @@ supplierRoute.get("/", async (req, res) => {
             );
             }
 
-       
 
         res.render('./suppliers/supplier', {
             'suppliers': suppliers.rows

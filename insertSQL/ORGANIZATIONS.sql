@@ -35,14 +35,14 @@ VALUES (
 INSERT INTO ORGANIZATIONS (
     ORGANIZATION_ID,
     NAME,
-    ADDRESS,
+    --ADDRESS,
     URL,
     TYPE
 )
 VALUES (
     3,
     'Distribution Hub Ltd',
-    3, -- Replace with actual value
+    --3, -- Replace with actual value
     'https://distributionhub.com.bd/',
     'SUPPLIER'
 );
