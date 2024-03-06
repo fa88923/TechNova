@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purchase Order Details</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/POdetails/page.css">
+</head>
+<body class="text-light">
+    <div class="container mt-5">
+
+        <!-- Section 1: Transaction Details -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4 class="mb-0">Transaction Details</h4>
+            </div>
+            <div class="card-body">
+                <ul>
+                    <% transactioninfo.forEach(info => { %>
+                        <li><strong>Transaction ID:</strong> <%= info.TRANSACTION_ID %></li>
+                        <li><strong>Pickup Date:</strong> <%= info.PICKUP_DATE %></li>
+                        <li><strong>Counterparty:</strong> <%= info.NAME %></li>
+                        <li><strong>Status:</strong> <%= info.STATUS %></li>
+                    <% }); %>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 2: Payment Details -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4 class="mb-0">Payment Details</h4>
+            </div>
+            <div class="card-body">
+                <ul>
+                    <% financial_details.forEach(detail => { %>
+                        <li><strong>Method:</strong> <%= detail.METHOD %></li>
+                        <li><strong>Account Number:</strong> <%= detail.ACCOUNT_NUMBER %></li>
+                        <li><strong>Bank Name:</strong> <%= detail.BANK_NAME %></li>
+                        <li><strong>Amount:</strong> <%= detail.AMOUNT %></li>
+                        <li><strong>Status:</strong> <%= detail.STATUS %></li>
+                    <% }); %>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 3: Shipment Details -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4 class="mb-0">Shipment Details</h4>
+            </div>
+            <div class="card-body">
+                <ul>
+                    <% shipment_details.forEach(detail => { %>
+                        <li><strong>Transport Company:</strong> <%= detail.NAME %></li>
+                        <li><strong>Pick Up From:</strong> <%= detail.PICK_UP_FROM %></li>
+                        <li><strong>Departure Date:</strong> <%= detail.DEPARTURE_DATE %></li>
+                        <li><strong>Departure Time:</strong> <%= detail.DEPARTURE_TIME %></li>
+                        <li><strong>Vehicle No:</strong> <%= detail.VEHICLE_NO %></li>
+                        <li><strong>Current Location:</strong> <%= detail.CURRENT_LOCATION %></li>
+                        <li><strong>Arrival Date:</strong> <%= detail.ARRIVAL_DATE %></li>
+                        <li><strong>Arrival Time:</strong> <%= detail.ARRIVAL_TIME %></li>
+                        <li><strong>Status:</strong> <%= detail.STATUS %></li>
+                    <% }); %>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 4: Purchase List (Dropdown) -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4 class="mb-0">Purchase List</h4>
+            </div>
+            <div class="card-body">
+                <button class="btn btn-primary show-purchase-list-btn" type="button" data-toggle="collapse" data-target="#purchaseList" aria-expanded="false" aria-controls="purchaseList">
+                    Show Purchase List
+                </button>
+                <div class="collapse mt-3" id="purchaseList">
+                    <table class="table table-bordered table-dark">
+                        <thead>
+                            <tr>
+                                <th scope="col">Product Name</th>
+                                <th scope="col">Price Each</th>
+                                <th scope="col">Quantity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% purchase_list.forEach(item => { %>
+                                <tr>
+                                    <td><%= item.PRODUCT_NAME %></td>
+                                    <td><%= item.PRICE_EACH %></td>
+                                    <td><%= item.QUANTITY %></td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies (jQuery, Popper.js) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

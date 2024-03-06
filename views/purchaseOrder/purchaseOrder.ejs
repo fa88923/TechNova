@@ -1,0 +1,75 @@
+<!--************************** suppliers page ***********************************-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- stylesheet to handle the searchbar specially -->
+
+    <link rel="stylesheet" type="text/css" href="/css/supplierSearch.css">
+    <link rel="stylesheet" type="text/css" href="/css/supplier.css">
+
+    <title>Purchase Orders</title>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <div id="navbar">
+            <h1 class="mb-4">Purchase Orders</h1>
+            <div class="search-box">
+                <form id="searchForm">
+                    <button class="btn-search" type="submit"><i class="fas fa-search"></i></button>
+                    <input type="text" class="input-search" id="searchkey" placeholder="Search...">
+                </form>
+            </div>
+        </div>
+  
+
+        <br><br><br>
+        <br><br><br>
+         
+        <!--po list-->
+
+        <div class="table-responsive">
+            <% if (purchase_orders.length > 0) { %>
+                <table class="table table-bordered table-hover table-dark">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>TRANSACTION ID</th>
+                            <th>SUPPLIER NAME</th>
+                            <th>PAYMENT STATUS</th>
+                            <th>SHIPMENT STATUS</th>
+                            <th>STATUS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% purchase_orders.forEach(purchase_order => { %>
+                        <tr>
+                            <td><%= purchase_order.TRANSACTION_ID %></td>
+                            <td><a href="#" class="supplier-details-button" data-supplier-id="<%= purchase_order.SUPPLIER_ID %>"><%= purchase_order.NAME %></a></td> 
+                            <td><%= purchase_order.PAYMENT_STATUS %> </td>
+                            <td><%= purchase_order.SHIPMENT_STATUS %></td>
+                            <td><%= purchase_order.STATUS %></td>
+                            <td>
+                                <button class="details-button" transaction-id="<%= purchase_order.TRANSACTION_ID %>">Details</button>
+                            </td>
+                        </tr>
+                        <% });
+                        %>
+                    </tbody>
+                </table>
+            <% } else { %>
+                <p>        No purchase orders found.</p>
+            <% } %>
+        </div>
+        <div class="add_button">
+            <br><br><br>
+            <button type="button" id="add_button_po">Add purchase order</button>
+        </div>
+    </div>
+    <!--<script src="/js/supplierPageControllers/addScript.js"></script>
+    <script src="/js/supplierPageControllers/searchScript.js"></script>-->
+    <script src="/js/POpageControllers/purchaseOrderController.js"></script>
+</body>
+</html>
+

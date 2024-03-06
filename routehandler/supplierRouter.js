@@ -304,6 +304,7 @@ supplierRoute.post("/edit/submit", async (req, res) => {
     }
 });
 
+/////////////////////////////////////////////////////////////add
 supplierRoute.get("/add",(req,res)=>{       
     //just render the addSupplier page
     res.render('./suppliers/addSupplier');
@@ -332,7 +333,7 @@ supplierRoute.post("/submit", async (req, res) => {
             );
             
 
-            const supplierId = result.outBinds.branch_id;
+            const supplierId = result.outBinds.supplier_id;
 
             // Call the PL/SQL procedure to insert into LOCATIONS
         
