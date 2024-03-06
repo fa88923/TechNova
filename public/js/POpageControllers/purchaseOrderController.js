@@ -31,37 +31,10 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    //product details reroute
-    // var buttons = document.querySelectorAll('.branch-details-button');
-
-    // // Add a click event listener to each button
-    // buttons.forEach(function (button) {
-    //     button.addEventListener('click', function () {
-    //         // Get the productId from the 'data-product-id' attribute
-    //         var branchId = button.getAttribute('data-branch-id');
-    //         console.log(branchId);
-
-    //         // Redirect to the 'supplierDetails' page with the supplierId
-    //         window.location.href = '/branches/details?branchId=' + branchId;
-    //     });
-    // });
-
-    // var add_button = document.getElementById('add_button');
-    // if (add_button) 
-    // {
-    //     add_button.addEventListener('click', function(event) {
-    //     event.preventDefault();
-    //     window.location.href = '/branches/add';
-    // });
-    // }
-
-    // var deleteButtons = document.querySelectorAll('.delete-button');
-    // deleteButtons.forEach(function (button) {
-    //     button.addEventListener('click', function () {
-    //         var branchId = button.getAttribute('data-branch-id');
-    //         // Redirect to /branches with the delete parameter
-    //         window.location.href = '/branches?delete=' + branchId;
-    //     });
-    // });
-
+    
+    document.getElementById('add_button').addEventListener('click', function(event) {
+        event.preventDefault(); 
+        var supplierId = document.getElementById('inputSupplier').value;
+        window.location.href = '/purchaseOrder/add?supplierId=' + supplierId;
+    });
 });

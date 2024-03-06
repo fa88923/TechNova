@@ -1,0 +1,54 @@
+/* Add this CSS to your dropdown.css */
+
+/* Styles for the card with the dropdown */
+.card {
+    width: 100%; /* Full width of the container */
+    margin: 20px 0; /* Add space around the card */
+    background-color: #54697e46;
+    border: 1px solid #343a40;
+}
+
+.card-header {
+    background-color: #072c54;
+    color: #fff;
+    border-bottom: 1px solid #343a4015;
+    font-size: 25px;
+    height:40px;
+}
+
+/* Styles for the form inside the card */
+.card-body {
+    padding: 20px; /* Add padding inside the card body */
+}
+
+.form-row {
+    display: flex;
+    flex-wrap: wrap; /* Allow the form rows to wrap */
+}
+
+.form-group {
+    margin-right: 15px; /* Add space between form groups */
+}
+
+/* Styles for the form controls */
+.form-control {
+    background-color: #fff; /* Set a light background color */
+    color: #495057;
+    font-size: 20px; /* Adjust font size */
+}
+
+/* Style the primary button */
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff; /* Set font color to white */
+    font-size: 16px; /* Adjust font size */
+}
+
+/* Hover effect for the primary button */
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+

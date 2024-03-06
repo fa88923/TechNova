@@ -56,9 +56,15 @@ poRoute.get("/", async (req, res) => {
             );
             }
 
-
+            const supplier_list = await req.db.execute(
+                `SELECT O.ORGANIZATION_ID,O.NAME
+                FROM ORGANIZATIONS O
+                WHERE O.TYPE='SUPPLIER'`
+                // Use bind variables to prevent SQL injection
+            );
         res.render('./purchaseOrder/purchaseOrder', {
-            'purchase_orders': purchase_orders.rows
+            'purchase_orders': purchase_orders.rows,
+            'supplier_list': supplier_list.rows
         });
     } catch (error) {
         console.error('error fetching', error);
@@ -108,14 +114,20 @@ poRoute.get("/details",async(req,res)=>{
         // Use bind variables to prevent SQL injection
     );
 
-    // const branch_list = await req.db.execute(
-    //     ``
-    //     // Use bind variables to prevent SQL injection
-    // );
+    
 
 
     res.render('./purchaseOrder/purchaseOrderDetails', { 'transactioninfo': transactioninfo.rows, 'financial_details':financial_details.rows, 'shipment_details':shipment_details.rows,
     'purchase_list':purchase_list.rows });
+})
+
+
+///////////////////////////
+poRoute.get("/add",async(req,res)=>{       
+    //just render the addSupplier page
+    const supplierId=parseInt(req.query.supplierId);
+    
+    res.render('./purchaseOrder/addPurchaseOrder');
 })
 
 
