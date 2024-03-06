@@ -126,8 +126,22 @@ poRoute.get("/details",async(req,res)=>{
 poRoute.get("/add",async(req,res)=>{       
     //just render the addSupplier page
     const supplierId=parseInt(req.query.supplierId);
-    
-    res.render('./purchaseOrder/addPurchaseOrder');
+
+    const supplierinfo = await req.db.execute(
+        `SELECT S.SUPPLIER_ID, O.NAME,L2.STREET_ADDRESS||','||L2.CITY||'-'||L2.POSTAL_CODE||','||L2.COUNTRY PICKUP_LOCATION,P.ACCOUNT_NUMBER,P.ACCOUNT_HOLDER,P.BANK_NAME  FROM ORGANIZATIONS O JOIN SUPPLIERS S ON (O.ORGANIZATION_ID=S.SUPPLIER_ID) LEFT OUTER JOIN LOCATIONS L2 ON (O.ORGANIZATION_ID=L2.ORGANIZATION_ID AND (UPPER(L2.TYPE) IN ('DUAL','PICKUP'))) LEFT OUTER JOIN PAYMENT_INFO P ON (S.SUPPLIER_ID=P.OWNER_ID) WHERE S.SUPPLIER_ID=:supplierId`,
+        [supplierId] 
+        // Use bind variables to prevent SQL injection
+    );
+
+    products = await req.db.execute(
+        `SELECT *
+        FROM SUPPLIER_PRODUCT SP JOIN products P ON (SP.PRODUCT_ID=P.PRODUCT_ID) WHERE SP.SUPPLIER_ID=:supplierId
+        ORDER BY p.product_id`,{supplierId}
+    );
+    //console.log(supplierinfo)
+    res.render('./purchaseOrder/addPurchaseOrder',{
+        'supplierinfo': supplierinfo.rows, 'products': products.rows                                                   
+    });
 })
 
 

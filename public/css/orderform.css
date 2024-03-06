@@ -9,9 +9,15 @@ html {
     font-family: sans-serif;
     background: linear-gradient(#141e30, #243b55);
   }
+  /* .d-flex {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 100vh;
+  } */
   
   .table-container {
-    width: 80%;
+    width: 100%;
     margin: 50px auto;
   }
   

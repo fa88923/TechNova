@@ -1,0 +1,12 @@
+.d-flex{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-radius: 0 0 5px 5px;
+    padding: 20px;
+}
+
+  .login-box,
+.table-container {
+  flex: 1; /* Add this line to make both elements share the available space */
+}
