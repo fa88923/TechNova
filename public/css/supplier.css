@@ -51,10 +51,16 @@ tr:hover {
 }
 
 body {
-    background-image: url('https://wallpapers.com/images/hd/modern-1600-x-1200-background-puat3771sn5l0bpg.jpg'); 
+    /* background-image: url('https://wallpapers.com/images/hd/modern-1600-x-1200-background-puat3771sn5l0bpg.jpg');  */
+
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     margin: 0; /* Remove default margin */
     padding: 0; /* Remove default padding */
+}
+
+body {
+    background-color: #142b45e8; /* Dark bluish background */
+    /* color: #ffffff; */
 }

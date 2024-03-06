@@ -1,20 +1,20 @@
-/* Additional Custom Styles for Dark Theme */
+/* Additional Custom Styles for Bluish Dark Theme */
 body {
-    background-color: #343a40;
-    color: #fff; /* Text color */
+    background-color: #28313b; /* Dark bluish background */
+    color: #ffffff; /* Text color */
 }
 
 .card {
-    background-color: #495057;
-    border-color: #343a40;
+    background-color: #394b59; /* Darker bluish background */
+    border-color: #28313b;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
 }
 
 .card-header {
-    background-color: #343a40;
-    border-color: #343a40;
-    color: #fff;
+    background-color: #28313b;
+    border-color: #28313b;
+    color: #ffffff;
 }
 
 .card-body {
@@ -35,29 +35,28 @@ body {
 }
 
 .table {
-    color: #fff;
+    color: #ffffff;
 }
 
 .table th, .table td {
-    border-color: #343a40;
+    border-color: #28313b;
 }
 
 .table thead th {
-    background-color: #343a40;
-    color: #fff;
+    background-color: #28313b;
+    color: #ffffff;
 }
 
 .table-dark {
-    background-color: #495057;
-    color: #fff;
+    background-color: #394b59;
+    color: #ffffff;
 }
 
 .table-dark th, .table-dark td {
-    border-color: #343a40;
+    border-color: #28313b;
 }
 
 
-/* ************************ */
 /* Styling for Lists in Card Bodies */
 .card-body ul {
     list-style-type: none;
@@ -67,4 +66,3 @@ body {
 .card-body ul li {
     margin-bottom: 10px;
 }
-

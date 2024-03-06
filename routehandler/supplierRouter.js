@@ -355,6 +355,7 @@ supplierRoute.post("/edit/submit", async (req, res) => {
     }
 });
 
+/////////////////////////////////////////////////////////////add
 supplierRoute.get("/add",(req,res)=>{       
     //just render the addSupplier page
     res.render('./suppliers/addSupplier');
