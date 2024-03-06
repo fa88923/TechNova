@@ -45,11 +45,11 @@
         <br>
         <p> Check Availability</p>
         <br>
-        <a  href="/products?stock=out_of_stock">
+        <a  href="/suppliers/products?stock=out_of_stock&supplierId=<%=supplierId%> ">
             Out Of Stock
         </a>
         <br><br>
-        <a  href="/products?stock=in_stock">
+        <a  href="/suppliers/products?stock=in_stock&supplierId=<%=supplierId%>">
             In Stock
         </a>
         </div>
@@ -96,7 +96,7 @@
         </div>
         <div class="add_button">
             <br><br><br>
-            <button type="button" id="add_button">Add Supplier</button>
+            <button type="button" id="add_button">Add to Product Catalogue</button>
         </div>
     </div>
     <!--<script src="/js/supplierPageControllers/addScript.js"></script>

@@ -111,8 +111,8 @@ supplierRoute.get("/products", async (req, res) => {
             products = await req.db.execute(
                 `SELECT * 
                 FROM SUPPLIER_PRODUCT SP1 JOIN PRODUCTS P ON (SP1.PRODUCT_ID=P.PRODUCT_ID)  where p.PRODUCT_ID IN (
-                    SELECT DISTINCT P2.PRODUCT_ID FROM SUPPLIER_PRODUCT SP JOIN PRODUCTS P2 ON (SP.PRODUCT_ID=P2.PRODUCT_ID) 
-                WHERE upper(p2.category) = upper(:category) AND SP.SUPPLIER_ID=:supplierId)
+                SELECT DISTINCT P2.PRODUCT_ID FROM PRODUCTS P2
+                WHERE upper(p2.category) = upper(:category)) AND SP1.SUPPLIER_ID=:supplierId
                 ORDER BY P.product_id`, [category,supplierId]
             );
         }
@@ -129,9 +129,10 @@ supplierRoute.get("/products", async (req, res) => {
                 WHERE SP1.SUPPLIER_ID=:supplierId AND
                 (UPPER(P1.PRODUCT_NAME) LIKE UPPER(:searchPattern) OR UPPER(P1.CATEGORY) LIKE UPPER(:searchPattern) OR UPPER(P1.MANUFACTURER_ID) LIKE UPPER(:searchPattern)
                 OR UPPER(PF.VALUE) LIKE UPPER(:searchPattern) OR UPPER(FN.FEATURE_NAME) LIKE UPPER(:searchPattern))
-                )
-    ORDER BY P2.PRODUCT_ID`,  [supplierId, searchPattern, searchPattern, searchPattern, searchPattern, searchPattern]
+                ) AND SP2.SUPPLIER_ID=:supplierId
+    ORDER BY P2.PRODUCT_ID`,  [supplierId, searchPattern, searchPattern, searchPattern, searchPattern, searchPattern,supplierId]
             );
+
         }
 
         else if(stock)
@@ -141,7 +142,7 @@ supplierRoute.get("/products", async (req, res) => {
                 `SELECT *
                 FROM SUPPLIER_PRODUCT SP2 JOIN PRODUCTS P ON (SP2.PRODUCT_ID=P.PRODUCT_ID) where p.PRODUCT_ID IN (
                     SELECT DISTINCT P2.PRODUCT_ID FROM SUPPLIER_PRODUCT SP JOIN PRODUCTS P2 ON (SP.PRODUCT_ID=P2.PRODUCT_ID) 
-                WHERE p2.central_stock<>0 AND SP.SUPPLIER_ID=:supplierId)
+                WHERE p2.central_stock<>0 AND SP.SUPPLIER_ID=:supplierId) AND SP2.SUPPLIER_ID=:supplierId
                 ORDER BY P.product_id`,{supplierId}
             );
 
@@ -150,7 +151,7 @@ supplierRoute.get("/products", async (req, res) => {
                 `SELECT *
                 FROM SUPPLIER_PRODUCT SP2 JOIN PRODUCTS P ON (SP2.PRODUCT_ID=P.PRODUCT_ID) where p.PRODUCT_ID IN (
                     SELECT DISTINCT P2.PRODUCT_ID FROM SUPPLIER_PRODUCT SP JOIN PRODUCTS P2 ON (SP.PRODUCT_ID=P2.PRODUCT_ID) 
-                WHERE p2.central_stock=0 AND SP.SUPPLIER_ID=:supplierId)
+                WHERE p2.central_stock=0 AND SP.SUPPLIER_ID=:supplierId) AND SP2.SUPPLIER_ID=:supplierId
                 ORDER BY P.product_id`,{supplierId}
             );
         }
