@@ -1,56 +1,107 @@
-<!--************************** display product cat of a supplier -page ***********************************-->
-
+<!--************************** products page ***********************************-->
+<!--to do:  'no products found message ta boojha jachhe na'-->
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Catalogue</title>
-    <!-- Bootstrap CSS link -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
-    <!-- External CSS link -->
-    <link rel="stylesheet" href="/css/productCatalogue.css">
+    <!-- stylesheet to handle the searchbar specially -->
+
+    <link rel="stylesheet" type="text/css" href="/css/supplierSearch.css">
+    <link rel="stylesheet" type="text/css" href="/css/supplier.css">
+    <link rel="stylesheet" type="text/css" href="/css/products/productpage.css">
+
+    <title>Products</title>
 </head>
 
-<body>
-    <h1 class="text-center">Product Catalogue</h1>
+<body data-supplier-id="<%= supplierId %>">
+    <div class="container mt-5">
+        <div id="navbar">
+            <h1 class="mb-4">Products</h1>
+            <div class="search-box">
+                <form id="searchForm">
+                    <button class="btn-search" type="submit"><i class="fas fa-search"></i></button>
+                    <input type="text" class="input-search" id="searchkey" placeholder="Search...">
+                </form>
+            </div>
+        </div>
+       
+        <div class="categories">           <!--add the css for this-->
 
-    <div class="container mt-4">
-        <table class="table table-bordered">
-            <thead class="thead-dark">
-                <tr>
-                    <th>Product ID</th>
-                    <th>Product Name</th>
-                    <th>Category</th>
-                    <th>Price</th>
-                    <th>Warranty</th>
-                    <th>Manufacturer</th>
-                    <th>Central Stock</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% productCatalogue.forEach(product => { %>
-                    <tr>
-                        <td><%= product.PRODUCT_ID %></td>
-                        <td><%= product.PRODUCT_NAME %></td>
-                        <td><%= product.CATEGORY %></td>
-                        <td><%= product.PRICE %></td>
-                        <td><%= product.WARRANTY %></td>
-                        <td><%= product.MANUFACTURER %></td>
-                        <td><%= product.CENTRAL_STOCK %></td>
-                    </tr>
-                <% }); %>
-            </tbody>
-        </table>
+            <!-- category Bar -->
+           <!-- Category Bar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <ul class="navbar-nav">
+            <% categories.forEach(category => { %>
+                <li class="nav-item">
+                    <a class="nav-link" href="/suppliers/products?category=<%= category.CATEGORY %>&supplierId=<% =supplierId%> ">
+                        <%= category.CATEGORY %>s
+                    </a>
+                </li>
+            <% }); %>
+        </ul>
+        </nav>
+        <br>
+        <br>
+        <p> Check Availability</p>
+        <br>
+        <a  href="/products?stock=out_of_stock">
+            Out Of Stock
+        </a>
+        <br><br>
+        <a  href="/products?stock=in_stock">
+            In Stock
+        </a>
+        </div>
+
+        <br><br><br>
+        <br><br><br>
+         
+        <!--product list-->
+
+        <div class="table-responsive">
+            <% if (products.length > 0) { %>
+                <table class="table table-bordered table-hover table-dark">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>PRODUCT ID</th>
+                            <th>PRODUCT NAME</th>
+                            <th>CATEGORY</th>
+                            <th>RETAIL PRICE</th>
+                            <th>WARRANTY</th>
+                            <th>MANUFACTURER</th>
+                            <th>STOCK</th>
+                            <th>OFFERING PRICE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% products.forEach(product => { %>
+                        <tr>
+                            <td><%= product.PRODUCT_ID %></td>
+                            <td><a href="#" class="product-details-button" data-product-id="<%= product.PRODUCT_ID %>"><%= product.PRODUCT_NAME %></a></td> 
+                            <td><%= product.CATEGORY %></td>
+                            <td>Tk. <%= product.RETAIL_PRICE %></td>
+                            <td><%= product.WARRANTY %> years</td>
+                            <td><%= product.MANUFACTURER_ID %></td>
+                            <td><%= product.CENTRAL_STOCK %></td>
+                            <td><%= product.WHOLESALE_PRICE %></td>
+                        </tr>
+                        <% });
+                        %>
+                    </tbody>
+                </table>
+            <% } else { %>
+                <p>        No products found.</p>
+            <% } %>
+        </div>
+        <div class="add_button">
+            <br><br><br>
+            <button type="button" id="add_button">Add Supplier</button>
+        </div>
     </div>
-
-    <!-- Bootstrap JS and jQuery scripts (required for Bootstrap) -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-
-
+    <!--<script src="/js/supplierPageControllers/addScript.js"></script>
+    <script src="/js/supplierPageControllers/searchScript.js"></script>-->
+    <script src="/js/suppliers/productCatalogueController.js"></script>
 </body>
-
 </html>
+

@@ -1,1 +1,2 @@
 before_insert_location trigger should also be called for location update: jhamela kortesilo
+before_insert_location trigger:kano jani update statement ta run hochhe na

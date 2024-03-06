@@ -95,40 +95,91 @@ supplierRoute.get("/details",async(req,res)=>{
     res.render('./suppliers/supplierDetails', { 'supplierinfo': supplierinfo.rows, 'phone_numbers':supplierphone.rows, 'emails':suppliermail.rows });
 })
 
-supplierRoute.get("/details/incomeStatement",async(req,res)=>{       
-    //just render the addSupplier page
-    const branchId=parseInt(req.query.branchId);
-    const month=parseInt(req.query.month);
-    const year=parseInt(req.query.year);
-    // Execute SQL query to search in the database
-    const branchinfo = await req.db.execute(
-        'SELECT O.NAME,B.BRANCH_ID FROM ORGANIZATIONS O JOIN BRANCHES B ON (O.ORGANIZATION_ID=B.BRANCH_ID) WHERE B.BRANCH_ID=:branchId',[branchId]
-        // Use bind variables to prevent SQL injection
-    );
-    let branchIncome;
-    if(month)
-    {
-        branchIncome = await req.db.execute(
-        'SELECT * FROM BRANCH_INCOME_STATEMENT WHERE EXTRACT(MONTH FROM START_DATE) = :month AND EXTRACT(YEAR FROM START_DATE) = :year AND BRANCH_ID = :branchId',
-        [month, year, branchId]  // Pass an array of bind variables in the correct order
-    );
-    }
-    else if(year)
-    {
-        branchIncome = await req.db.execute(
-            'SELECT * FROM BRANCH_INCOME_STATEMENT where  EXTRACT(YEAR FROM START_DATE)=:year AND BRANCH_ID=:branchId',[year,branchId]
-            // Use bind variables to prevent SQL injection
+supplierRoute.get("/products", async (req, res) => {
+   
+
+    try {
+        let products;
+
+        //category wise filtering
+        const category= req.query.category; // check for differnet search queries
+        const searchkey=req.query.searchkey;
+        const stock=req.query.stock;
+        const supplierId=req.query.supplierId;
+        if (category) {
+            console.log(category);
+            products = await req.db.execute(
+                `SELECT * 
+                FROM SUPPLIER_PRODUCT SP1 JOIN PRODUCTS P ON (SP1.PRODUCT_ID=P.PRODUCT_ID)  where p.PRODUCT_ID IN (
+                    SELECT DISTINCT P2.PRODUCT_ID FROM SUPPLIER_PRODUCT SP JOIN PRODUCTS P2 ON (SP.PRODUCT_ID=P2.PRODUCT_ID) 
+                WHERE upper(p2.category) = upper(:category) AND SP.SUPPLIER_ID=:supplierId)
+                ORDER BY P.product_id`, [category,supplierId]
+            );
+        }
+        
+        else if (searchkey) {
+            const searchPattern = `%${searchkey.toUpperCase()}%`;
+        
+            products = await req.db.execute(
+                `SELECT * FROM SUPPLIER_PRODUCT SP2 JOIN PRODUCTS P2 ON (SP2.PRODUCT_ID=P2.PRODUCT_ID) WHERE P2.PRODUCT_ID IN
+                (SELECT DISTINCT P1.PRODUCT_ID FROM SUPPLIER_PRODUCT SP1 
+                JOIN PRODUCTS P1 ON (SP1.PRODUCT_ID=P1.PRODUCT_ID) 
+                LEFT OUTER JOIN PRODUCT_FEATURES PF ON (P1.PRODUCT_ID = PF.PRODUCT_ID) 
+                LEFT OUTER JOIN FEATURE_NAMES FN ON (PF.FEATURE_ID = FN.FEATURE_ID)
+                WHERE SP1.SUPPLIER_ID=:supplierId AND
+                (UPPER(P1.PRODUCT_NAME) LIKE UPPER(:searchPattern) OR UPPER(P1.CATEGORY) LIKE UPPER(:searchPattern) OR UPPER(P1.MANUFACTURER_ID) LIKE UPPER(:searchPattern)
+                OR UPPER(PF.VALUE) LIKE UPPER(:searchPattern) OR UPPER(FN.FEATURE_NAME) LIKE UPPER(:searchPattern))
+                )
+    ORDER BY P2.PRODUCT_ID`,  [supplierId, searchPattern, searchPattern, searchPattern, searchPattern, searchPattern]
+            );
+        }
+
+        else if(stock)
+        {
+            if(stock=='in_stock')
+            products = await req.db.execute(
+                `SELECT *
+                FROM SUPPLIER_PRODUCT SP2 JOIN PRODUCTS P ON (SP2.PRODUCT_ID=P.PRODUCT_ID) where p.PRODUCT_ID IN (
+                    SELECT DISTINCT P2.PRODUCT_ID FROM SUPPLIER_PRODUCT SP JOIN PRODUCTS P2 ON (SP.PRODUCT_ID=P2.PRODUCT_ID) 
+                WHERE p2.central_stock<>0 AND SP.SUPPLIER_ID=:supplierId)
+                ORDER BY P.product_id`,{supplierId}
+            );
+
+            else
+            products=await req.db.execute(
+                `SELECT *
+                FROM SUPPLIER_PRODUCT SP2 JOIN PRODUCTS P ON (SP2.PRODUCT_ID=P.PRODUCT_ID) where p.PRODUCT_ID IN (
+                    SELECT DISTINCT P2.PRODUCT_ID FROM SUPPLIER_PRODUCT SP JOIN PRODUCTS P2 ON (SP.PRODUCT_ID=P2.PRODUCT_ID) 
+                WHERE p2.central_stock=0 AND SP.SUPPLIER_ID=:supplierId)
+                ORDER BY P.product_id`,{supplierId}
+            );
+        }
+
+        else {
+            products = await req.db.execute(
+                `SELECT *
+                FROM SUPPLIER_PRODUCT SP JOIN products P ON (SP.PRODUCT_ID=P.PRODUCT_ID) WHERE SP.SUPPLIER_ID=:supplierId
+                ORDER BY p.product_id`,{supplierId}
+            );
+        }
+
+        const categories = await req.db.execute(
+            `SELECT DISTINCT CATEGORY
+            FROM products
+            ORDER BY CATEGORY`
         );
+
+        res.render('./suppliers/productCatalogue', {
+            'products': products.rows,
+            'categories': categories.rows,
+            'supplierId': supplierId
+
+        });
+    } catch (error) {
+        console.error('error fetching', error);
+        res.status(500).send('Internal server error');
     }
-    else
-    {
-        branchIncome = await req.db.execute(
-        'SELECT * FROM BRANCH_INCOME_STATEMENT WHERE BRANCH_ID=:branchId',[branchId]
-        // Use bind variables to prevent SQL injection
-    );
-    }
-    res.render('./branches/income', { 'branchinfo': branchinfo.rows, 'income':branchIncome.rows});
-})
+});
 
 /*supplierRoute.get("/details/edit",async(req,res)=>{       
     //just render the addSupplier page
@@ -332,7 +383,7 @@ supplierRoute.post("/submit", async (req, res) => {
             );
             
 
-            const supplierId = result.outBinds.branch_id;
+            const supplierId = result.outBinds.supplier_id;
 
             // Call the PL/SQL procedure to insert into LOCATIONS
         
@@ -340,7 +391,7 @@ supplierRoute.post("/submit", async (req, res) => {
                 await req.db.execute(
                     `BEGIN INSERT_LOCATION(:a_street_address, :a_postal_code, :a_city, :a_state_province, :a_country, :organization_id, :type); END;`,
                     {
-                        street_address: a_street,
+                        a_street_address: a_street,
                         a_postal_code,
                         a_city,
                         a_state_province: '', // Replace with the actual value if available

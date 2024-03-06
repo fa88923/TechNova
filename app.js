@@ -31,17 +31,17 @@ let connection;
     connectString: "localhost/ORCL",
 };*/
 
-// const dbConfig = {
-//   user: 'technova',
-//   password: '123',
-//   connectString: "localhost/ORCL",
-// };
-
 const dbConfig = {
-  user: 'newtechnova',
+  user: 'technova',
   password: '123',
   connectString: "localhost/ORCL",
 };
+
+// const dbConfig = {
+//   user: 'newtechnova',
+//   password: '123',
+//   connectString: "localhost/ORCL",
+// };
 
 async function connectToDatabase() {
     try {

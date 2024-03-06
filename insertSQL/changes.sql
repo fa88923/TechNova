@@ -190,3 +190,7 @@ ALTER TABLE SUPPLY_REQUESTS
 ADD STATUS VARCHAR2(20) CHECK (UPPER(STATUS) IN ('PENDING', 'COMPLETED'));
 
 -------------------------------------------end
+
+--changes adri march 5
+
+--RERUN BEFORE_INSERT_LOCATION_TRIGGER
