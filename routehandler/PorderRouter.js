@@ -108,10 +108,10 @@ poRoute.get("/details",async(req,res)=>{
         // Use bind variables to prevent SQL injection
     );
 
-    const branch_list = await req.db.execute(
-        ``
-        // Use bind variables to prevent SQL injection
-    );
+    // const branch_list = await req.db.execute(
+    //     ``
+    //     // Use bind variables to prevent SQL injection
+    // );
 
 
     res.render('./purchaseOrder/purchaseOrderDetails', { 'transactioninfo': transactioninfo.rows, 'financial_details':financial_details.rows, 'shipment_details':shipment_details.rows,
