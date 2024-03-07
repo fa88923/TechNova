@@ -173,33 +173,72 @@ poRoute.post("/submit", async (req, res) => {
 
         const selectedProductData = JSON.parse(req.body.selectedProductData);
 
-        if (Array.isArray(selectedProductData)) {
-            // Now you can safely use forEach on selectedProductData
-            selectedProductData.forEach(product => {
-                const productId = product.productId;
-                const quantity = product.quantity;
-                const price=product.price;
-    
-                // Do something with productId and quantity (e.g., store in a database)
-                console.log(`Product ID: ${productId}, Quantity: ${quantity}, Price: ${price}` );
-            });
-        } else {
-            // Handle the case where selectedProductData is not an array
-            console.error('selectedProductData is not an array.');
-        }
+        let message = "";
+        let errorflag=0;
 
-    // Assuming the selectedProductData is an array of objects
+        const result = await req.db.execute(
+            `BEGIN :transactionId := INSERT_PRODUCT_TRANSACTIONS('PURCHASE_TRANSACTION', :supplierId, :pickupDate); END;`,
+            {
+                supplierId,
+                pickupDate,
+                transactionId: { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
+            }
+        );
         
-        
+
+        const transaction_id = result.outBinds.transactionId;
+
+        for (const product of selectedProductData) 
+        {
+            const productId = product.productId;
+            const quantity = product.quantity;
+            const price = product.price;
+            const total=quantity*price;
+
+            await req.db.execute(
+                `INSERT INTO ORDER_PRODUCTS (ORDER_ID, PRODUCT_ID, QUANTITY, PRICE) VALUES (:transaction_id, :productId,:quantity,:total)`,
+                {
+                    transaction_id,
+                    productId,
+                    quantity,
+                    total
+                }
+            );
+        }
+        //inserting financial transaction
+        await req.db.execute(
+            `BEGIN INSERT_PURCHASE_TRANSACTION(:transaction_id, :method, :to_acc, :currency, :total_amount); END;`,
+            {
+                transaction_id,
+                method,
+                to_acc,
+                currency,
+                total_amount
+            }
+        );
+        //inserting shipments
+        await req.db.execute(
+            `BEGIN INSERT_SHIPMENTS(:tcompany,:transaction_id, :departure_time, :departure_date, :vehicle_no, :current_location, :start_loc, :dest, 1500); END;`,
+            {
+                tcompany,
+                transaction_id,
+                departure_time,
+                departure_date,
+                vehicle_no,
+                current_location,
+                start_loc,
+                dest
+            }
+        );
         
     } catch (error) {
         console.error(error);
         // Send an error response
         
-        // await req.db.execute("ROLLBACK");
-        // await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'BRANCH '|| :name || ' INSERT FAILED','INSERT')",[name]);
-        // await req.db.execute("COMMIT");
-        // res.status(500).send("Internal Server Error;"+message);
+        await req.db.execute("ROLLBACK");
+        await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'product_transaction ' || ' INSERT FAILED','INSERT')");
+        await req.db.execute("COMMIT");
+        res.status(500).send("Internal Server Error;"+message);
     }
     res.redirect('/purchaseOrder')
     //res.render('home');
@@ -207,3 +246,12 @@ poRoute.post("/submit", async (req, res) => {
 
 
 module.exports=poRoute;
+
+
+//if (Array.isArray(selectedProductData)) {
+    //     // Now you can safely use forEach on selectedProductData
+       
+    // } else {
+    //     // Handle the case where selectedProductData is not an array
+    //     console.error('selectedProductData is not an array.');
+    // }

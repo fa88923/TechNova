@@ -1,0 +1,105 @@
+CREATE OR REPLACE PROCEDURE INSERT_FT(
+    ft_type VARCHAR2,
+    trans_id NUMBER,
+    meth VARCHAR2,
+    from_acc NUMBER,
+    to_acc NUMBER,
+		curr VARCHAR2,
+		amnt NUMBER
+) IS
+BEGIN
+        INSERT INTO FINANCIAL_TRANSACTIONS (
+            FINANCIAL_TRANSACTION_ID,
+            TYPE,
+            PRODUCT_TRANSACTION_ID,
+            METHOD,
+            FROM_ACCOUNT,
+            TO_ACCOUNT,
+						STATUS,
+						CURRENCY,
+						AMOUNT
+        ) VALUES (
+            FTRANSACTION_ID_SEQ.NEXTVAL,
+            UPPER(ft_type),
+            trans_id,
+						meth,
+						from_acc,
+						to_acc,
+						UPPER('PENDING'),
+						curr,
+						amnt
+        );
+END;
+/
+
+CREATE OR REPLACE PROCEDURE INSERT_PURCHASE_TRANSACTION(
+    trans_id NUMBER,
+    meth VARCHAR2,
+    to_acc NUMBER,
+		curr VARCHAR2,
+		amnt NUMBER
+) IS
+	 from_acc NUMBER;
+BEGIN
+				SELECT P.ID INTO from_acc
+				FROM ORGANIZATIONS O JOIN PAYMENT_INFO P ON O.ORGANIZATION_ID=P.OWNER_ID
+				WHERE O.TYPE='CENTRAL';
+				
+        INSERT_FT('PURCHASE_ORDER_PAYMENT', trans_id,meth,from_acc,to_acc,curr,amnt);
+END;
+/
+
+
+
+--insert SHIPMENTS
+CREATE OR REPLACE PROCEDURE INSERT_SHIPMENTS(
+    tcompany_id NUMBER,
+    trans_id NUMBER,
+    dept_time VARCHAR2,
+		dept_date VARCHAR2,
+		vehicle_num VARCHAR2,
+    currloc VARCHAR2,
+		start_loc NUMBER,
+		dest NUMBER,	
+		amnt NUMBER
+) IS
+BEGIN
+        INSERT INTO SHIPMENTS (
+            SHIPMENT_ID,
+            TRANSPORT_COMPANY_ID,
+            PRODUCT_TRANSACTION_ID,
+            DEPARTURE_TIME,
+						DEPARTURE_DATE,
+            VEHICLE_NO,
+						CURRENT_LOCATION,
+						START_LOCATION,
+						DESTINATION,
+						COST
+        ) VALUES (
+            SHIPMENT_ID_SEQ.NEXTVAL,
+            tcompany_id,
+            trans_id,
+						dept_time,
+						TO_DATE(dept_date, 'DD-MON-RR'),
+						vehicle_num,
+						currloc,
+						start_loc,
+						dest,
+						amnt
+        );
+END;
+/
+
+SELECT S.SUPPLIER_ID, O.NAME,L2.STREET_ADDRESS||','||L2.CITY||'-'||L2.POSTAL_CODE||','||L2.COUNTRY PICKUP_LOCATION,P.ID,P.ACCOUNT_NUMBER,P.ACCOUNT_HOLDER,P.BANK_NAME, L2.LOCATION_ID, L1.LOCATION_ID
+FROM ORGANIZATIONS O JOIN SUPPLIERS S ON (O.ORGANIZATION_ID=S.SUPPLIER_ID) 
+	LEFT OUTER JOIN LOCATIONS L2 ON (O.ORGANIZATION_ID=L2.ORGANIZATION_ID AND (UPPER(L2.TYPE) IN ('DUAL','PICKUP'))) 
+	LEFT OUTER JOIN LOCATIONS L1 ON (O.ORGANIZATION_ID=L1.ORGANIZATION_ID AND (UPPER(L1.TYPE) IN ('DUAL','PICKUP'))) 
+	LEFT OUTER JOIN PAYMENT_INFO P ON (S.SUPPLIER_ID=P.OWNER_ID) 
+WHERE S.SUPPLIER_ID=2
+
+
+SELECT L2.LOCATION_ID
+FROM ORGANIZATIONS O  
+	LEFT OUTER JOIN LOCATIONS L2 ON (O.ORGANIZATION_ID=L2.ORGANIZATION_ID AND (UPPER(L2.TYPE) IN ('DUAL','PICKUP'))) 
+WHERE O.TYPE='CENTRAL'
+
