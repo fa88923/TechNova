@@ -1,0 +1,119 @@
+<!--************************** edit suppliers page ***********************************-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Supplier</title>
+    <link rel="stylesheet" type="text/css" href="/css/addSupplier.css">
+</head>
+<body>
+    <div class="login-box">
+        <h2>Supplier Information</h2>
+        <form method="post" action="/suppliers/edit/submit?supplierId=<%= supplierinfo[0].SUPPLIER_ID %>" id="editingForm">
+
+            <div class="user-box">
+                <input type="text" id="name" name="name" required="" value="<%= supplierinfo[0].NAME %>">
+                <label>Name</label>
+            </div>
+            <h3>Address</h3>
+            <div class="user-box">
+                <input type="text" id="a_street" name="street" required="" value="<%= supplierinfo[0].A_STREET_ADDRESS %>">
+                <label>Street Address</label>
+            </div>
+            <div class="user-box">
+                <input type="text" id="a_postal_code" name="postal_code" required="" value="<%= supplierinfo[0].A_POSTAL_CODE %>">
+                <label>Postal Code</label>
+            </div>
+            <div class="user-box">
+                <input type="text" id="a_city" name="city" required="" value="<%= supplierinfo[0].A_CITY %>">
+                <label>City</label>
+            </div>
+            <div class="user-box">
+                <input type="text" id="a_country" name="country" required="" value="<%= supplierinfo[0].A_COUNTRY %>">
+                <label>Country</label>
+            </div>
+
+            <h3>Pickup Location</h3>
+            <div class="user-box">
+                <input type="text" id="p_street" name="street" required="" value="<%= supplierinfo[0].P_STREET_ADDRESS %>">
+                <label>Street Address</label>
+            </div>
+            <div class="user-box">
+                <input type="text" id="p_postal_code" name="postal_code" required="" value="<%= supplierinfo[0].P_POSTAL_CODE %>">
+                <label>Postal Code</label>
+            </div>
+            <div class="user-box">
+                <input type="text" id="p_city" name="city" required="" value="<%= supplierinfo[0].P_CITY %>">
+                <label>City</label>
+            </div>
+            <div class="user-box">
+                <input type="text" id="p_country" name="country" required="" value="<%= supplierinfo[0].P_COUNTRY %>">
+                <label>Country</label>
+            </div>
+            <!-- Add these lines to your HTML form -->
+
+
+            <!-- Phone Numbers -->
+            <div id="phone_container" class="contact-container">
+                <% phone_numbers.forEach(function(phone) { %>
+                    <div class="user-box">
+                        <input type="text" name="phone_number[]" required="" value="<%= phone.VALUE %>">
+                        <label>Phone Number</label>
+                    </div>
+                <% }); %>
+                <button type="button" class="add_contact" data-container="phone_container">Add Another Phone Number</button>
+            </div>
+            
+            <!-- Emails -->
+            <div id="email_container" class="contact-container">
+                <% emails.forEach(function(email) { %>
+                    <div class="user-box">
+                        <input type="text" name="email[]" required="" value="<%= email.VALUE %>">
+                        <label>Email</label>
+                    </div>
+                <% }); %>
+                <button type="button" class="add_contact" data-container="email_container">Add Another Email</button>
+            </div>
+            
+            <div class="user-box">
+                <input type="text" id="avg_delivery_time" name="avg_shipping_duration" required="avg_shipping_duration" value="<%= supplierinfo[0].AVG_DELIVERY_TIME %>">
+                <label>Average Shipping Duration(in days)</label>
+            </div>
+            
+            <h3>Payment Information</h3>
+
+            <div class="user-box">
+                <input type="text" id="account_number" name="account_number" required="account_number" value="<%= supplierinfo[0].ACCOUNT_NUMBER %>">
+                <label>Account Number</label>
+            </div>
+
+            <div class="user-box">
+                <input type="text" id="account_holder" name="account_holder" required="account_holder" value="<%= supplierinfo[0].ACCOUNT_HOLDER %>">
+                <label>Account Holder</label>
+            </div>
+
+            <div class="user-box">
+                <input type="text" id="bank" name="bank" required="bank" value="<%= supplierinfo[0].BANK_NAME %>">
+                <label>Bank</label>
+            </div>
+
+            <div class="user-box">
+                <input type="text" id="iban" name="iban" required="iban" value="<%= supplierinfo[0].IBAN %>">
+                <label>IBAN</label>
+            </div>
+
+            <a href="#" id="edit_button">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            Edit
+            </a>
+        </form>
+        </div>
+        <script src="/js/suppliers/editSupplierController.js"></script>
+</body>
+</html>

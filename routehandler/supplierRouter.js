@@ -111,8 +111,8 @@ supplierRoute.get("/products", async (req, res) => {
             products = await req.db.execute(
                 `SELECT * 
                 FROM SUPPLIER_PRODUCT SP1 JOIN PRODUCTS P ON (SP1.PRODUCT_ID=P.PRODUCT_ID)  where p.PRODUCT_ID IN (
-                    SELECT DISTINCT P2.PRODUCT_ID FROM SUPPLIER_PRODUCT SP JOIN PRODUCTS P2 ON (SP.PRODUCT_ID=P2.PRODUCT_ID) 
-                WHERE upper(p2.category) = upper(:category) AND SP.SUPPLIER_ID=:supplierId)
+                SELECT DISTINCT P2.PRODUCT_ID FROM PRODUCTS P2
+                WHERE upper(p2.category) = upper(:category)) AND SP1.SUPPLIER_ID=:supplierId
                 ORDER BY P.product_id`, [category,supplierId]
             );
         }
@@ -129,9 +129,10 @@ supplierRoute.get("/products", async (req, res) => {
                 WHERE SP1.SUPPLIER_ID=:supplierId AND
                 (UPPER(P1.PRODUCT_NAME) LIKE UPPER(:searchPattern) OR UPPER(P1.CATEGORY) LIKE UPPER(:searchPattern) OR UPPER(P1.MANUFACTURER_ID) LIKE UPPER(:searchPattern)
                 OR UPPER(PF.VALUE) LIKE UPPER(:searchPattern) OR UPPER(FN.FEATURE_NAME) LIKE UPPER(:searchPattern))
-                )
-    ORDER BY P2.PRODUCT_ID`,  [supplierId, searchPattern, searchPattern, searchPattern, searchPattern, searchPattern]
+                ) AND SP2.SUPPLIER_ID=:supplierId
+    ORDER BY P2.PRODUCT_ID`,  [supplierId, searchPattern, searchPattern, searchPattern, searchPattern, searchPattern,supplierId]
             );
+
         }
 
         else if(stock)
@@ -141,7 +142,7 @@ supplierRoute.get("/products", async (req, res) => {
                 `SELECT *
                 FROM SUPPLIER_PRODUCT SP2 JOIN PRODUCTS P ON (SP2.PRODUCT_ID=P.PRODUCT_ID) where p.PRODUCT_ID IN (
                     SELECT DISTINCT P2.PRODUCT_ID FROM SUPPLIER_PRODUCT SP JOIN PRODUCTS P2 ON (SP.PRODUCT_ID=P2.PRODUCT_ID) 
-                WHERE p2.central_stock<>0 AND SP.SUPPLIER_ID=:supplierId)
+                WHERE p2.central_stock<>0 AND SP.SUPPLIER_ID=:supplierId) AND SP2.SUPPLIER_ID=:supplierId
                 ORDER BY P.product_id`,{supplierId}
             );
 
@@ -150,7 +151,7 @@ supplierRoute.get("/products", async (req, res) => {
                 `SELECT *
                 FROM SUPPLIER_PRODUCT SP2 JOIN PRODUCTS P ON (SP2.PRODUCT_ID=P.PRODUCT_ID) where p.PRODUCT_ID IN (
                     SELECT DISTINCT P2.PRODUCT_ID FROM SUPPLIER_PRODUCT SP JOIN PRODUCTS P2 ON (SP.PRODUCT_ID=P2.PRODUCT_ID) 
-                WHERE p2.central_stock=0 AND SP.SUPPLIER_ID=:supplierId)
+                WHERE p2.central_stock=0 AND SP.SUPPLIER_ID=:supplierId) AND SP2.SUPPLIER_ID=:supplierId
                 ORDER BY P.product_id`,{supplierId}
             );
         }
@@ -181,39 +182,102 @@ supplierRoute.get("/products", async (req, res) => {
     }
 });
 
-/*supplierRoute.get("/details/edit",async(req,res)=>{       
-    //just render the addSupplier page
+supplierRoute.get("/products/add", async (req, res) => {
+   
+
+    try {
+        let products;
+
+        //category wise filtering
+        const category= req.query.category; // check for differnet search queries
+        const searchkey=req.query.searchkey;
+        const supplierId=req.query.supplierId;
+        if (category) {
+            products = await req.db.execute(
+                `SELECT *
+                FROM products
+                WHERE upper(category) = upper(:category) AND PRODUCT_ID NOT IN (SELECT SP.PRODUCT_ID FROM SUPPLIER_PRODUCT SP WHERE SP.SUPPLIER_ID=:supplierId )
+                ORDER BY product_id`, [category,supplierId]
+            );
+        }
+        
+        else if (searchkey) {
+            const searchPattern = `%${searchkey.toUpperCase()}%`;
+        
+            products = await req.db.execute(
+                `SELECT * FROM PRODUCTS P2 WHERE P2.PRODUCT_ID IN
+                (SELECT DISTINCT P1.PRODUCT_ID FROM PRODUCTS P1 
+                LEFT OUTER JOIN PRODUCT_FEATURES PF ON (P1.PRODUCT_ID = PF.PRODUCT_ID) 
+                LEFT OUTER JOIN FEATURE_NAMES FN ON (PF.FEATURE_ID = FN.FEATURE_ID)
+                WHERE UPPER(P1.PRODUCT_NAME) LIKE UPPER(:searchPattern) OR UPPER(P1.CATEGORY) LIKE UPPER(:searchPattern) OR UPPER(P1.MANUFACTURER_ID) LIKE UPPER(:searchPattern)
+                OR UPPER(PF.VALUE) LIKE UPPER(:searchPattern) OR UPPER(FN.FEATURE_NAME) LIKE UPPER(:searchPattern)
+                )
+                ORDER BY P2.PRODUCT_ID`, { searchPattern }
+            );
+        }
+
+        else {
+            products = await req.db.execute(
+                `SELECT *
+                FROM products P WHERE P.PRODUCT_ID NOT IN (SELECT SP.PRODUCT_ID FROM SUPPLIER_PRODUCT SP WHERE SP.SUPPLIER_ID=:supplierId)
+                ORDER BY product_id`,{supplierId}
+            );
+        }
+
+        const categories = await req.db.execute(
+            `SELECT DISTINCT CATEGORY
+            FROM products
+            ORDER BY CATEGORY`
+        );
+
+        res.render('./suppliers/addProductCatalogue', {
+            'products': products.rows,
+            'categories': categories.rows,
+            'supplierId': supplierId
+
+        });
+    } catch (error) {
+        console.error('error fetching', error);
+        res.status(500).send('Internal server error');
+    }
+});
+
+supplierRoute.get("/details/edit",async(req,res)=>{    
     const supplierId=parseInt(req.query.supplierId);
-    // Execute SQL query to search in the database
     const supplierinfo = await req.db.execute(
-        'SELECT B.BRANCH_ID,O.NAME, B.MANAGER,STREET_ADDRESS,CITY,POSTAL_CODE,COUNTRY,B.SQUARE_FOOTAGE,B.AVG_SHIPPING_DURATION,P.ACCOUNT_NUMBER,P.ACCOUNT_HOLDER,P.BANK_NAME,P.IBAN FROM ORGANIZATIONS O JOIN BRANCHES B ON (O.ORGANIZATION_ID=B.BRANCH_ID) LEFT OUTER JOIN LOCATIONS L ON (O.ORGANIZATION_ID=L.ORGANIZATION_ID) LEFT OUTER JOIN PAYMENT_INFO P ON (B.BRANCH_ID=P.OWNER_ID) WHERE B.BRANCH_ID=:branchId ORDER BY B.BRANCH_ID',
-        [branchId] 
+        'SELECT S.SUPPLIER_ID, O.NAME, O.URL,S.AVG_DELIVERY_TIME, L1.STREET_ADDRESS A_STREET_ADDRESS, L1.CITY A_CITY, L1.POSTAL_CODE A_POSTAL_CODE, L1.COUNTRY A_COUNTRY,L2.STREET_ADDRESS P_STREET_ADDRESS, L2.CITY P_CITY,L2.POSTAL_CODE P_POSTAL_CODE,L2.COUNTRY P_COUNTRY,P.ACCOUNT_NUMBER,P.ACCOUNT_HOLDER,P.BANK_NAME,P.IBAN FROM ORGANIZATIONS O JOIN SUPPLIERS S ON (O.ORGANIZATION_ID=S.SUPPLIER_ID) LEFT OUTER JOIN LOCATIONS L1 ON (O.ORGANIZATION_ID=L1.ORGANIZATION_ID AND (UPPER(L1.TYPE) IN (\'DUAL\',\'ADDRESS\'))) LEFT OUTER JOIN LOCATIONS L2 ON (O.ORGANIZATION_ID=L2.ORGANIZATION_ID AND (UPPER(L2.TYPE) IN (\'DUAL\',\'PICKUP\'))) LEFT OUTER JOIN PAYMENT_INFO P ON (P.OWNER_ID=O.ORGANIZATION_ID) WHERE S.SUPPLIER_ID=:supplierId ORDER BY O.ORGANIZATION_ID',
+        [supplierId] 
+        // Use bind variables to prevent SQL injection
+    );
+
+    const supplierphone = await req.db.execute(
+        'SELECT * FROM CONTACTS WHERE OWNER_ID = :supplierId AND UPPER(TYPE) = \'PHONE_NUMBER\' ORDER BY VALUE',
+        [supplierId]
+        // Use bind variables to prevent SQL injection
+    );
+
+    const suppliermail = await req.db.execute(
+        'SELECT * FROM CONTACTS WHERE OWNER_ID = :supplierId AND UPPER(TYPE) = \'EMAIL\' ORDER BY VALUE',
+        [supplierId]
         // Use bind variables to prevent SQL injection
     );
 
 
-    const branchphone = await req.db.execute(
-        'SELECT * FROM CONTACTS WHERE OWNER_ID = :branchId AND UPPER(TYPE) = \'PHONE_NUMBER\' ORDER BY VALUE',
-        [branchId]
-        // Use bind variables to prevent SQL injection
-    );
+    res.render('./suppliers/edit', { 'supplierinfo': supplierinfo.rows, 'phone_numbers':supplierphone.rows, 'emails':suppliermail.rows });
+})
 
-    const branchmail = await req.db.execute(
-        'SELECT * FROM CONTACTS WHERE OWNER_ID = :branchId AND UPPER(TYPE) = \'EMAIL\' ORDER BY VALUE',
-        [branchId]
-        // Use bind variables to prevent SQL injection
-    );
+supplierRoute.post("/add/submitProducts", async (req, res) => {
+    console.log("oolala");
+    res.redirect('/suppliers' );
 
-
-    res.render('./branches/edit', { 'branchinfo': branchinfo.rows, 'phone_numbers':branchphone.rows, 'emails':branchmail.rows });
-})*/
+});
 
 supplierRoute.post("/edit/submit", async (req, res) => {
     try {
         // Extract form data from request body
         let errorflag=0;
-        const branchId=req.query.branchId;
-        const { name, street, postal_code, city, country, manager, square_footage, avg_shipping_duration, account_number, account_holder, bank, iban } = req.body;
+        const supplierId=req.query.supplierId;
+        const { name, a_street_address,url, a_postal_code, a_city, a_country,p_street_address, p_postal_code, p_city, p_country,  avg_delivery_time, account_number, account_holder, bank, iban } = req.body;
         
         // Initialize error message
         let message = "";
@@ -222,14 +286,12 @@ supplierRoute.post("/edit/submit", async (req, res) => {
         try {
             // Call the PL/SQL function to insert into BRANCHES
               await req.db.execute(
-                `BEGIN UPDATE_BRANCH(:branchId,:name,:url,:manager, :square_footage, :avg_shipping_duration); END;`,
+                `BEGIN UPDATE_SUPPLIER(:supplierId,:name,:url,:avg_delivery_time); END;`,
                 {   
-                    branchId,
+                    supplierId,
                     name,
-                    url: '',
-                    manager,
-                    square_footage,
-                    avg_shipping_duration
+                    url,
+                    avg_delivery_time
                 }
             );
             
@@ -239,15 +301,34 @@ supplierRoute.post("/edit/submit", async (req, res) => {
         
             try {
                 await req.db.execute(
-                    `BEGIN UPDATE_LOCATION(:street_address, :postal_code, :city, :state_province, :country, :organization_id,:type); END;`,
+                    `BEGIN UPDATE_LOCATION(:a_street_address, :a_postal_code, :a_city, :state_province, :a_country, :organization_id,:type); END;`,
                     {
-                        street_address: street,
-                        postal_code,
-                        city,
+                        a_street_address,
+                        a_postal_code,
+                        a_city,
                         state_province: '', // Replace with the actual value if available
-                        country,
-                        organization_id: branchId,
-                        type: 'DUAL' // Replace with the actual type
+                        a_country,
+                        organization_id: supplierId,
+                        type: 'ADDRESS' // Replace with the actual type
+                    }
+                );
+
+            } catch (locationError) {
+                errorflag=1;
+                message += ` Location Error: ${locationError.message};`;
+            }
+
+            try {
+                await req.db.execute(
+                    `BEGIN UPDATE_LOCATION(:p_street_address, :p_postal_code, :p_city, :state_province, :p_country, :organization_id,:type); END;`,
+                    {
+                        p_street_address,
+                        p_postal_code,
+                        p_city,
+                        state_province: '', // Replace with the actual value if available
+                        p_country,
+                        organization_id: supplierId,
+                        type: 'PICKUP' // Replace with the actual type
                     }
                 );
 
@@ -262,7 +343,7 @@ supplierRoute.post("/edit/submit", async (req, res) => {
                 await req.db.execute(
                     'BEGIN add_contact(:organization_id, :contact_type, :contact_value); END;',
                     {
-                        organization_id: branchId,
+                        organization_id: supplierId,
                         contact_type: 'PHONE_NUMBER',
                         contact_value: phoneNumber
                     }
@@ -282,7 +363,7 @@ supplierRoute.post("/edit/submit", async (req, res) => {
                 await req.db.execute(
                     'BEGIN add_contact(:organization_id, :contact_type, :contact_value); END;',
                     {
-                        organization_id: branchId,
+                        organization_id: supplierId,
                         contact_type: 'EMAIL',
                         contact_value: email
                     }
@@ -302,7 +383,7 @@ supplierRoute.post("/edit/submit", async (req, res) => {
                 await req.db.execute(
                     `BEGIN UPDATE_PAYMENT_INFO(:owner_id, :account_number, :account_holder, :bank_name, :iban); END;`,
                     {
-                        owner_id: branchId,
+                        owner_id: supplierId,
                         account_number,
                         account_holder,
                         bank_name: bank,
@@ -318,14 +399,15 @@ supplierRoute.post("/edit/submit", async (req, res) => {
             // Commit the transaction
         if(errorflag===0)
            {
-            await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'BRANCH '||:branchId ||' '|| :name || ' UPDATED','UPDATE')",{branchId,name});
+            await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'SUPPLIER '||:supplierId ||' '|| :name || ' UPDATED','UPDATE')",{supplierId,name});
             await req.db.execute("COMMIT");
+            res.redirect(`/suppliers/details?supplierId=${supplierId}`);
            }
             
         else
             {
                 await req.db.execute("ROLLBACK");
-                await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'BRANCH '||:branchId ||' '|| :name || ' UPDATE FAILED','UPDATE')",{branchId,name});
+                await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'SUPPLIER '||:supplierId ||' '|| :name || ' UPDATE FAILED','UPDATE')",{supplierId,name});
                 await req.db.execute("COMMIT");
             }
 
@@ -339,19 +421,13 @@ supplierRoute.post("/edit/submit", async (req, res) => {
             message = ` Internal Server Error: ${error.message}`;
             
             await req.db.execute("ROLLBACK");
-            await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'BRANCH '||:branchId ||' '|| :name || ' UPDATE FAILED','UPDATE')",{branchId,name});
+            await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'SUPPLIER '||:supplierId ||' '|| :name || ' UPDATE FAILED','UPDATE')",{supplierId,name});
             await req.db.execute("COMMIT");
             // Send an error response
             res.status(500).send(message);
         } 
     } catch (error) {
         console.error(error);
-        // Send an error response
-        
-        await req.db.execute("ROLLBACK");
-        await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'BRANCH '||:branchId ||' '|| :name || ' UPDATE FAILED','UPDATE')",{branchId,name});
-        await req.db.execute("COMMIT");
-        res.status(500).send("Internal Server Error;"+message);
     }
 });
 
@@ -392,7 +468,7 @@ supplierRoute.post("/submit", async (req, res) => {
                 await req.db.execute(
                     `BEGIN INSERT_LOCATION(:a_street_address, :a_postal_code, :a_city, :a_state_province, :a_country, :organization_id, :type); END;`,
                     {
-                        a_street_address: a_street,
+                        a_street_address:a_street,
                         a_postal_code,
                         a_city,
                         a_state_province: '', // Replace with the actual value if available
@@ -411,7 +487,7 @@ supplierRoute.post("/submit", async (req, res) => {
                 await req.db.execute(
                     `BEGIN INSERT_LOCATION(:p_street_address, :p_postal_code, :p_city, :p_state_province, :p_country, :organization_id, :type); END;`,
                     {
-                        p_street_address: p_street,
+                        p_street_address:p_street,
                         p_postal_code,
                         p_city,
                         p_state_province: '', // Replace with the actual value if available
@@ -490,6 +566,7 @@ supplierRoute.post("/submit", async (req, res) => {
             {
              await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'SUPPLIER '||:supplierId ||' '|| :name || ' INSERTED','INSERT')",{supplierId,name});
              await req.db.execute("COMMIT");
+             res.redirect(`/suppliers/details?supplierId=${supplierId}`);
             }
              
          else
@@ -500,6 +577,7 @@ supplierRoute.post("/submit", async (req, res) => {
              }
 
             console.log(message);
+           
             // Send a success response
             res.status(200).send(message);
         } catch (error) {
@@ -517,12 +595,6 @@ supplierRoute.post("/submit", async (req, res) => {
         } 
     } catch (error) {
         console.error(error);
-        // Send an error response
-        
-        await req.db.execute("ROLLBACK");
-        await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'BRANCH '|| :name || ' INSERT FAILED','INSERT')",[name]);
-        await req.db.execute("COMMIT");
-        res.status(500).send("Internal Server Error;"+message);
     }
 });
 

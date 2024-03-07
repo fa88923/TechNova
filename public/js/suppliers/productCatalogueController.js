@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     //get the  form inside which is the input and button tag
     
     //searching
+    const supplierId = document.body.getAttribute('data-supplier-id');
     const searchForm = document.getElementById('searchForm');
     if(searchForm)
     {
@@ -14,8 +15,17 @@ document.addEventListener('DOMContentLoaded', function () {
         //access the search key word inserted in the input tag
         const searchValue = searchInput.value;
         //send it to get(/search) route with the searchkey as query
-        const supplierId = document.body.getAttribute('data-supplier-id');
+      
         window.location.href = `/suppliers/products?searchkey=${searchValue}&supplierId=${supplierId}`;
+    });
+    }
+    
+    var add_button = document.getElementById('add_button');
+    if (add_button) 
+    {
+        add_button.addEventListener('click', function(event) {
+        event.preventDefault();
+        window.location.href = `/suppliers/products/add?supplierId=${supplierId}`;
     });
     }
 

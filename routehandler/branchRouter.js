@@ -239,6 +239,9 @@ branchRoute.post("/edit/submit", async (req, res) => {
                 res.status(500).send('Error adding emails.');
             }
         }
+        
+            
+
 
             // Call the PL/SQL procedure to insert into PAYMENT_INFO
             if(account_number && bank)
@@ -253,6 +256,7 @@ branchRoute.post("/edit/submit", async (req, res) => {
                         iban
                     }
                 );
+
 
             } catch (paymentInfoError) {
                 message += ` Payment Info Error: ${paymentInfoError.message};`;
