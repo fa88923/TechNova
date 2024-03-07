@@ -10,7 +10,7 @@ const transportRouter=require('./routehandler/transportRouter.js');
 const PorderRouter=require('./routehandler/PorderRouter.js');
 
 const app = express();
-const port = 3000;
+const port = 3001;
 
 oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT;
 

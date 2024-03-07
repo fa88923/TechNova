@@ -1,0 +1,120 @@
+<!--************************** products page ***********************************-->
+<!--to do:  'no products found message ta boojha jachhe na'-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- stylesheet to handle the searchbar specially -->
+
+    <link rel="stylesheet" type="text/css" href="/css/supplierSearch.css">
+    <link rel="stylesheet" type="text/css" href="/css/supplier.css">
+    <link rel="stylesheet" type="text/css" href="/css/products/productpage.css">
+    <style>
+        /* Adjust the size of the checkbox */
+        .user-box input[type="checkbox"] {
+            transform: scale(1.5); /* You can adjust the scale factor to increase or decrease the size */
+        }
+    </style>
+
+    <title>Add Products</title>
+</head>
+
+<body data-supplier-id="<%= supplierId %>">
+    <div class="container mt-5">
+        <div id="navbar">
+            <h1 class="mb-4">Choose Products</h1>
+            <div class="search-box">
+                <form id="searchForm">
+                    <button class="btn-search" type="submit"><i class="fas fa-search"></i></button>
+                    <input type="text" class="input-search" id="searchkey" placeholder="Search...">
+                </form>
+            </div>
+        </div>
+       
+        <div class="categories">           <!--add the css for this-->
+
+            <!-- category Bar -->
+           <!-- Category Bar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <ul class="navbar-nav">
+            <% categories.forEach(category => { %>
+                <li class="nav-item">
+                    <a class="nav-link" href="/suppliers/products/add?category=<%= category.CATEGORY %>&supplierId=<%=supplierId%> ">
+                        <%= category.CATEGORY %>s
+                    </a>
+                </li>
+            <% }); %>
+        </ul>
+        </nav>
+        <br>
+        <br>
+        </div>
+
+        <br><br><br>
+        <br><br><br>
+         
+
+
+        <!--product list-->
+
+        <div class="table-responsive">
+            <form id="itemForm" action="/suppliers/add/submitProducts" method="post">
+                <% if (products.length > 0) { %>
+                    <table class="table table-bordered table-hover table-dark">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>PRODUCT ID</th>
+                                <th>PRODUCT NAME</th>
+                                <th>CATEGORY</th>
+                                <th>RETAIL PRICE</th>
+                                <th>WARRANTY</th>
+                                <th>MANUFACTURER</th>
+                                <th>STOCK</th>
+                                <th>SELECT</th>
+                                <th>OFFERING PRICE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% products.forEach(product => { %>
+                                <tr>
+                                    <td><%= product.PRODUCT_ID %></td>
+                                    <td><a href="#" class="product-details-button" data-product-id="<%= product.PRODUCT_ID %>"><%= product.PRODUCT_NAME %></a></td> 
+                                    <td><%= product.CATEGORY %></td>
+                                    <td>Tk. <%= product.RETAIL_PRICE %></td>
+                                    <td><%= product.WARRANTY %> years</td>
+                                    <td><%= product.MANUFACTURER_ID %></td>
+                                    <td><%= product.CENTRAL_STOCK %></td>
+                                    <td>
+                                        <div class="user-box">
+                                            <input type="checkbox" class="select-checkbox" data-product-id="<%= product.PRODUCT_ID %>" />
+                                            <label></label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="offering-price-container">
+                                            <input type="number" class="offering-price-input" placeholder="Offering Price(in taka)" data-product-id="<%= product.PRODUCT_ID %>" />
+                                        </div>
+                                    </td>
+                                </tr>
+                            <% });
+                            %>
+                        </tbody>
+                    </table>
+                <% } else { %>
+                    <p>No products to choose from.</p>
+                <% } %>
+                <div class="add_button">
+                    <br><br><br>
+                    <button type="button" id="add_button">Add to Product Catalogue</button>
+                </div>
+            </form>
+        </div>
+        
+    </div>
+    <!--<script src="/js/supplierPageControllers/addScript.js"></script>
+    <script src="/js/supplierPageControllers/searchScript.js"></script>-->
+    <script src="/js/suppliers/addProductCatalogueController.js"></script>
+</body>
+</html>
+

@@ -12,6 +12,19 @@ BEGIN
     VALUES (CURRENT_TIMESTAMP, v_log_message,'INSERT');
 END;*/
 
+
+CREATE OR REPLACE TRIGGER BEFORE_INSERT_LOCATION   --use same functionality when a location is updated, but for some reason I am getting an error
+BEFORE INSERT  ON LOCATIONS
+FOR EACH ROW
+DECLARE
+    v_old_location_type VARCHAR2(20);
+    location_type VARCHAR2(20);
+BEGIN
+	
+            RAISE_APPLICATION_ERROR(-20001, 'Insertion stopped. Similar location found with type DUAL.'|| LOCATION_TYPE);
+END;
+/
+
 CREATE OR REPLACE TRIGGER BEFORE_INSERT_LOCATION   --use same functionality when a location is updated, but for some reason I am getting an error
 BEFORE INSERT  ON LOCATIONS
 FOR EACH ROW
@@ -40,11 +53,11 @@ BEGIN
 				END IF;
             UPDATE LOCATIONS 
             --SET TYPE = LOCATION_TYPE
-						SET COUNTRY = 'OOLALA'
+						SET TYPE=location_type
             WHERE LOCATION_ID=EXISTING_LOCATION.LOCATION_ID;
 						
 			  DBMS_OUTPUT.PUT_LINE('Insertion stopped. Similar location found with type DUAL.'  );
-            RAISE_APPLICATION_ERROR(-20001, 'Insertion stopped. Similar location found with type DUAL.'|| EXISTING_LOCATION.LOCATION_ID);
+            RAISE_APPLICATION_ERROR(-20001, 'Insertion stopped. Similar location found with type DUAL.'|| LOCATION_TYPE);
 
     END LOOP;
 END;
