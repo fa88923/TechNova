@@ -128,9 +128,20 @@ poRoute.get("/add",async(req,res)=>{
     const supplierId=parseInt(req.query.supplierId);
 
     const supplierinfo = await req.db.execute(
-        `SELECT S.SUPPLIER_ID, O.NAME,L2.STREET_ADDRESS||','||L2.CITY||'-'||L2.POSTAL_CODE||','||L2.COUNTRY PICKUP_LOCATION,P.ACCOUNT_NUMBER,P.ACCOUNT_HOLDER,P.BANK_NAME  FROM ORGANIZATIONS O JOIN SUPPLIERS S ON (O.ORGANIZATION_ID=S.SUPPLIER_ID) LEFT OUTER JOIN LOCATIONS L2 ON (O.ORGANIZATION_ID=L2.ORGANIZATION_ID AND (UPPER(L2.TYPE) IN ('DUAL','PICKUP'))) LEFT OUTER JOIN PAYMENT_INFO P ON (S.SUPPLIER_ID=P.OWNER_ID) WHERE S.SUPPLIER_ID=:supplierId`,
+        `SELECT S.SUPPLIER_ID, O.NAME,L2.STREET_ADDRESS||','||L2.CITY||'-'||L2.POSTAL_CODE||','||L2.COUNTRY PICKUP_LOCATION,P.ID,P.ACCOUNT_NUMBER,P.ACCOUNT_HOLDER,P.BANK_NAME, L2.LOCATION_ID
+        FROM ORGANIZATIONS O JOIN SUPPLIERS S ON (O.ORGANIZATION_ID=S.SUPPLIER_ID) 
+            LEFT OUTER JOIN LOCATIONS L2 ON (O.ORGANIZATION_ID=L2.ORGANIZATION_ID AND (UPPER(L2.TYPE) IN ('DUAL','PICKUP')))  
+            LEFT OUTER JOIN PAYMENT_INFO P ON (S.SUPPLIER_ID=P.OWNER_ID) 
+        WHERE S.SUPPLIER_ID=:supplierId`,
         [supplierId] 
         // Use bind variables to prevent SQL injection
+    );
+
+    destination = await req.db.execute(
+        `SELECT L2.LOCATION_ID
+        FROM ORGANIZATIONS O  
+            LEFT OUTER JOIN LOCATIONS L2 ON (O.ORGANIZATION_ID=L2.ORGANIZATION_ID AND (UPPER(L2.TYPE) IN ('DUAL','PICKUP'))) 
+        WHERE O.TYPE='CENTRAL'`
     );
 
     products = await req.db.execute(
@@ -138,11 +149,61 @@ poRoute.get("/add",async(req,res)=>{
         FROM SUPPLIER_PRODUCT SP JOIN products P ON (SP.PRODUCT_ID=P.PRODUCT_ID) WHERE SP.SUPPLIER_ID=:supplierId
         ORDER BY p.product_id`,{supplierId}
     );
+
+    const tcompany_list = await req.db.execute(
+        `SELECT O.ORGANIZATION_ID,O.NAME
+        FROM ORGANIZATIONS O
+        WHERE O.TYPE='TRANSPORT'`
+        // Use bind variables to prevent SQL injection
+    );
     //console.log(supplierinfo)
     res.render('./purchaseOrder/addPurchaseOrder',{
-        'supplierinfo': supplierinfo.rows, 'products': products.rows                                                   
+        'supplierinfo': supplierinfo.rows, 
+        'products': products.rows,
+        'tcompany_list': tcompany_list.rows , 
+        'destination': destination.rows                                                                         
     });
 })
+
+//////////////////////////////////
+poRoute.post("/submit", async (req, res) => {
+    try {
+        // Extract form data from request body
+        const {supplierId,to_acc,pickupDate,method,currency,total_amount,tcompany,departure_time,departure_date,vehicle_no,current_location,start_loc,dest} = req.body;
+
+        const selectedProductData = JSON.parse(req.body.selectedProductData);
+
+        if (Array.isArray(selectedProductData)) {
+            // Now you can safely use forEach on selectedProductData
+            selectedProductData.forEach(product => {
+                const productId = product.productId;
+                const quantity = product.quantity;
+                const price=product.price;
+    
+                // Do something with productId and quantity (e.g., store in a database)
+                console.log(`Product ID: ${productId}, Quantity: ${quantity}, Price: ${price}` );
+            });
+        } else {
+            // Handle the case where selectedProductData is not an array
+            console.error('selectedProductData is not an array.');
+        }
+
+    // Assuming the selectedProductData is an array of objects
+        
+        
+        
+    } catch (error) {
+        console.error(error);
+        // Send an error response
+        
+        // await req.db.execute("ROLLBACK");
+        // await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'BRANCH '|| :name || ' INSERT FAILED','INSERT')",[name]);
+        // await req.db.execute("COMMIT");
+        // res.status(500).send("Internal Server Error;"+message);
+    }
+    res.redirect('/purchaseOrder')
+    //res.render('home');
+});
 
 
 module.exports=poRoute;

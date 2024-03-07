@@ -10,3 +10,18 @@
 .table-container {
   flex: 1; /* Add this line to make both elements share the available space */
 }
+
+#inputSupplier {
+    /* padding: 10px auto; */
+    width: 100%;
+    background-color: transparent; /* Set the background color of the dropdown to transparent */
+    color: #fff; /* Set the text color */
+    border: 1px solid #fff; /* Add a border for better visibility */
+    font-size: larger;
+}
+
+#inputSupplier option {
+    
+    background-color: transparent; /* Set the background color of the options to transparent */
+    color: #000; 
+}

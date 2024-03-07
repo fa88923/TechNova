@@ -15,17 +15,19 @@
     <div class="d-flex">
         <div class="login-box">
             <h2>Purchase Information</h2>
-            <form method="post" action="/suppliers/submit" id="addingForm">
+            <form method="post" action="/purchaseOrder/submit" id="addingForm">
                 
                 
                 <div class="user-box">
                     <input type="text" id="account_number" name="account_number" required="account_number" value="<%= supplierinfo[0].ACCOUNT_NUMBER %>">
                     <label>Account Number</label>
+                    <input type="hidden" name="supplierId" value="<%= supplierinfo[0].SUPPLIER_ID %>">
                 </div>
     
                 <div class="user-box">
                     <input type="text" id="account_holder" name="account_holder" required="account_holder" value="<%= supplierinfo[0].ACCOUNT_HOLDER %>">
                     <label>Account Holder</label>
+                    <input type="hidden" name="to_acc" value="<%= supplierinfo[0].ID %>">
                 </div>
     
                 <div class="user-box">
@@ -49,9 +51,22 @@
                     <label>Total amount</label>
                 </div>
                 <h3>Shipping Information</h3>
+
+                <div class="user-box">
+                    <select id="inputSupplier" class="form-control" name="tcompany">
+                        <option value="" selected>Choose Transport Company</option>
+                        <% tcompany_list.forEach(tc => { %>
+                            <option value="<%= tc.ORGANIZATION_ID %>"><%= tc.NAME %></option>
+                        <% }); %>
+                    </select>
+                    <!-- <label>Transport Company</label> -->
+                </div><br><br>
+
                 <div class="user-box">
                     <input type="text" id="pickupLocation" name="pickupLocation" required="" value="<%= supplierinfo[0].PICKUP_LOCATION %>">
                     <label>Pickup Location</label>
+                    <input type="hidden" name="start_loc" value="<%= supplierinfo[0].LOCATION_ID %>">
+                    <input type="hidden" name="dest" value="<%= destination[0].LOCATION_ID %>">
                 </div>
                 <div class="user-box">
                     <input type="text" id="departure_time" name="departure_time" required="" value="">
@@ -78,6 +93,8 @@
                     <label>Current Location</label>
                 </div>
     
+                <input type="hidden" id="selectedProductData" name="selectedProductData" value="">
+
                 <a href="#" id="add_button">
                 <span></span>
                 <span></span>
@@ -104,14 +121,14 @@
                                 <td><%= product.PRODUCT_NAME %></td>
                                 <td>
                                     <div class="user-box">
-                                        <input type="checkbox" id="checkbox<%= product.PRODUCT_ID %>" />
+                                        <input type="checkbox" id="<%= product.PRODUCT_ID %>" class="productCheckbox" />
                                         <!-- <label for="checkbox<%= product.PRODUCT_ID %>"></label> -->
                                         <input type="number" id="quantity<%= product.PRODUCT_ID %>" name="quantity<%= product.PRODUCT_ID %>" />
                                     </div>
                                 </td>
                                 <td>
                                     <form action="">
-                                        <input type="number" value="<%= product.RETAIL_PRICE %>">
+                                        <input type="number" id="price<%= product.PRODUCT_ID %>" value="<%= product.RETAIL_PRICE %>">
                                     </form>
                                 </td>
                             </tr>
@@ -121,7 +138,8 @@
                 </table>
             </div>
         </div>
-    </div>    
+    </div>  
+    <script src="/js/POpageControllers/addPOController.js"></script>  
 </body>
 
 </html>
