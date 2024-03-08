@@ -314,7 +314,6 @@ branchRoute.get("/add",(req,res)=>{
 
 branchRoute.post("/submit", async (req, res) => {
     try {
-        console.log("dholtongpoltong");
         // Extract form data from request body
         const { name, street, postal_code, city, country, manager, square_footage, avg_shipping_duration, account_number, account_holder, bank, iban } = req.body;
         
@@ -436,23 +435,23 @@ branchRoute.post("/submit", async (req, res) => {
                 await req.db.execute("ROLLBACK");
                 await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE, TYPE, ACTION, OUTCOME) VALUES (CURRENT_TIMESTAMP, 'BRANCH ' || :name || ' INSERT FAILED', 'ORGANIZATION', 'INSERT', 'FAILED')", { name });
                 await req.db.execute("COMMIT");
+                res.status(500).send(message);
              }
 
             console.log(message);
             // Send a success response
-            res.status(200).send(message);
         } catch (error) {
             // Rollback the transaction in case of an error
 
             // Capture the error message
             message += ` Internal Server Error: ${error.message}`;
             
-           /* await req.db.execute("ROLLBACK");
+            await req.db.execute("ROLLBACK");
             await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE, TYPE, ACTION, OUTCOME) VALUES (CURRENT_TIMESTAMP, 'BRANCH ' || :name || ' INSERT FAILED', 'ORGANIZATION', 'INSERT', 'FAILED')", { name });
-            await req.db.execute("COMMIT");*/
+            await req.db.execute("COMMIT");
 
             // Send an error response
-            res.status(500).send('INTERNAL SERVER ERROR');
+            res.status(500).send(message);
         } 
     } catch (error) {
         console.error(error);

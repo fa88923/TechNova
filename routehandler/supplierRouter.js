@@ -562,7 +562,7 @@ supplierRoute.post("/submit", async (req, res) => {
                 message += ` Payment Info Error: ${paymentInfoError.message};`;
                 errorflag=1;
             }
-console.log(errorflag);
+            console.log(errorflag);
             // Commit the transaction
             if(errorflag===0)
             {
@@ -576,29 +576,29 @@ console.log(errorflag);
              {
                 await req.db.execute("ROLLBACK");
                 await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE, TYPE, ACTION, OUTCOME) VALUES (CURRENT_TIMESTAMP, 'SUPPLIER ' || :name || ' INSERT FAILED', 'ORGANIZATION', 'INSERT', 'FAILED')", { name });
-                     await req.db.execute("COMMIT");
+                await req.db.execute("COMMIT");
+                res.status(500).send(message);
              }
 
             console.log(message);
            
             // Send a success response
-            res.status(200).send(message);
         } catch (error) {
             // Rollback the transaction in case of an error
 
             // Capture the error message
             message += ` Internal Server Error: ${error.message}`;
             
-           /* await req.db.execute("ROLLBACK");
+            await req.db.execute("ROLLBACK");
             await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE, TYPE, ACTION, OUTCOME) VALUES (CURRENT_TIMESTAMP, 'SUPPLIER ' || :name || ' INSERT FAILED', 'ORGANIZATION', 'INSERT', 'FAILED')", { name });
-                 await req.db.execute("COMMIT");*/
+            await req.db.execute("COMMIT");
 
             // Send an error response
             res.status(500).send(message);
         } 
     } catch (error) {
         console.error(error);
-        //res.status(500).send('error');
+        res.status(500).send('Internal Server Error');
     }
 });
 

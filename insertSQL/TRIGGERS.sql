@@ -15,6 +15,23 @@ BEGIN
 END org_insert_trigger;
 /
 
+CREATE OR REPLACE TRIGGER check_negative_stock
+BEFORE UPDATE OF CENTRAL_STOCK ON PRODUCTS
+FOR EACH ROW
+DECLARE
+  v_new_stock NUMBER;
+BEGIN
+  -- Retrieve the new stock value from the updated row
+  v_new_stock := :NEW.CENTRAL_STOCK;
+
+  -- Check if the new stock is less than 0
+  IF v_new_stock < 0 THEN
+    -- Raise an error with a custom message
+    RAISE_APPLICATION_ERROR(-20001, 'Central Stock cannot be updated to a value less than 0.');
+  END IF;
+END check_negative_stock;
+/
+
 
 
 CREATE OR REPLACE TRIGGER BEFORE_DELETE_ORGANIZATION
@@ -45,8 +62,8 @@ BEGIN
 	 v_log_message := :OLD.TYPE ||' ' || :OLD.NAME || ' DELETED';
 
     -- Insert data into the LOGS table
-    INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE)
-    VALUES (CURRENT_TIMESTAMP, v_log_message,'DELETE');
+    INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE,ACTION,OUTCOME)
+    VALUES (CURRENT_TIMESTAMP, v_log_message,'ORGANIZATION','DELETE','SUCCESSFUL');
 	
 END;
 /
