@@ -35,11 +35,12 @@
 
                     <dt class="col-sm-4">Address:</dt>
                     <dd class="col-sm-8"><%= branchinfo[0].ADDRESS %></dd>
-                    <dt class="col-sm-4">Mobile Phone:</dt>
-                    <dd class="col-sm-8"><%if(phone_numbers.length>0)
-                       { phone_numbers.forEach(number => { %>
-                         <%= number.VALUE %>,            <!--extra akta comma print hoy, fix it-->
-                    <% }); }%></dd>
+                    <%if(phone_numbers.length>0){%>
+                        <dt class="col-sm-4">Mobile Phone:</dt>
+                        <dd class="col-sm-8">
+                           <% phone_numbers.forEach(number => { %>
+                             <%= number.VALUE %>,            <!--extra akta comma print hoy, fix it-->
+                        <% }); }%></dd>
                     <%if(emails.length>0){%>
                     <dt class="col-sm-4">Email:</dt>
                     <dd class="col-sm-8">

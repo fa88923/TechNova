@@ -503,6 +503,7 @@ supplierRoute.post("/submit", async (req, res) => {
             }
 
             const phoneNumbers = req.body.phone_number || [];
+            console.log(phoneNumbers);
         for (const phoneNumber of phoneNumbers) {
             try {
                 await req.db.execute(
@@ -512,6 +513,7 @@ supplierRoute.post("/submit", async (req, res) => {
                         contact_type: 'PHONE_NUMBER',
                         contact_value: phoneNumber
                     }
+
                 );
             } catch (error) {
                 // Handle contact insertion errors

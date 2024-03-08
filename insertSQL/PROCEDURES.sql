@@ -105,11 +105,21 @@ BEGIN
     WHERE OWNER_ID = p_organization_id
         AND upper(TYPE) = UPPER(p_type)
         AND VALUE = p_value;
+			dbms_output.put_line('contact '||v_count);
+			dbms_output.put_line('contact '||p_value||'olgol');
+			
+			IF v_count = 0 AND P_VALUE<>'' THEN
+				dbms_output.put_line('contact added successfully');
+    END IF;
 
     -- If no existing contact, then add the contact
-    IF v_count = 0 AND P_VALUE<>'' THEN
+    IF v_count = 0 AND P_VALUE is not null THEN
         INSERT INTO CONTACTS (OWNER_ID, TYPE, VALUE)
         VALUES (p_organization_id, UPPER(p_type), p_value);
+				dbms_output.put_line('contact added successfully');
+		ELSE
+		dbms_output.put_line('contact added sfailed');
+		raise_application_error(-20001,'oolala');
     END IF;
 EXCEPTION
     WHEN OTHERS THEN
