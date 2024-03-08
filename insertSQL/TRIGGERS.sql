@@ -1,67 +1,38 @@
-/*CREATE OR REPLACE TRIGGER ORG_INSERT_TRIGGER
+CREATE OR REPLACE TRIGGER org_insert_trigger
 AFTER INSERT ON ORGANIZATIONS
 FOR EACH ROW
 DECLARE
-    v_log_message VARCHAR2(255);
+  v_log_id NUMBER;
 BEGIN
-    -- Create a log message for successful insertion
-    v_log_message := :NEW.TYPE || ' ' || :NEW.ORGANIZATION_ID || ' ' || :NEW.NAME || ' ADDED SUCCESSFULLY';
+  -- Insert a record into the LOGS table
+  INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE, TYPE, ACTION, OUTCOME)
+  VALUES (CURRENT_TIMESTAMP,:NEW.TYPE ||' '|| :NEW.ORGANIZATION_ID || ' ' ||:NEW.NAME || ' Inserted','ORGANIZATION', 'INSERT', 'SUCCESSFUL')
+  RETURNING LOG_ID INTO v_log_id;
 
-    -- Insert data into the LOGS table
-    INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE)
-    VALUES (CURRENT_TIMESTAMP, v_log_message,'INSERT');
-END;*/
-
-
-CREATE OR REPLACE TRIGGER BEFORE_INSERT_LOCATION   --use same functionality when a location is updated, but for some reason I am getting an error
-BEFORE INSERT  ON LOCATIONS
-FOR EACH ROW
-DECLARE
-    v_old_location_type VARCHAR2(20);
-    location_type VARCHAR2(20);
-BEGIN
-	
-            RAISE_APPLICATION_ERROR(-20001, 'Insertion stopped. Similar location found with type DUAL.'|| LOCATION_TYPE);
-END;
+  -- Insert a record into the ORGANIZATION_LOGS table
+  INSERT INTO ORGANIZATION_LOGS (LOG_ID, ORGANIZATION_ID, ORGANIZATION_TYPE)
+  VALUES (v_log_id, :NEW.ORGANIZATION_ID, :NEW.TYPE);
+END org_insert_trigger;
 /
 
-CREATE OR REPLACE TRIGGER BEFORE_INSERT_LOCATION   --use same functionality when a location is updated, but for some reason I am getting an error
-BEFORE INSERT  ON LOCATIONS
+CREATE OR REPLACE TRIGGER check_negative_stock
+BEFORE UPDATE OF CENTRAL_STOCK ON PRODUCTS
 FOR EACH ROW
 DECLARE
-    v_old_location_type VARCHAR2(20);
-    location_type VARCHAR2(20);
+  v_new_stock NUMBER;
 BEGIN
-    -- Check if a similar location already exists in the table
-    FOR existing_location IN (SELECT * FROM LOCATIONS
-                            WHERE upper(STREET_ADDRESS) LIKE UPPER(:NEW.STREET_ADDRESS)
-                                AND upper(CITY) LIKE UPPER(:NEW.CITY)
-                                AND upper(COUNTRY) LIKE UPPER(:NEW.COUNTRY)
-                                AND ORGANIZATION_ID = :NEW.ORGANIZATION_ID
-                            )
-    LOOP
-        v_old_location_type := existing_location.TYPE;
-				location_type := existing_location.TYPE;
-        
-        IF v_old_location_type = 'DUAL' OR :NEW.TYPE = 'DUAL' THEN
-            location_type := 'DUAL';
-        ELSIF v_old_location_type IS NOT NULL AND :NEW.TYPE IS NOT NULL AND v_old_location_type <> :NEW.TYPE THEN
-					location_type :='DUAL';
-        ELSIF v_old_location_type IS NULL or v_old_location_type=:NEW.TYPE THEN
-				    location_type := :NEW.TYPE;
-					
-				END IF;
-            UPDATE LOCATIONS 
-            --SET TYPE = LOCATION_TYPE
-						SET TYPE=location_type
-            WHERE LOCATION_ID=EXISTING_LOCATION.LOCATION_ID;
-						
-			  DBMS_OUTPUT.PUT_LINE('Insertion stopped. Similar location found with type DUAL.'  );
-            RAISE_APPLICATION_ERROR(-20001, 'Insertion stopped. Similar location found with type DUAL.'|| LOCATION_TYPE);
+  -- Retrieve the new stock value from the updated row
+  v_new_stock := :NEW.CENTRAL_STOCK;
 
-    END LOOP;
-END;
+  -- Check if the new stock is less than 0
+  IF v_new_stock < 0 THEN
+    -- Raise an error with a custom message
+    RAISE_APPLICATION_ERROR(-20001, 'Central Stock cannot be updated to a value less than 0.');
+  END IF;
+END check_negative_stock;
 /
+
+
 
 CREATE OR REPLACE TRIGGER BEFORE_DELETE_ORGANIZATION
 BEFORE DELETE ON ORGANIZATIONS
@@ -91,8 +62,8 @@ BEGIN
 	 v_log_message := :OLD.TYPE ||' ' || :OLD.NAME || ' DELETED';
 
     -- Insert data into the LOGS table
-    INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE)
-    VALUES (CURRENT_TIMESTAMP, v_log_message,'DELETE');
+    INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE,ACTION,OUTCOME)
+    VALUES (CURRENT_TIMESTAMP, v_log_message,'ORGANIZATION','DELETE','SUCCESSFUL');
 	
 END;
 /

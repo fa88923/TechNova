@@ -31,4 +31,13 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
+    var deleteButtons = document.querySelectorAll('.delete-button');
+    deleteButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+            var clientId = button.getAttribute('data-client-id');
+            // Redirect to /branches with the delete parameter
+            window.location.href = '/clients?delete=' + clientId;
+        });
+    });
+
 });

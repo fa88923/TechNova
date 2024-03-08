@@ -1,4 +1,4 @@
-<!--************************** edit suppliers page ***********************************-->
+<!--************************** edit transporters page ***********************************-->
 
 
 <!DOCTYPE html>
@@ -6,59 +6,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Supplier</title>
+    <title>Edit Shipping Company</title>
     <link rel="stylesheet" type="text/css" href="/css/addSupplier.css">
 </head>
 <body>
     <div class="login-box">
-        <h2>Supplier Information</h2>
-        <form method="post" action="/suppliers/edit/submit?supplierId=<%= supplierinfo[0].SUPPLIER_ID %>" id="editingForm">
+        <h2>Shipping Company Information</h2>
+        <form method="post" action="/transports/edit/submit?companyId=<%= companyinfo[0].COMPANY_ID %>" id="editingForm">
 
             <div class="user-box">
-                <input type="text" id="name" name="name" required="" value="<%= supplierinfo[0].NAME %>">
+                <input type="text" id="name" name="name" required="" value="<%= companyinfo[0].NAME %>">
                 <label>Name</label>
             </div>
 
             <div class="user-box">
-                <input type="text" id="url" name="url" required="" value="<%= supplierinfo[0].URL %>">
+                <input type="text" id="url" name="url" required="" value="<%= companyinfo[0].URL %>">
                 <label>url</label>
             </div>
 
             <h3>Address</h3>
             <div class="user-box">
-                <input type="text" id="a_street" name="street" required="" value="<%= supplierinfo[0].A_STREET_ADDRESS %>">
+                <input type="text" id="street_address" name="street" required="" value="<%= companyinfo[0].STREET_ADDRESS %>">
                 <label>Street Address</label>
             </div>
             <div class="user-box">
-                <input type="text" id="a_postal_code" name="postal_code" required="" value="<%= supplierinfo[0].A_POSTAL_CODE %>">
+                <input type="text" id="postal_code" name="postal_code" required="" value="<%= companyinfo[0].POSTAL_CODE %>">
                 <label>Postal Code</label>
             </div>
             <div class="user-box">
-                <input type="text" id="a_city" name="city" required="" value="<%= supplierinfo[0].A_CITY %>">
+                <input type="text" id="city" name="city" required="" value="<%= companyinfo[0].CITY %>">
                 <label>City</label>
             </div>
             <div class="user-box">
-                <input type="text" id="a_country" name="country" required="" value="<%= supplierinfo[0].A_COUNTRY %>">
+                <input type="text" id="country" name="country" required="" value="<%= companyinfo[0].COUNTRY %>">
                 <label>Country</label>
             </div>
 
-            <h3>Pickup Location</h3>
-            <div class="user-box">
-                <input type="text" id="p_street" name="street" required="" value="<%= supplierinfo[0].P_STREET_ADDRESS %>">
-                <label>Street Address</label>
-            </div>
-            <div class="user-box">
-                <input type="text" id="p_postal_code" name="postal_code" required="" value="<%= supplierinfo[0].P_POSTAL_CODE %>">
-                <label>Postal Code</label>
-            </div>
-            <div class="user-box">
-                <input type="text" id="p_city" name="city" required="" value="<%= supplierinfo[0].P_CITY %>">
-                <label>City</label>
-            </div>
-            <div class="user-box">
-                <input type="text" id="p_country" name="country" required="" value="<%= supplierinfo[0].P_COUNTRY %>">
-                <label>Country</label>
-            </div>
             <!-- Add these lines to your HTML form -->
 
 
@@ -85,29 +68,29 @@
             </div>
             
             <div class="user-box">
-                <input type="text" id="avg_delivery_time" name="avg_delivery_time" required="avg_delivery_time" value="<%= supplierinfo[0].AVG_DELIVERY_TIME %>">
-                <label>Average Shipping Duration(in days)</label>
+                <input type="text" id="capacity" name="capacity" required="capacity" value="<%= companyinfo[0].CAPACITY %>">
+                <label>Capacity(in TEUs)</label>
             </div>
             
             <h3>Payment Information</h3>
 
             <div class="user-box">
-                <input type="text" id="account_number" name="account_number" required="account_number" value="<%= supplierinfo[0].ACCOUNT_NUMBER %>">
+                <input type="text" id="account_number" name="account_number" required="account_number" value="<%= companyinfo[0].ACCOUNT_NUMBER %>">
                 <label>Account Number</label>
             </div>
 
             <div class="user-box">
-                <input type="text" id="account_holder" name="account_holder" required="account_holder" value="<%= supplierinfo[0].ACCOUNT_HOLDER %>">
+                <input type="text" id="account_holder" name="account_holder" required="account_holder" value="<%= companyinfo[0].ACCOUNT_HOLDER %>">
                 <label>Account Holder</label>
             </div>
 
             <div class="user-box">
-                <input type="text" id="bank" name="bank" required="bank" value="<%= supplierinfo[0].BANK_NAME %>">
+                <input type="text" id="bank" name="bank" required="bank" value="<%= companyinfo[0].BANK_NAME %>">
                 <label>Bank</label>
             </div>
 
             <div class="user-box">
-                <input type="text" id="iban" name="iban" required="iban" value="<%= supplierinfo[0].IBAN %>">
+                <input type="text" id="iban" name="iban" required="iban" value="<%= companyinfo[0].IBAN %>">
                 <label>IBAN</label>
             </div>
 
@@ -120,6 +103,6 @@
             </a>
         </form>
         </div>
-        <script src="/js/suppliers/editSupplierController.js"></script>
+        <script src="/js/transporters/editTransportController.js"></script>
 </body>
 </html>

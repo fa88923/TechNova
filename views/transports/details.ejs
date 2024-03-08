@@ -1,11 +1,11 @@
-<!--************************** details of a client page ***********************************-->
+<!--************************** details of a transport page ***********************************-->
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Client Details</title>
+    <title>Shipping Company Details</title>
     <!-- Bootstrap CSS link -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom CSS link -->
@@ -14,27 +14,26 @@
 </head>
 
 <body>
-    <h1 class="text-center">Client Details</h1>
+    <h1 class="text-center">Shipping Company Details</h1>
 
     <div class="container mt-5">
         
         <!-- Section 1: Product Information -->
         <div class="card mb-4">
             <div class="card-header">
-                Client Information
+                Shipping Company Information
             </div>
             <div class="card-body">
                 <dl class="row">
-                    <dt class="col-sm-4">Client ID:</dt>
-                    <dd class="col-sm-8"><%= clientinfo[0].CLIENT_ID%></dd>
-                    <dt class="col-sm-4">Client Name:</dt>
-                    <dd class="col-sm-8"><%= clientinfo[0].NAME %></dd>
-
-                    <dt class="col-sm-4">URL:</dt>
-                    <dd class="col-sm-8"><a href="<%= clientinfo[0].URL %>"><%= clientinfo[0].URL %></a></dd>
-
+                    <dt class="col-sm-4">Company ID:</dt>
+                    <dd class="col-sm-8"><%= companyinfo[0].COMPANY_ID%></dd>
+                    <dt class="col-sm-4">Name:</dt>
+                    <dd class="col-sm-8"><%= companyinfo[0].NAME %></dd>
                     <dt class="col-sm-4">Address:</dt>
-                    <dd class="col-sm-8"><%= clientinfo[0].ADDRESS %></dd>
+                    <dd class="col-sm-8"><%= companyinfo[0].ADDRESS %></dd>
+                    <dt class="col-sm-4">Capacity:</dt>
+                    <dd class="col-sm-8"><%= companyinfo[0].CAPACITY %> TEUs</dd>
+                    
                     <dt class="col-sm-4">Mobile Phone:</dt>
                     <dd class="col-sm-8"><%if(phone_numbers.length>0)
                        { phone_numbers.forEach(number => { %>
@@ -46,7 +45,7 @@
                        <% emails.forEach(email => { %>
                          <%= email.VALUE %>,            <!--extra akta comma print hoy, fix it-->
                     <% }); }%></dd>
-                   
+                    
                     
 
                 </dl>
@@ -61,26 +60,25 @@
             <div class="card-body">
                 <dl class="row">
                     <dt class="col-sm-4">Account Number:</dt>
-                    <dd class="col-sm-8"><%= clientinfo[0].ACCOUNT_NUMBER %></dd>
+                    <dd class="col-sm-8"><%=companyinfo[0].ACCOUNT_NUMBER %></dd>
 
                     <dt class="col-sm-4">Account Holder:</dt>
-                    <dd class="col-sm-8"><%= clientinfo[0].ACCOUNT_HOLDER %></dd>
+                    <dd class="col-sm-8"><%= companyinfo[0].ACCOUNT_HOLDER %></dd>
 
                     <dt class="col-sm-4">Bank:</dt>
-                    <dd class="col-sm-8"><%= clientinfo[0].BANK_NAME %></dd>
+                    <dd class="col-sm-8"><%= companyinfo[0].BANK_NAME %></dd>
 
                     <dt class="col-sm-4">Iban:</dt>
-                    <dd class="col-sm-8"><%= clientinfo[0].IBAN %></dd>
+                    <dd class="col-sm-8"><%= companyinfo[0].IBAN %></dd>
 
                 </dl>
               </div>
               
              </div>
-             <!--View order button here, similar to the income statements button-->
-             <a href="/clients/details/edit?clientId=<%=clientinfo[0].CLIENT_ID%>" class="btn btn-primary">Edit</a>
+             
+             <a href="/transports/details/edit?companyId=<%=companyinfo[0].COMPANY_ID%>" class="btn btn-primary">Edit</a>
         
-    <!-- Bootstrap JS and dependencies (jQuery, Popper.js) -->  <!--create details controller for the purchase order button here-->
-    <script src="/js/branches/branchDetailsController.js"></script>
+    <!-- Bootstrap JS and dependencies (jQuery, Popper.js) -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
