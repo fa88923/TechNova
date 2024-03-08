@@ -230,6 +230,8 @@ poRoute.post("/submit", async (req, res) => {
                 dest
             }
         );
+
+        await req.db.execute("COMMIT");
         
     } catch (error) {
         console.error(error);
