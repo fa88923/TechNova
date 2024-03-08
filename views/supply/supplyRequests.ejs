@@ -1,0 +1,78 @@
+<!--************************** suppliers page ***********************************-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- stylesheet to handle the searchbar specially -->
+    
+    <link rel="stylesheet" type="text/css" href="/css/supplierSearch.css">
+    <link rel="stylesheet" type="text/css" href="/css/supplier.css">
+    <link rel="stylesheet" type="text/css" href="/css/dropdown.css">
+
+    <title>Purchase Orders</title>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <div id="navbar">
+            <h1 class="mb-4">Supply Requests</h1>
+            <div class="search-box">
+                <form id="searchForm">
+                    <button class="btn-search" type="submit"><i class="fas fa-search"></i></button>
+                    <input type="text" class="input-search" id="searchkey" placeholder="Search...">
+                </form>
+            </div>
+        </div>
+  
+
+        <br><br><br>
+        <br><br><br>
+         
+        <!--po list-->
+
+        <div class="table-responsive">
+            <% if (supplyRequests.length > 0) { %>
+                <table class="table table-bordered table-hover table-dark">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>REQUEST ID</th>
+                            <th>BRANCH NAME</th>
+                            <th>PLACEMENT DATE</th>
+                            <th>DEADLINE</th>
+                            <th>STATUS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% supplyRequests.forEach(supplyRequest => { %>
+                        <tr>
+                            <td><%= supplyRequest.REQUEST_ID %></td>
+                            <td><a href="/branches/details?branchId= <%= supplyRequest.BRANCH_ID %>" class="supplier-details-button" ><%= supplyRequest.NAME %></a></td> 
+                            <td><%= supplyRequest.PLACEMENT_DATE %> </td>
+                            <td><%= supplyRequest.DEADLINE %></td>
+                            <td><%= supplyRequest.STATUS %></td>
+                            <td>
+                                <button class="details-button" supplyid="<%= supplyRequest.REQUEST_ID %>">Details</button>
+                            </td>
+                        </tr>
+                        <% });
+                        %>
+                    </tbody>
+                </table>
+            <% } else { %>
+                <p>        No supply orders found.</p>
+            <% } %>
+        </div>
+        <!-- dropdown -->
+        
+        
+
+        
+    </div>
+
+
+    <script src="/js/supply/supplyRequestsController.js"></script>
+    
+</body>
+</html>
+

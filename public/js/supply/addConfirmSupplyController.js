@@ -12,13 +12,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (checkboxes[i].checked) {
                     var productId = checkboxes[i].id;
                     var quantity = document.getElementById('quantity' + productId).value;
-                    var price = document.getElementById('price' + productId).value;
+                    //var price = document.getElementById('price' + productId).value;
 
                     // Create an object to store data for each selected product
                     var productData = {
                         productId: productId,
                         quantity: quantity,
-                        price: price
+                        //price: price
                         // Add more properties if needed
                     };
 
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('selectedProductData').value = selectedProductDataJson;
             //console.log('hellooooo');
 
-        document.getElementById('addingForm').submit();
+        document.getElementById('confirmedSupplyForm').submit();
     });
 
     

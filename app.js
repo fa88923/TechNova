@@ -8,6 +8,8 @@ const branchRouter=require('./routehandler/branchRouter.js');
 const clientRouter=require('./routehandler/clientRouter.js');
 const transportRouter=require('./routehandler/transportRouter.js');
 const PorderRouter=require('./routehandler/PorderRouter.js');
+const supplyRequestRouter=require('./routehandler/supplyRequestRouter.js');
+
 
 const app = express();
 const port = 3000;
@@ -111,6 +113,12 @@ app.use("/suppliers", (req, res, next) => {
     req.db = connection;
     next();
   },transportRouter); 
+
+  app.use("/supplyRequests", (req, res, next) => {
+    // Pass the connection object to the supplierRouter middleware
+    req.db = connection;
+    next();
+  },supplyRequestRouter); 
 
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);

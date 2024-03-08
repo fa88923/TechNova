@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suppply Request Details</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/supplyreq.css">
+    <link rel="stylesheet" href="/css/POdetails/page.css">
+</head>
+<body class="text-light">
+    <div class="container mt-5">
+
+        <!-- Section 1: Transaction Details -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4 class="mb-0">Suppy Request Details</h4>
+            </div>
+            <div class="card-body">
+                <ul>
+                    <% requestInfo.forEach(info => { %>
+                        <li><strong>Request ID:</strong> <%= info.REQUEST_ID %></li>
+                        <li><strong>Requested By:</strong> <%= info.NAME %></li>
+                        <li><strong>Placement Date:</strong> <%= info.PLACEMENT_DATE %></li>
+                        <li><strong>Deadline:</strong> <%= info.DEADLINE %></li>
+                        <li><strong>Status:</strong> <%= info.STATUS %></li>
+                    <% }); %>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 2: Payment Details -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4 class="mb-0">Confirmed Supplies</h4>
+            </div>
+            <div class="card-body">
+                <ul>
+                    <% confirmed_supply_list.rows.forEach(cs => { %>
+                        <li><h4><strong>Transaction ID:</strong> <%= cs.TRANSACTION_ID %></h4></li>
+                        <li><strong>Pickup Date:</strong> <%= cs.PICKUP_DATE %></li>
+                        <li><strong>Status:</strong> <%= cs.STATUS %></li>
+                    <% }); %>
+                </ul>
+            </div>
+        </div>
+
+        
+
+        <!-- Section 4: Purchase List (Dropdown) -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4 class="mb-0">Product List</h4>
+            </div>
+            <div class="card-body">
+                <button class="btn btn-primary show-purchase-list-btn" type="button" data-toggle="collapse" data-target="#purchaseList" aria-expanded="false" aria-controls="purchaseList">
+                    Show Product List
+                </button>
+                <div class="collapse mt-3" id="purchaseList">
+                    <table class="table table-bordered table-dark">
+                        <thead>
+                            <tr>
+                                <th scope="col">Product Name</th>
+                                <th scope="col">Requested Quantity</th>
+                                <th scope="col">Remaining Quantity</th>
+                                <th scope="col">IN STOCK</th>
+                                <th scope="col">Choose Quantity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% product_list.forEach(item => { %>
+                                <tr>
+                                    <td><%= item.PRODUCT_NAME %></td>
+                                    <td><%= item.QUANTITY_REQUESTED %></td>
+                                    <td><%= item.QUANTITY_LEFT %></td>
+                                    <td><%= item.CENTRAL_STOCK %></td>
+                                    <td>
+                                        <div class="user-box">
+                                            <input type="checkbox" id="<%= item.PRODUCT_ID %>" class="productCheckbox" />
+                                            <input type="number" id="quantity<%= item.PRODUCT_ID %>" name="quantity<%= item.PRODUCT_ID %>" />
+                                        </div>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 5: Add Confirmed Supply Form -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h4 class="mb-0">Add Confirmed Supply</h4>
+        </div>
+        <div class="card-body">
+            <button class="btn btn-primary show-add-supply-form-btn" type="button" data-toggle="collapse" data-target="#addSupplyForm" aria-expanded="false" aria-controls="addSupplyForm">
+                Add Confirmed Supply
+            </button>
+
+            <!-- Add Confirmed Supply Form -->
+            <div class="collapse mt-3" id="addSupplyForm">
+                <form id="confirmedSupplyForm" action="/supplyRequests/submit" method="post">
+                    <!-- Input fields for pickup date, transport company ID, departure date -->
+                    <div class="form-group">
+                        <select id="inputSupplier" class="form-control" name="tcompany">
+                            <option value="" selected>Choose Transport Company</option>
+                            <% tcompany_list.forEach(tc => { %>
+                                <option value="<%= tc.ORGANIZATION_ID %>"><%= tc.NAME %></option>
+                            <% }); %>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="pickupDate">Pickup Date:</label>
+                        <input type="date" class="form-control" id="pickupDate" name="pickupDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="departureDate">Departure Date:</label>
+                        <input type="date" class="form-control" id="departureDate" name="departureDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="departureTime">Departure Time:</label>
+                        <input type="time" class="form-control" id="departureTime" name="departureTime" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="vehicleNo">Vehicle No:</label>
+                        <input type="text" class="form-control" id="vehicleNo" name="vehicleNo" >
+                    </div>
+                    <div class="form-group">
+                        <label for="currLoc">Current Location:</label>
+                        <input type="text" class="form-control" id="currLoc" name="currLoc" >
+                    </div>
+                    <input type="hidden" id="selectedProductData" name="selectedProductData" value="">
+                    <input type="hidden" id="branchId" name="branchId" value="<%= requestInfo[0].BRANCH_ID %>">
+                    <input type="hidden" id="requestId" name="requestId" value="<%= requestInfo[0].REQUEST_ID %>">
+                    <button type="submit" class="btn btn-success" id="add_button">Add</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Bootstrap JS and dependencies (jQuery, Popper.js) -->
+    <script src="/js/supply/addConfirmSupplyController.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

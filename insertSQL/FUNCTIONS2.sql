@@ -19,11 +19,16 @@ BEGIN
             v_transaction_id,
             UPPER(trans_type),
             cparty_id,
-						TO_DATE(pickupdate, 'DD-MON-RR'),
+-- 						TO_DATE(pickupdate, 'DD-MM-RRRR'),
+						TO_DATE(pickupdate, 'YYYY-MM-DD'),
             UPPER('PENDING')
         );
 				
         RETURN v_transaction_id;
 END ;
 /
-
+DECLARE transactionId NUMBER;
+BEGIN transactionId := INSERT_PRODUCT_TRANSACTIONS('CONFIRMED_SUPPLY', 12, '5/3/12' ); 
+DBMS_OUTPUT.PUT_LINE(transactionId);
+END;
+/

@@ -1,0 +1,37 @@
+/* Styling for Add Confirmed Supply Form */
+#addSupplyForm {
+    margin-top: 15px;
+}
+
+#addSupplyForm form {
+    background-color: #394b59; /* Darker bluish background */
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#addSupplyForm label {
+    color: #ffffff;
+}
+
+#addSupplyForm input {
+    background-color: #28313b;
+    color: #ffffff;
+    border: 1px solid #28313b;
+    border-radius: 3px;
+    padding: 8px;
+    margin-bottom: 10px;
+}
+
+#addSupplyForm button {
+    background-color: #28a745; /* Green color for the submit button */
+    color: #ffffff;
+    border: 1px solid #28a745;
+    border-radius: 3px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+#addSupplyForm button:hover {
+    background-color: #218838; /* Darker green on hover */
+}
