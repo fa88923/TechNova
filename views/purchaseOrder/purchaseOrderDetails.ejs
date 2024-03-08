@@ -21,6 +21,7 @@
                 <ul>
                     <% transactioninfo.forEach(info => { %>
                         <li><strong>Transaction ID:</strong> <%= info.TRANSACTION_ID %></li>
+                        <!-- <li><strong>Transaction ID:</strong> <span id="transactionId" data-value="<%= info.TRANSACTION_ID %>"><%= info.TRANSACTION_ID %></span></li> -->
                         <li><strong>Pickup Date:</strong> <%= info.PICKUP_DATE %></li>
                         <li><strong>Counterparty:</strong> <%= info.NAME %></li>
                         <li><strong>Status:</strong> <%= info.STATUS %></li>
@@ -41,10 +42,10 @@
                         <li><strong>Account Number:</strong> <%= detail.ACCOUNT_NUMBER %></li>
                         <li><strong>Bank Name:</strong> <%= detail.BANK_NAME %></li>
                         <li><strong>Amount:</strong> <%= detail.AMOUNT %></li>
-                        <li><strong>Status:</strong> <%= detail.STATUS %></li>
+                        <strong>Status:</strong> <%= detail.STATUS %></li>
                     <% }); %>
                 </ul>
-                <button class="btn btn-primary" type="button" id="payment_done_button">
+                <button class="btn btn-primary" type="button" id="payment_done_button" transactionId="<%= transactioninfo[0].TRANSACTION_ID %>">
                     Mark As Completed
                 </button>
             </div>
@@ -64,12 +65,13 @@
                         <li><strong>Departure Time:</strong> <%= detail.DEPARTURE_TIME %></li>
                         <li><strong>Vehicle No:</strong> <%= detail.VEHICLE_NO %></li>
                         <li><strong>Current Location:</strong> <%= detail.CURRENT_LOCATION %></li>
-                        <li><strong>Arrival Date:</strong> <%= detail.ARRIVAL_DATE %></li>
-                        <li><strong>Arrival Time:</strong> <%= detail.ARRIVAL_TIME %></li>
+                        <li><strong>Arrival Date:</strong> <input type="text" id="arr_date" value="<%= detail.ARRIVAL_DATE %>" ></li>
+                        <li><strong>Arrival Time:</strong> <input type="text" id="arr_time" value="<%= detail.ARRIVAL_TIME %>" ></li>
+                        <!-- <li><strong>Arrival Time:</strong> <%= detail.ARRIVAL_TIME %></li> -->
                         <li><strong>Status:</strong> <%= detail.STATUS %></li>
                     <% }); %>
                 </ul>
-                <button class="btn btn-primary" type="button" id="shipment_done_button">
+                <button class="btn btn-primary" type="button" id="shipment_done_button" transactionId="<%= transactioninfo[0].TRANSACTION_ID %>">
                     Mark As Completed
                 </button>
             </div>
@@ -109,6 +111,7 @@
     </div>
 
     <!-- Bootstrap JS and dependencies (jQuery, Popper.js) -->
+    <script src="/js/POpageControllers/POdetailsController.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

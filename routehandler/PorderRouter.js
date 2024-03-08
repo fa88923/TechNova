@@ -26,7 +26,7 @@ poRoute.get("/", async (req, res) => {
                 END STATUS
                 FROM SHIPMENTS S
                 ) S2 ON S2.PRODUCT_TRANSACTION_ID=PT.TRANSACTION_ID
-                WHERE PT.TYPE='PURCHASE_TRANSACTION' AND
+                WHERE FT.TYPE='PURCHASE_ORDER_PAYMENT' AND
                 (
                 UPPER(O.NAME) LIKE :searchPattern OR
                 UPPER(PT.STATUS) LIKE :searchPattern OR
@@ -51,7 +51,7 @@ poRoute.get("/", async (req, res) => {
                 END STATUS
                 FROM SHIPMENTS S
                 ) S2 ON S2.PRODUCT_TRANSACTION_ID=PT.TRANSACTION_ID
-                WHERE PT.TYPE='PURCHASE_TRANSACTION'
+                WHERE FT.TYPE='PURCHASE_ORDER_PAYMENT'
                 ORDER BY PT.TRANSACTION_ID DESC`
             );
             }
@@ -76,6 +76,52 @@ poRoute.get("/", async (req, res) => {
 poRoute.get("/details",async(req,res)=>{       
     //just render the addSupplier page
     const transactionId=parseInt(req.query.transactionId);
+
+    const shipment_complete=req.query.shipment_complete;
+    const payment_complete=req.query.payment_complete;
+    const payment_type='PURCHASE_ORDER_PAYMENT';
+    const t_type='PURCHASE_TRANSACTION';
+    if(payment_complete)
+    {
+        try{
+            await req.db.execute(
+                `BEGIN UPDATE_FT(:transactionId,:payment_type); END;`,
+                {
+                    transactionId,
+                    payment_type
+                }
+            );
+            await req.db.execute("COMMIT");
+        }catch(error){
+            console.log('payment update error'+error);
+            await req.db.execute("ROLLBACK");
+            // await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'SUPPLIER '|| :name || ' INSERT FAILED','INSERT')",[name]);
+            // await req.db.execute("COMMIT");
+        }
+    }
+
+    if(shipment_complete)
+    {
+        try{
+            var arr_time = req.query.arr_time;
+            var arr_date = req.query.arr_date;
+            await req.db.execute(
+                `BEGIN UPDATE_SHIPMENT(:transactionId,:t_type, :arr_time,:arr_date); END;`,
+                {
+                    transactionId,
+                    t_type,
+                    arr_time,
+                    arr_date
+                }
+            );
+            await req.db.execute("COMMIT");
+        }catch(error){
+            console.log('shipment update error'+error);
+            await req.db.execute("ROLLBACK");
+            // await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'SUPPLIER '|| :name || ' INSERT FAILED','INSERT')",[name]);
+            // await req.db.execute("COMMIT");
+        }
+    }
     // Execute SQL query to search in the database
     const transactioninfo = await req.db.execute(
         `SELECT DISTINCT PT.TRANSACTION_ID,PT.PICKUP_DATE,O.NAME, PT.STATUS
