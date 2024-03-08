@@ -202,6 +202,7 @@ branchRoute.post("/edit/submit", async (req, res) => {
 
             const phoneNumbers = req.body.phone_number || [];
         for (const phoneNumber of phoneNumbers) {
+          
             try {
                 await req.db.execute(
                     'BEGIN add_contact(:organization_id, :contact_type, :contact_value); END;',
@@ -268,6 +269,7 @@ branchRoute.post("/edit/submit", async (req, res) => {
            {
             await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'BRANCH '||:branchId ||' '|| :name || ' UPDATED','UPDATE')",{branchId,name});
             await req.db.execute("COMMIT");
+            res.redirect(`/branches/details?branchId=${branchId}`);
            }
             
         else
@@ -290,16 +292,11 @@ branchRoute.post("/edit/submit", async (req, res) => {
             await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'BRANCH '||:branchId ||' '|| :name || ' UPDATE FAILED','UPDATE')",{branchId,name});
             await req.db.execute("COMMIT");
             // Send an error response
-            res.status(500).send(message);
+           // res.status(500).send(message);
         } 
     } catch (error) {
         console.error(error);
         // Send an error response
-        
-        await req.db.execute("ROLLBACK");
-        await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'BRANCH '||:branchId ||' '|| :name || ' UPDATE FAILED','UPDATE')",{branchId,name});
-        await req.db.execute("COMMIT");
-        res.status(500).send("Internal Server Error;"+message);
     }
 });
 
@@ -420,6 +417,7 @@ branchRoute.post("/submit", async (req, res) => {
             {
              await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'BRANCH '||:branchId ||' '|| :name || ' INSERTED','INSERT')",{branchId,name});
              await req.db.execute("COMMIT");
+             res.redirect(`/branches/details?branchId=${branchId}`);
             }
              
          else
@@ -443,16 +441,11 @@ branchRoute.post("/submit", async (req, res) => {
             await req.db.execute("COMMIT");
 
             // Send an error response
-            res.status(500).send(message);
+            //res.status(500).send(message);
         } 
     } catch (error) {
         console.error(error);
         // Send an error response
-        
-        await req.db.execute("ROLLBACK");
-        await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'BRANCH '|| :name || ' INSERT FAILED','INSERT')",[name]);
-        await req.db.execute("COMMIT");
-        res.status(500).send("Internal Server Error;"+message);
     }
 });
 
