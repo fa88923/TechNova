@@ -116,13 +116,12 @@ END;
 CREATE OR REPLACE FUNCTION INSERT_TRANSPORT_COMPANY(
     p_name VARCHAR2,
     p_url VARCHAR2,
-    p_type VARCHAR2,
     p_capacity NUMBER
 ) RETURN NUMBER IS
     v_company_id NUMBER;
 BEGIN
     -- Insert organization data and get the organization ID
-    v_company_id := INSERT_ORGANIZATION(p_name, p_url, p_type);
+    v_company_id := INSERT_ORGANIZATION(p_name, p_url,'TRANSPORT');
 
     -- Insert transport company-specific data into the TRANSPORT_COMPANIES table
     INSERT INTO TRANSPORT_COMPANIES (

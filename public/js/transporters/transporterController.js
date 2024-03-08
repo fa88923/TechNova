@@ -17,6 +17,15 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     }
 
+    var add_button = document.getElementById('add_button');
+    if (add_button) 
+    {
+        add_button.addEventListener('click', function(event) {
+        event.preventDefault();
+        window.location.href = '/transports/add';
+    });
+    }
+
     //product details reroute
     var buttons = document.querySelectorAll('.transporter-details-button');
 
@@ -28,6 +37,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Redirect to the 'supplierDetails' page with the supplierId
             window.location.href = '/transports/details?companyId=' + companyId;
+        });
+    });
+
+    var deleteButtons = document.querySelectorAll('.delete-button');
+    deleteButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+            var companyId = button.getAttribute('data-company-id');
+            // Redirect to /branches with the delete parameter
+            window.location.href = '/transports?delete=' + companyId;
         });
     });
 

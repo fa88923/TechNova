@@ -42,6 +42,8 @@ CREATE OR REPLACE PROCEDURE INSERT_LOCATION(
 ) IS
     v_location_id NUMBER;
     v_org_count NUMBER;
+		v_old_location_type VARCHAR2(20);
+		location_type VARCHAR2(20);
 BEGIN
     -- Check if the organization_id exists in the ORGANIZATIONS table
     SELECT COUNT(*) INTO v_org_count
@@ -58,6 +60,31 @@ BEGIN
         -- Raise an exception if the type is not allowed
         RAISE_APPLICATION_ERROR(-20002, 'Invalid type. Allowed values are ADDRESS, PICKUP, DUAL.');
     END IF;
+		
+		 FOR existing_location IN (SELECT * FROM LOCATIONS
+                            WHERE upper(STREET_ADDRESS) LIKE UPPER(p_street_address)
+                                AND upper(CITY) LIKE UPPER(P_CITY)
+                                AND upper(COUNTRY) LIKE UPPER(P_COUNTRY)
+                                AND ORGANIZATION_ID = P_ORGANIZATION_ID
+                            )
+    LOOP
+        v_old_location_type := existing_location.TYPE;
+				location_type := existing_location.TYPE;
+        
+        IF v_old_location_type = 'DUAL' OR P_TYPE = 'DUAL' THEN
+            location_type := 'DUAL';
+        ELSIF v_old_location_type IS NOT NULL AND P_TYPE IS NOT NULL AND v_old_location_type <> P_TYPE THEN
+					location_type :='DUAL';
+        ELSIF v_old_location_type IS NULL or v_old_location_type=P_TYPE THEN
+				    location_type := P_TYPE;
+					
+				END IF;
+            UPDATE LOCATIONS 
+						SET TYPE=location_type
+            WHERE LOCATION_ID=EXISTING_LOCATION.LOCATION_ID;
+					 RETURN;
+
+    END LOOP;
 
     -- Get the next LOCATION_ID from the sequence
     SELECT LOCATION_ID_SEQ.NEXTVAL INTO v_location_id FROM DUAL;
@@ -239,18 +266,53 @@ CREATE OR REPLACE PROCEDURE UPDATE_LOCATION(
     p_type VARCHAR2
 ) IS
     v_org_count NUMBER;
+		v_old_location_type VARCHAR2(20);
+		location_type VARCHAR2(20);
+		P_location_id NUMBER;
 BEGIN
     -- Check if the organization_id exists in the ORGANIZATIONS table
     SELECT COUNT(*) INTO v_org_count
     FROM ORGANIZATIONS
     WHERE ORGANIZATION_ID = p_organization_id;
+		
+		SELECT LOCATION_ID INTO P_LOCATION_ID FROM LOCATIONS WHERE ORGANIZATION_ID=p_organization_id AND TYPE=p_type;
 
     IF v_org_count = 0 THEN
         -- Raise an exception if the organization does not exist
         RAISE_APPLICATION_ERROR(-20001, 'Organization does not exist.');
     END IF;
+		
+		FOR existing_location IN (SELECT * FROM LOCATIONS
+                            WHERE upper(STREET_ADDRESS) LIKE UPPER(p_street_address)
+                                AND upper(CITY) LIKE UPPER(P_CITY)
+                                AND upper(COUNTRY) LIKE UPPER(P_COUNTRY)
+                                AND ORGANIZATION_ID = P_ORGANIZATION_ID
+                            )
+    LOOP
+        v_old_location_type := existing_location.TYPE;
+				location_type := existing_location.TYPE;
+        
+        IF v_old_location_type = 'DUAL' OR P_TYPE = 'DUAL' THEN
+            location_type := 'DUAL';
+        ELSIF v_old_location_type IS NOT NULL AND P_TYPE IS NOT NULL AND v_old_location_type <> P_TYPE THEN
+					location_type :='DUAL';
+        ELSIF v_old_location_type IS NULL or v_old_location_type=P_TYPE THEN
+				    location_type := P_TYPE;
+					
+				END IF;
+            UPDATE LOCATIONS 
+						SET TYPE=location_type
+            WHERE LOCATION_ID=EXISTING_LOCATION.LOCATION_ID;
+						IF EXISTING_LOCATION.LOCATION_ID<>P_LOCATION_ID THEN
+						DELETE FROM LOCATIONS WHERE ORGANIZATION_ID=p_organization_id AND TYPE=p_type;
+						END IF;
+					 RETURN;
+    END LOOP;
+		
+		UPDATE LOCATIONS SET STREET_ADDRESS=p_street_address, POSTAL_CODE=p_postal_code, CITY=p_city, STATE_PROVINCE=p_state_province,COUNTRY= p_country WHERE ORGANIZATION_ID=p_organization_id AND TYPE=p_type;
 
-    UPDATE LOCATIONS SET STREET_ADDRESS=p_street_address, POSTAL_CODE=p_postal_code, CITY=p_city, STATE_PROVINCE=p_state_province,COUNTRY= p_country WHERE ORGANIZATION_ID=p_organization_id AND TYPE=p_type;
+
+    
 
     -- No need to return a value in a procedure
 EXCEPTION

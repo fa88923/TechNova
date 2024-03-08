@@ -48,6 +48,10 @@
                             <td><a href="#" class="client-details-button" data-client-id="<%= client.CLIENT_ID %>"><%= client.NAME %></a></td>
                             <td><a href="<%= client.URL %>"><%= client.URL %></a></td> 
                             <td><%= client.ADDRESS %></td>
+                            <td>
+                                <!-- Delete button with a link to /branches with the delete parameter -->
+                                <button class="delete-button" data-client-id="<%= client.CLIENT_ID %>">Delete</button>
+                            </td>
                             
                         </tr>
                         <% });

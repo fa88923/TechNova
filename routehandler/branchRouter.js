@@ -165,6 +165,8 @@ branchRoute.post("/edit/submit", async (req, res) => {
         // Start a database transaction
         try {
             // Call the PL/SQL function to insert into BRANCHES
+
+            try {
               await req.db.execute(
                 `BEGIN UPDATE_BRANCH(:branchId,:name,:url,:manager, :square_footage, :avg_shipping_duration); END;`,
                 {   
@@ -176,6 +178,11 @@ branchRoute.post("/edit/submit", async (req, res) => {
                     avg_shipping_duration
                 }
             );
+
+        } catch (error) {
+            errorflag=1;
+            message += ` Location Error: ${error.message};`;
+        }
             
              
 
@@ -292,7 +299,7 @@ branchRoute.post("/edit/submit", async (req, res) => {
             await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'BRANCH '||:branchId ||' '|| :name || ' UPDATE FAILED','UPDATE')",{branchId,name});
             await req.db.execute("COMMIT");
             // Send an error response
-           // res.status(500).send(message);
+            res.status(500).send(message);
         } 
     } catch (error) {
         console.error(error);
@@ -307,6 +314,7 @@ branchRoute.get("/add",(req,res)=>{
 
 branchRoute.post("/submit", async (req, res) => {
     try {
+        console.log("dholtongpoltong");
         // Extract form data from request body
         const { name, street, postal_code, city, country, manager, square_footage, avg_shipping_duration, account_number, account_holder, bank, iban } = req.body;
         
@@ -317,7 +325,9 @@ branchRoute.post("/submit", async (req, res) => {
         // Start a database transaction
         try {
             // Call the PL/SQL function to insert into BRANCHES
-            const result = await req.db.execute(
+           
+           
+           const result = await req.db.execute(
                 `BEGIN :branch_id := INSERT_BRANCH(:name,:url, :manager, :square_footage, :avg_shipping_duration); END;`,
                 {
                     name,
@@ -328,6 +338,7 @@ branchRoute.post("/submit", async (req, res) => {
                     branch_id: { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
                 }
             );
+            
             
 
             const branchId = result.outBinds.branch_id;
@@ -415,16 +426,16 @@ branchRoute.post("/submit", async (req, res) => {
             // Commit the transaction
             if(errorflag===0)
             {
-             await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'BRANCH '||:branchId ||' '|| :name || ' INSERTED','INSERT')",{branchId,name});
+           
              await req.db.execute("COMMIT");
              res.redirect(`/branches/details?branchId=${branchId}`);
             }
              
          else
              {
-                 await req.db.execute("ROLLBACK");
-                 await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'BRANCH '|| :name || ' INSERT FAILED','INSERT')",[name]);
-                 await req.db.execute("COMMIT");
+                await req.db.execute("ROLLBACK");
+                await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE, TYPE, ACTION, OUTCOME) VALUES (CURRENT_TIMESTAMP, 'BRANCH ' || :name || ' INSERT FAILED', 'ORGANIZATION', 'INSERT', 'FAILED')", { name });
+                await req.db.execute("COMMIT");
              }
 
             console.log(message);
@@ -436,12 +447,12 @@ branchRoute.post("/submit", async (req, res) => {
             // Capture the error message
             message += ` Internal Server Error: ${error.message}`;
             
-            await req.db.execute("ROLLBACK");
-            await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'BRANCH '|| :name || ' INSERT FAILED','INSERT')",[name]);
-            await req.db.execute("COMMIT");
+           /* await req.db.execute("ROLLBACK");
+            await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE, TYPE, ACTION, OUTCOME) VALUES (CURRENT_TIMESTAMP, 'BRANCH ' || :name || ' INSERT FAILED', 'ORGANIZATION', 'INSERT', 'FAILED')", { name });
+            await req.db.execute("COMMIT");*/
 
             // Send an error response
-            //res.status(500).send(message);
+            res.status(500).send('INTERNAL SERVER ERROR');
         } 
     } catch (error) {
         console.error(error);
