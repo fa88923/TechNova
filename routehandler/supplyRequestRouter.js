@@ -88,7 +88,8 @@ supplyRequestRouter.get("/details",async(req,res)=>{
         `SELECT PT.TRANSACTION_ID, PT.PICKUP_DATE,PT.STATUS
         FROM CONFIRMED_SUPPLY CS JOIN SUPPLY_REQUESTS SR ON SR.REQUEST_ID=CS.REQUEST_ID 
                 JOIN PRODUCT_TRANSACTIONS PT ON PT.TRANSACTION_ID=CS.SUPPLY_ID
-        WHERE SR.REQUEST_ID=:requestId`,
+        WHERE SR.REQUEST_ID=:requestId
+        ORDER BY PT.TRANSACTION_ID`,
         [requestId]
         // Use bind variables to prevent SQL injection
     );
@@ -201,7 +202,70 @@ supplyRequestRouter.post("/submit", async (req, res) => {
     //res.render('home');
 });
 
+supplyRequestRouter.get("/details/confirmedDetails",async(req,res)=>{       
+    const transactionId=parseInt(req.query.transactionId);
 
+    const shipment_complete=req.query.shipment_complete;
+    const t_type='CONFIRMED_SUPPLY';
+    
+    if(shipment_complete)
+    {
+        try{
+            var arr_time = req.query.arr_time;
+            var arr_date = req.query.arr_date;
+            await req.db.execute(
+                `BEGIN UPDATE_SHIPMENT(:transactionId,:t_type, :arr_time,:arr_date); END;`,
+                {
+                    transactionId,
+                    t_type,
+                    arr_time,
+                    arr_date
+                }
+            );
+            await req.db.execute("COMMIT");
+        }catch(error){
+            console.log('shipment update error'+error);
+            await req.db.execute("ROLLBACK");
+            // await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'SUPPLIER '|| :name || ' INSERT FAILED','INSERT')",[name]);
+            // await req.db.execute("COMMIT");
+        }
+    }
+    // Execute SQL query to search in the database
+    const transactioninfo = await req.db.execute(
+        `SELECT DISTINCT PT.TRANSACTION_ID,PT.PICKUP_DATE,O.NAME, PT.STATUS
+        FROM PRODUCT_TRANSACTIONS PT JOIN ORGANIZATIONS O ON O.ORGANIZATION_ID=PT.COUNTERPARTY_ID
+        WHERE PT.TRANSACTION_ID=:transactionId`,
+        [transactionId] 
+        // Use bind variables to prevent SQL injection
+    );
+
+    const shipment_details = await req.db.execute(
+        `SELECT O.NAME, L1.STREET_ADDRESS||', '||L1.CITY||'-'||L1.POSTAL_CODE||','||L1.COUNTRY AS PICK_UP_FROM, S.DEPARTURE_DATE,S.DEPARTURE_TIME,S.VEHICLE_NO,S.CURRENT_LOCATION,S.ARRIVAL_DATE,S.ARRIVAL_TIME,
+        CASE 
+                WHEN S.ARRIVAL_DATE IS NULL THEN 'PENDING'
+                ELSE 'COMPLETED'
+        END STATUS
+        FROM SHIPMENTS S JOIN ORGANIZATIONS O ON O.ORGANIZATION_ID=S.TRANSPORT_COMPANY_ID
+                JOIN LOCATIONS L1 ON S.START_LOCATION=L1.LOCATION_ID
+        WHERE S.PRODUCT_TRANSACTION_ID=:transactionId`,
+        [transactionId]
+        // Use bind variables to prevent SQL injection
+    );
+
+    const purchase_list = await req.db.execute(
+        `SELECT P.PRODUCT_NAME,CSP.QUANTITY
+        FROM CONFIRMED_SUPPLY_PRODUCTS CSP JOIN PRODUCTS P ON P.PRODUCT_ID=CSP.PRODUCT_ID
+        WHERE CSP.SUPPLY_ID= :transactionId`,
+        [transactionId]
+        // Use bind variables to prevent SQL injection
+    );
+
+    
+
+
+    res.render('./supply/confirmSupplyDetails', { 'transactioninfo': transactioninfo.rows, 'shipment_details':shipment_details.rows,
+    'purchase_list':purchase_list.rows });
+})
 
 
 

@@ -39,7 +39,7 @@
             <div class="card-body">
                 <ul>
                     <% confirmed_supply_list.rows.forEach(cs => { %>
-                        <li><h4><strong>Transaction ID:</strong> <%= cs.TRANSACTION_ID %></h4></li>
+                        <li><a href="/supplyRequests/details/confirmedDetails?transactionId=<%= cs.TRANSACTION_ID %>" ><h6><strong>Transaction ID:</strong> <%= cs.TRANSACTION_ID %></h6></a></li>
                         <li><strong>Pickup Date:</strong> <%= cs.PICKUP_DATE %></li>
                         <li><strong>Status:</strong> <%= cs.STATUS %></li>
                     <% }); %>
