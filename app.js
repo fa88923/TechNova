@@ -9,6 +9,7 @@ const clientRouter=require('./routehandler/clientRouter.js');
 const transportRouter=require('./routehandler/transportRouter.js');
 const PorderRouter=require('./routehandler/PorderRouter.js');
 const supplyRequestRouter=require('./routehandler/supplyRequestRouter.js');
+const clientOrderRouter=require('./routehandler/clientOrderRouter.js');
 
 
 const app = express();
@@ -119,6 +120,12 @@ app.use("/suppliers", (req, res, next) => {
     req.db = connection;
     next();
   },supplyRequestRouter); 
+
+  app.use("/clientOrders", (req, res, next) => {
+    // Pass the connection object to the supplierRouter middleware
+    req.db = connection;
+    next();
+  },clientOrderRouter); 
 
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Order Details</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/POdetails/page.css">
+</head>
+<body class="text-light">
+    <div class="container mt-5">
+
+        <!-- Section 1: Transaction Details -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4 class="mb-0">Transaction Details</h4>
+            </div>
+            <div class="card-body">
+                <ul>
+                    <% transactioninfo.forEach(info => { %>
+                        <li><strong>Transaction ID:</strong> <%= info.TRANSACTION_ID %></li>
+                        <!-- <li><strong>Transaction ID:</strong> <span id="transactionId" data-value="<%= info.TRANSACTION_ID %>"><%= info.TRANSACTION_ID %></span></li> -->
+                        <li><strong>Pickup Date:</strong> <%= info.PICKUP_DATE %></li>
+                        <li><strong>Counterparty:</strong> <%= info.NAME %></li>
+                        <li><strong>Status:</strong> <%= info.STATUS %></li>
+                    <% }); %>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 2: Payment Details -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4 class="mb-0">Payment Details</h4>
+            </div>
+            <div class="card-body">
+                <ul>
+                    <% financial_details.forEach(detail => { %>
+                        <li><strong>Method:</strong> <%= detail.METHOD %></li>
+                        <li><strong>Account Number:</strong> <%= detail.ACCOUNT_NUMBER %></li>
+                        <li><strong>Bank Name:</strong> <%= detail.BANK_NAME %></li>
+                        <li><strong>Amount:</strong> <%= detail.AMOUNT %></li>
+                        <strong>Status:</strong> <%= detail.STATUS %></li>
+                    <% }); %>
+                </ul>
+                <button class="btn btn-primary" type="button" id="payment_done_button" transactionId="<%= transactioninfo[0].TRANSACTION_ID %>">
+                    Mark As Completed
+                </button>
+            </div>
+        </div>
+
+
+        <!-- Section 4: Purchase List (Dropdown) -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4 class="mb-0">Purchase List</h4>
+            </div>
+            <div class="card-body">
+                <button class="btn btn-primary show-purchase-list-btn" type="button" data-toggle="collapse" data-target="#purchaseList" aria-expanded="false" aria-controls="purchaseList">
+                    Show Purchase List
+                </button>
+                <div class="collapse mt-3" id="purchaseList">
+                    <table class="table table-bordered table-dark">
+                        <thead>
+                            <tr>
+                                <th scope="col">Product Name</th>
+                                <th scope="col">Price Each</th>
+                                <th scope="col">Quantity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% purchase_list.forEach(item => { %>
+                                <tr>
+                                    <td><%= item.PRODUCT_NAME %></td>
+                                    <td><%= item.PRICE_EACH %></td>
+                                    <td><%= item.QUANTITY %></td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+            <!-- Section 5: Add Confirmed Supply Form -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4 class="mb-0">Add Shipment</h4>
+            </div>
+            <div class="card-body">
+                <button class="btn btn-primary show-add-supply-form-btn" type="button" data-toggle="collapse" data-target="#addSupplyForm" aria-expanded="false" aria-controls="addSupplyForm">
+                    Add Confirmed Supply
+                </button>
+
+                <!-- Add Confirmed Supply Form -->
+                <div class="collapse mt-3" id="addSupplyForm">
+                    <form id="confirmedSupplyForm" action="/clientOrders/submit" method="post">
+                        <!-- Input fields for pickup date, transport company ID, departure date -->
+                        <div class="form-group">
+                            <select id="inputSupplier" class="form-control" name="tcompany">
+                                <option value="" selected>Choose Transport Company</option>
+                                <% tcompany_list.forEach(tc => { %>
+                                    <option value="<%= tc.ORGANIZATION_ID %>"><%= tc.NAME %></option>
+                                <% }); %>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="departureDate">Departure Date:</label>
+                            <input type="date" class="form-control" id="departureDate" name="departureDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="departureTime">Departure Time:</label>
+                            <input type="time" class="form-control" id="departureTime" name="departureTime" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="vehicleNo">Vehicle No:</label>
+                            <input type="text" class="form-control" id="vehicleNo" name="vehicleNo" >
+                        </div>
+                        <div class="form-group">
+                            <label for="currLoc">Current Location:</label>
+                            <input type="text" class="form-control" id="currLoc" name="currLoc" >
+                        </div>
+                        <input type="hidden" id="clientId" name="clientId" value="<%= transactioninfo[0].CLIENT_ID %>">
+                        <input type="hidden" id="transactionId" name="transaction_id" value="<%= transactioninfo[0].TRANSACTION_ID %>">
+                        <button type="submit" class="btn btn-success" id="add_button">Ship</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    
+
+    <!-- Bootstrap JS and dependencies (jQuery, Popper.js) -->
+    <script src="/js/clientOrders/clientOrderDetailsController2.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
