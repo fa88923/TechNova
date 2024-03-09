@@ -32,3 +32,16 @@ END ;
 -- DBMS_OUTPUT.PUT_LINE(transactionId);
 -- END;
 -- /
+
+CREATE OR REPLACE FUNCTION CLIENT_ORDER_STATE(
+    p_transaction_id NUMBER
+) RETURN NUMBER IS
+   state NUMBER;
+BEGIN
+			SELECT COUNT(SHIPMENT_ID) INTO state
+			FROM SHIPMENTS
+			WHERE PRODUCT_TRANSACTION_ID=p_transaction_id;
+
+      RETURN state;
+END ;
+/
