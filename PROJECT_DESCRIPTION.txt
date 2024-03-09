@@ -1,0 +1,94 @@
+Pages:
+1. Home Page:
+a. Link to supplier page
+b. Link to branches page
+c. Link to client_company page
+d. Link to product_inventory page
+e. Link to purchase_queue page
+f. Link to pending supply requests page
+2. Product inventory page ( shows all products)
+a. Search and sort option to search and filter products based on various
+keys(such as name, brand, type etc)
+b. Each of the products is linked to its respective product details page
+3. Product details page( shows the features of the product)
+a. In addition to the other details , the different prices offered by different
+suppliers for the product are shown and next to those prices is a input box
+for amount and a button called “add to purchasing queue”- when clicked it
+enqueues this product with the quantity to the purchasing queue from the
+chosen supplier
+4. Supplier page( lists all the suppliers)
+a. Search suppliers option
+b. Add suppliers button( Link to Add supplier page)
+c. Each of the suppliers are linked to respective Supplier details page
+5. Supplier Details page ( shows the details of the chosen supplier)
+a. Edit option to update the suppliers info if needed
+b. Product catalog (linked to product catalog page)
+c. Show purchase orders button( linked to Purchase Orders page of that
+supplier)
+6. Add suppliers page( form to add suppliers)
+a. Takes the necessary info as input and inserts a new supplier
+7. Product catalog of a supplier page ( displays products offered by the
+suppliers)
+a. Shows a list of the products sold by the supplier, available in our stock and
+the offered price
+b. Next to each product- a input box for the quantity, and a “Add to
+purchasing queue”
+8. Purchase order of a supplier page(shows the purchase orders made to that
+supplier)
+a. 2 sections
+i. Active purchase orders
+ii. Previous orders/closed orders
+b. Each of these orders are linked to Purchase order details page
+9. Purchase order details page( shows the details of a purchase order)
+a. Displays the details of the order, products and their respective amount ,
+shipment details, financial transaction details
+b. In case of orders awaiting delivery - there's an option to update its status
+to delivery received/closed order
+c. In case of orders awaiting payment- there's an option to update payment
+status. When that's clicked we get a form to fill up the necessary info and
+update the status
+10.Purchase_queue page( shows the products enqueued)
+a. There's a button- “Place order” when clicked asks to choose the supplier,
+and then displays the products with quantities enqueued for that supplier.
+From this list we can select the products and then click “confirm order”
+which will make a purchase order with the selected products to that
+supplier after taking other necessary details as input and then redirect to
+the purchase order details page
+11. Branches page( shows the list of branches)
+a. Search suppliers option
+b. Each of the suppliers are linked to respective Branch details page
+12.Branch Details page ( shows the details of the chosen branch)
+a. Edit option to update the branches info if needed
+b. Show supply requests button( linked to supply requests page of that
+branch)
+c. View income statement option that takes the month and year as input and
+then shows the income statement of the branch for that time period
+13.Supply request page(shows the supply requests from a branch)
+a. 3 sections
+i. Pending supply requests
+ii. En route requests/supplies
+iii. Previous requests
+b. Each of these requests are linked to supply request details page
+14.Supply request details page (shows details of the request)
+a. In case of pending request, we can approve the supply of all requested
+products or we can approve it partially
+15.Pending requests page( shows all the requests currently pending)
+a. Search, sort and filter. Can be sorted by deadline or the requested product
+availability rate
+b. Each of the requests- linked to the supply request details page of that
+request
+16.Client companies page( shows the list of client companies)
+a. Search option
+b. Each of the clients are linked to respective Client company details page
+17.Client company Details page ( shows the details of the chosen client)
+a. Edit option to update the info if needed
+b. Show orders button( linked to client order page of that client)
+18.Client order page(shows all the orders from the client)
+a. 3 sections
+i. Pending orders
+ii. En route orders
+iii. Previous orders
+b. Each of these orders are linked to client order details page
+19.Client order details page (shows details of the order)
+a. In case of pending order, we can select transport companies, and insert
+other necessary details for that order and update its status

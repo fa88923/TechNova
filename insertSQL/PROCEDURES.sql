@@ -274,19 +274,34 @@ BEGIN
     SELECT COUNT(*) INTO v_org_count
     FROM ORGANIZATIONS
     WHERE ORGANIZATION_ID = p_organization_id;
-		
-		SELECT LOCATION_ID INTO P_LOCATION_ID FROM LOCATIONS WHERE ORGANIZATION_ID=p_organization_id AND TYPE=p_type;
-
-    IF v_org_count = 0 THEN
+		    IF v_org_count = 0 THEN
         -- Raise an exception if the organization does not exist
         RAISE_APPLICATION_ERROR(-20001, 'Organization does not exist.');
     END IF;
+		
+		
+		SELECT LOCATION_ID INTO P_LOCATION_ID FROM LOCATIONS WHERE ORGANIZATION_ID=p_organization_id AND TYPE=p_type;
+		
+		IF P_LOCATION_ID IS NULL THEN
+		INSERT_LOCATION(
+    p_street_address,
+    p_postal_code,
+    p_city,
+    p_state_province,
+    p_country,
+    p_organization_id,
+    p_type
+);
+    RETURN;
+		END IF; 
+
+
 		
 		FOR existing_location IN (SELECT * FROM LOCATIONS
                             WHERE upper(STREET_ADDRESS) LIKE UPPER(p_street_address)
                                 AND upper(CITY) LIKE UPPER(P_CITY)
                                 AND upper(COUNTRY) LIKE UPPER(P_COUNTRY)
-                                AND ORGANIZATION_ID = P_ORGANIZATION_ID
+                                AND ORGANIZATION_ID = P_ORGANIZATION_ID AND LOCATION_ID<>P_LOCATION_ID
                             )
     LOOP
         v_old_location_type := existing_location.TYPE;
@@ -303,15 +318,15 @@ BEGIN
             UPDATE LOCATIONS 
 						SET TYPE=location_type
             WHERE LOCATION_ID=EXISTING_LOCATION.LOCATION_ID;
-						IF EXISTING_LOCATION.LOCATION_ID<>P_LOCATION_ID THEN
-						DELETE FROM LOCATIONS WHERE ORGANIZATION_ID=p_organization_id AND TYPE=p_type;
-						END IF;
+						DELETE FROM LOCATIONS WHERE LOCATION_ID=P_LOCATION_ID;
 					 RETURN;
     END LOOP;
 		
-		UPDATE LOCATIONS SET STREET_ADDRESS=p_street_address, POSTAL_CODE=p_postal_code, CITY=p_city, STATE_PROVINCE=p_state_province,COUNTRY= p_country WHERE ORGANIZATION_ID=p_organization_id AND TYPE=p_type;
+		
+		
+		 UPDATE LOCATIONS SET STREET_ADDRESS=p_street_address, POSTAL_CODE=p_postal_code, CITY=p_city, STATE_PROVINCE=p_state_province,COUNTRY= p_country WHERE location_id=p_location_id;
 
-
+dbms_output.put_line('the update statement was called');
     
 
     -- No need to return a value in a procedure
@@ -321,3 +336,5 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Error: ' || SQLERRM);
 END;
 /
+
+	 UPDATE LOCATIONS SET STREET_ADDRESS='kdfkmfkdf', POSTAL_CODE='dkfmkmdfl', CITY='ksdmflkdmf', STATE_PROVINCE='sknfkdf',COUNTRY='kflkdfkmdf' WHERE ORGANIZATION_ID=236 AND TYPE'ADDRESS';

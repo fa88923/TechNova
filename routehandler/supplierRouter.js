@@ -278,8 +278,7 @@ supplierRoute.post("/edit/submit", async (req, res) => {
         let errorflag=0;
         const supplierId=req.query.supplierId;
         const { name, a_street_address,url, a_postal_code, a_city, a_country,p_street_address, p_postal_code, p_city, p_country,  avg_delivery_time, account_number, account_holder, bank, iban } = req.body;
-        console.log("url:"+url);
-        console.log("avg delivery time:"+avg_delivery_time);
+        
         // Initialize error message
         let message = "";
 
@@ -296,11 +295,16 @@ supplierRoute.post("/edit/submit", async (req, res) => {
                 }
             );
             
-             
+           
 
             // Call the PL/SQL procedure to insert into LOCATIONS
         
             try {
+
+                
+                console.log("street:"+a_postal_code);
+                console.log("avg delivery time:"+p_street_address);
+                
                 await req.db.execute(
                     `BEGIN UPDATE_LOCATION(:a_street_address, :a_postal_code, :a_city, :state_province, :a_country, :organization_id,:type); END;`,
                     {
@@ -400,7 +404,6 @@ supplierRoute.post("/edit/submit", async (req, res) => {
             // Commit the transaction
         if(errorflag===0)
            {
-            await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'SUPPLIER '||:supplierId ||' '|| :name || ' UPDATED','UPDATE')",{supplierId,name});
             await req.db.execute("COMMIT");
             res.redirect(`/suppliers/details?supplierId=${supplierId}`);
            }
@@ -408,27 +411,27 @@ supplierRoute.post("/edit/submit", async (req, res) => {
         else
             {
                 await req.db.execute("ROLLBACK");
-                await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'SUPPLIER '||:supplierId ||' '|| :name || ' UPDATE FAILED','UPDATE')",{supplierId,name});
+                await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE, TYPE, ACTION, OUTCOME) VALUES (CURRENT_TIMESTAMP, 'SUPPLIER ' ||:supplierId|| ' '|| :name || ' UPDATE FAILED', 'ORGANIZATION', 'UPDATE', 'FAILED')", [name,supplierId ]);
                 await req.db.execute("COMMIT");
+                res.status(500).send(message);
             }
 
             console.log(message);
             // Send a success response
-            res.status(200).send(message);
         } catch (error) {
             // Rollback the transaction in case of an error
 
             // Capture the error message
             message = ` Internal Server Error: ${error.message}`;
-            
             await req.db.execute("ROLLBACK");
-            await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'SUPPLIER '||:supplierId ||' '|| :name || ' UPDATE FAILED','UPDATE')",{supplierId,name});
-            await req.db.execute("COMMIT");
+                await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE, TYPE, ACTION, OUTCOME) VALUES (CURRENT_TIMESTAMP, 'SUPPLIER ' ||:supplierId|| ' '|| :name || ' UPDATE FAILED', 'ORGANIZATION', 'UPDATE', 'FAILED')", [name,supplierId]);
+                await req.db.execute("COMMIT");
             // Send an error response
             res.status(500).send(message);
         } 
     } catch (error) {
         console.error(error);
+        res.status(500).send('Internal Server Error');
     }
 });
 
@@ -437,173 +440,6 @@ supplierRoute.get("/add",(req,res)=>{
     //just render the addSupplier page
     res.render('./suppliers/addSupplier');
 })
-
-// supplierRoute.post("/submit", async (req, res) => {
-//     try {
-//         // Extract form data from request body
-//         const { name, a_street, a_postal_code, a_city, a_country, p_street, p_postal_code, p_city, p_country,url, avg_shipping_duration, account_number, account_holder, bank, iban } = req.body;
-        
-//         // Initialize error message
-//         let message = "";
-//         let errorflag=0;
-
-//         // Start a database transaction
-//         try {
-//             // Call the PL/SQL function to insert into BRANCHES
-//             const result = await req.db.execute(
-//                 `BEGIN :supplier_id := INSERT_SUPPLIER(:name,:url,:avg_shipping_duration); END;`,
-//                 {
-//                     name,
-//                     url,
-//                     avg_shipping_duration,
-//                     supplier_id: { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
-//                 }
-//             );
-            
-
-//             const supplierId = result.outBinds.supplier_id;
-
-//             // Call the PL/SQL procedure to insert into LOCATIONS
-        
-//             try {
-//                 await req.db.execute(
-//                     `BEGIN INSERT_LOCATION(:a_street_address, :a_postal_code, :a_city, :a_state_province, :a_country, :organization_id, :type); END;`,
-//                     {
-//                         a_street_address:a_street,
-//                         a_postal_code,
-//                         a_city,
-//                         a_state_province: '', // Replace with the actual value if available
-//                         a_country,
-//                         organization_id: supplierId,
-//                         type: 'ADDRESS' // Replace with the actual type
-//                     }
-//                 );
-
-//             } catch (locationError) {
-//                 errorflag=1;
-//                 message += ` Location Error: ${locationError.message};`;
-//             }
-
-//             try {
-//                 await req.db.execute(
-//                     `BEGIN INSERT_LOCATION(:p_street_address, :p_postal_code, :p_city, :p_state_province, :p_country, :organization_id, :type); END;`,
-//                     {
-//                         p_street_address:p_street,
-//                         p_postal_code,
-//                         p_city,
-//                         p_state_province: '', // Replace with the actual value if available
-//                         p_country,
-//                         organization_id: supplierId,
-//                         type: 'PICKUP' // Replace with the actual type
-//                     }
-//                 );
-
-//             } catch (locationError) {
-//                 errorflag=1;
-//                 message += ` Location Error: ${locationError.message};`;
-//             }
-
-//             const phoneNumbers = req.body.phone_number || [];
-//             console.log(phoneNumbers);
-//         for (const phoneNumber of phoneNumbers) {
-//             try {
-//                 await req.db.execute(
-//                     'BEGIN add_contact(:organization_id, :contact_type, :contact_value); END;',
-//                     {
-//                         organization_id: supplierId,
-//                         contact_type: 'PHONE_NUMBER',
-//                         contact_value: phoneNumber
-//                     }
-
-//                 );
-//             } catch (error) {
-//                 // Handle contact insertion errors
-//                 console.error('Phone Number Insertion Error:', error.message);
-//                 // Rollback the transaction if needed
-//                 errorflag=1;
-//                 res.status(500).send('Error adding phone numbers.');
-//             }
-//         }
-
-//         // Call the PL/SQL procedure to add emails
-//         const emails = req.body.email || [];
-//         for (const email of emails) {
-//             try {
-//                 await req.db.execute(
-//                     'BEGIN add_contact(:organization_id, :contact_type, :contact_value); END;',
-//                     {
-//                         organization_id: supplierId,
-//                         contact_type: 'EMAIL',
-//                         contact_value: email
-//                     }
-//                 );
-//             } catch (error) {
-//                 // Handle contact insertion errors
-//                 console.error('Email Insertion Error:', error.message);
-//                 errorflag=1;
-//                 res.status(500).send('Error adding emails.');
-//             }
-//         }
-
-//             // Call the PL/SQL procedure to insert into PAYMENT_INFO
-//             if(account_number && bank)
-//             try {
-//                 await req.db.execute(
-//                     `BEGIN ADD_PAYMENT_INFO(:owner_id, :account_number, :account_holder, :bank_name, :iban); END;`,
-//                     {
-//                         owner_id: supplierId,
-//                         account_number,
-//                         account_holder,
-//                         bank_name: bank,
-//                         iban
-//                     }
-//                 );
-
-//             } catch (paymentInfoError) {
-//                 message += ` Payment Info Error: ${paymentInfoError.message};`;
-//                 errorflag=1;
-//             }
-
-//             // Commit the transaction
-//             if(errorflag===0)
-//             {
-//              await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'SUPPLIER '||:supplierId ||' '|| :name || ' INSERTED','INSERT')",{supplierId,name});
-//              await req.db.execute("COMMIT");
-//              res.redirect(`/suppliers/details?supplierId=${supplierId}`);
-//             }
-             
-//          else
-//              {
-//                  await req.db.execute("ROLLBACK");
-//                  await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'SUPPLIER '|| :name || ' INSERT FAILED','INSERT')",[name]);
-//                  await req.db.execute("COMMIT");
-//              }
-
-//             console.log(message);
-           
-//             // Send a success response
-//             res.status(200).send(message);
-//         } catch (error) {
-//             // Rollback the transaction in case of an error
-
-//             // Capture the error message
-//             message += ` Internal Server Error: ${error.message}`;
-            
-//             await req.db.execute("ROLLBACK");
-//             await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'SUPPLIER '|| :name || ' INSERT FAILED','INSERT')",[name]);
-//             await req.db.execute("COMMIT");
-
-//             // Send an error response
-//             res.status(500).send(message);
-//         } 
-//     } catch (error) {
-//         console.error(error);
-//         //res.status(500).send("Internal Server Error;");
-//     }
-// });
-
-
-////////////////////////////////////
 
 
 supplierRoute.post("/submit", async (req, res) => {
@@ -733,7 +569,8 @@ supplierRoute.post("/submit", async (req, res) => {
             // Commit the transaction
             if(errorflag===0)
             {
-             await req.db.execute("COMMIT");
+             await req.db.execute("COMMIT"); 
+             res.redirect(`/suppliers/details?supplierId=${supplierId}`);
             }
 
             
@@ -747,7 +584,7 @@ supplierRoute.post("/submit", async (req, res) => {
              }
 
             console.log(message);
-            res.redirect('/suppliers');
+           ;
             // Send a success response
         } catch (error) {
             // Rollback the transaction in case of an error

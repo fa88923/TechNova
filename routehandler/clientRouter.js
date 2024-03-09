@@ -219,7 +219,6 @@ clientRoute.post("/edit/submit", async (req, res) => {
             // Commit the transaction
         if(errorflag===0)
            {
-            await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'CLIENT '||:clientId ||' '|| :name || ' UPDATED','UPDATE')",{clientId,name});
             await req.db.execute("COMMIT");
             res.redirect(`/clients/details?clientId=${clientId}`);
            }
@@ -227,13 +226,13 @@ clientRoute.post("/edit/submit", async (req, res) => {
         else
             {
                 await req.db.execute("ROLLBACK");
-                await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'CLIENT '||:clientId ||' '|| :name || ' UPDATE FAILED','UPDATE')",{clientId,name});
-                await req.db.execute("COMMIT");
+            await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE, TYPE, ACTION, OUTCOME) VALUES (CURRENT_TIMESTAMP, 'CLIENT' ||:clientId|| ' '|| :name || ' UPDATE FAILED', 'ORGANIZATION', 'UPDATE', 'FAILED')", [name,clientId ]);
+            await req.db.execute("COMMIT");
+                res.status(500).send(message);
             }
 
             console.log(message);
             // Send a success response
-            res.status(200).send(message);
         } catch (error) {
             // Rollback the transaction in case of an error
 
@@ -241,13 +240,14 @@ clientRoute.post("/edit/submit", async (req, res) => {
             message = ` Internal Server Error: ${error.message}`;
             
             await req.db.execute("ROLLBACK");
-            await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'CLIENT '||:clientId ||' '|| :name || ' UPDATE FAILED','UPDATE')",{clientId,name});
+            await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE, TYPE, ACTION, OUTCOME) VALUES (CURRENT_TIMESTAMP, 'CLIENT' ||:clientId|| ' '|| :name || ' UPDATE FAILED', 'ORGANIZATION', 'UPDATE', 'FAILED')", [name,clientId ]);
             await req.db.execute("COMMIT");
             // Send an error response
             res.status(500).send(message);
         } 
     } catch (error) {
         console.error(error);
+        res.status(500).send('INTERNAL SERVER ERROR');
     }
 });
 
