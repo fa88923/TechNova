@@ -6,9 +6,7 @@ CREATE OR REPLACE PROCEDURE ADD_PAYMENT_INFO(
     p_iban VARCHAR2
 ) IS
 BEGIN
-    -- Check if the payment information already exists
     IF IS_VALID_PAYMENTINFO_INSERT(p_bank_name, p_account_number) THEN
-        -- Insert data into the PAYMENT_INFO table
         INSERT INTO PAYMENT_INFO (
             ID,
             OWNER_ID,
@@ -17,7 +15,7 @@ BEGIN
             BANK_NAME,
             IBAN
         ) VALUES (
-            PAYMENTINFO_ID_SEQ.NEXTVAL, -- Assuming you have a sequence named PAYMENT_INFO_SEQ
+            PAYMENTINFO_ID_SEQ.NEXTVAL, 
             p_owner_id,
             p_account_number,
             p_account_holder,
@@ -25,7 +23,6 @@ BEGIN
             p_iban
         );
     ELSE
-        -- Raise an error if the payment information already exists
         RAISE_APPLICATION_ERROR(-20001, 'DUPLICATE ACCOUNT ALREADY EXISTS');
     END IF;
 END;
@@ -45,19 +42,15 @@ CREATE OR REPLACE PROCEDURE INSERT_LOCATION(
 		v_old_location_type VARCHAR2(20);
 		location_type VARCHAR2(20);
 BEGIN
-    -- Check if the organization_id exists in the ORGANIZATIONS table
     SELECT COUNT(*) INTO v_org_count
     FROM ORGANIZATIONS
     WHERE ORGANIZATION_ID = p_organization_id;
 
     IF v_org_count = 0 THEN
-        -- Raise an exception if the organization does not exist
         RAISE_APPLICATION_ERROR(-20001, 'Organization does not exist.');
     END IF;
-
-    -- Check if the provided type is one of the allowed values
     IF UPPER(p_type) NOT IN ('ADDRESS', 'PICKUP', 'DUAL') THEN
-        -- Raise an exception if the type is not allowed
+		
         RAISE_APPLICATION_ERROR(-20002, 'Invalid type. Allowed values are ADDRESS, PICKUP, DUAL.');
     END IF;
 		
@@ -146,7 +139,6 @@ BEGIN
 				dbms_output.put_line('contact added successfully');
 		ELSE
 		dbms_output.put_line('contact added sfailed');
-		raise_application_error(-20001,'oolala');
     END IF;
 EXCEPTION
     WHEN OTHERS THEN
