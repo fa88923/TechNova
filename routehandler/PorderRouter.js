@@ -8,10 +8,28 @@ poRoute.get("/", async (req, res) => {
     {
         let purchase_orders;
         const searchkey=req.query.searchkey;
+        const supplierId=req.query.supplierId;
         //category wise filtering
-
+        if(supplierId)
+        {
+            purchase_orders= await req.db.execute(
+                `SELECT DISTINCT PT.TRANSACTION_ID,O.NAME,O.ORGANIZATION_ID AS SUPPLIER_ID, PT.STATUS, FT.STATUS AS PAYMENT_STATUS, S2.STATUS AS SHIPMENT_STATUS
+                FROM PRODUCT_TRANSACTIONS PT JOIN ORGANIZATIONS O ON O.ORGANIZATION_ID=PT.COUNTERPARTY_ID
+                JOIN FINANCIAL_TRANSACTIONS FT ON FT.PRODUCT_TRANSACTION_ID=PT.TRANSACTION_ID
+                JOIN (
+                SELECT S.SHIPMENT_ID, S.PRODUCT_TRANSACTION_ID,
+                CASE 
+                        WHEN S.ARRIVAL_DATE IS NULL THEN 'PENDING'
+                        ELSE 'COMPLETED'
+                END STATUS
+                FROM SHIPMENTS S
+                ) S2 ON S2.PRODUCT_TRANSACTION_ID=PT.TRANSACTION_ID
+                WHERE FT.TYPE='PURCHASE_ORDER_PAYMENT' AND O.ORGANIZATION_ID=:supplierId
+                ORDER BY PT.TRANSACTION_ID DESC`,{supplierId}
+            );
+        }
         
-        if (searchkey) {
+        else if (searchkey) {
             const searchPattern = `%${searchkey.toUpperCase()}%`;
         
             purchase_orders = await req.db.execute(
