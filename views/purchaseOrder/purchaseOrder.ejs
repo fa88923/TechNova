@@ -121,6 +121,15 @@
     <script src="/js/supplierPageControllers/searchScript.js"></script>-->
     <a href="/" class="btn btn-primary">Home</a>
 
+    <script>
+        function filterStatements() {
+            var searchValue = document.getElementById('inputMonth').value;
+            
+            
+            window.location.href =`/purchaseOrder?searchkey=${searchValue}` ;
+        }
+    </script>
+
 
     <script src="/js/POpageControllers/purchaseOrderController.js"></script>
 
