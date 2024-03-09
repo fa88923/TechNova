@@ -284,8 +284,8 @@ branchRoute.post("/edit/submit", async (req, res) => {
         else
             {
                 await req.db.execute("ROLLBACK");
-            await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE, TYPE, ACTION, OUTCOME) VALUES (CURRENT_TIMESTAMP, 'BRANCH' ||:branchId|| ' '|| :name || ' UPDATE FAILED', 'ORGANIZATION', 'UPDATE', 'FAILED')", [name,branchId ]);
-            await req.db.execute("COMMIT");
+                await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE, TYPE, ACTION, OUTCOME) VALUES (CURRENT_TIMESTAMP, 'BRANCH' ||:branchId|| ' '|| :name || ' UPDATE FAILED', 'ORGANIZATION', 'UPDATE', 'FAILED')", [name,branchId ]);
+                await req.db.execute("COMMIT");
                 res.status(500).send(message);
             }
 

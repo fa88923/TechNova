@@ -280,7 +280,7 @@ BEGIN
     END IF;
 		
 		
-		SELECT LOCATION_ID INTO P_LOCATION_ID FROM LOCATIONS WHERE ORGANIZATION_ID=p_organization_id AND TYPE=p_type;
+		SELECT LOCATION_ID INTO P_LOCATION_ID FROM LOCATIONS WHERE ORGANIZATION_ID=p_organization_id AND (TYPE=p_type or upper(type) like '%DUAL%')  ;
 		
 		IF P_LOCATION_ID IS NULL THEN
 		INSERT_LOCATION(
@@ -325,8 +325,6 @@ BEGIN
 		
 		
 		 UPDATE LOCATIONS SET STREET_ADDRESS=p_street_address, POSTAL_CODE=p_postal_code, CITY=p_city, STATE_PROVINCE=p_state_province,COUNTRY= p_country WHERE location_id=p_location_id;
-
-dbms_output.put_line('the update statement was called');
     
 
     -- No need to return a value in a procedure
