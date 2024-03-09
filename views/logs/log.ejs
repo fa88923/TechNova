@@ -1,0 +1,78 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/css/orderform.css">
+    <link rel="stylesheet" type="text/css" href="/css/addPO.css">
+    <link rel="stylesheet" type="text/css" href="/css/addcontainer.css">
+    <title>Logs</title>
+</head>
+
+<body>
+    <div class="d-flex">
+        <div class="login-box">
+            <h2>TRANSACTION LOGS</h2>
+            <div class="table-box">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>LOG_ID</th>
+                            <th>LOG_MESSAGE</th>
+                            <th>TIMESTAMP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% transactioninfo.forEach(log =>{ %>
+                            <tr>
+                                <td><%= log.LOG_ID %></td>
+                                <td>
+                                    <%= log.LOG_MESSAGE %>
+                                </td>
+                                <td>
+                                    <%= log.TIMESTAMP_COL %>
+                                </td>
+                            </tr>
+                        <% });
+                        %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- table starts -->
+
+        <div class="login-box">
+            <h2>ORGANIZATION LOGS</h2>
+            <div class="table-box">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>LOG_ID</th>
+                            <th>LOG_MESSAGE</th>
+                            <th>TIMESTAMP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% organizationinfo.forEach(log =>{ %>
+                            <tr>
+                                <td><%= log.LOG_ID %></td>
+                                <td>
+                                    <%= log.LOG_MESSAGE %>
+                                </td>
+                                <td>
+                                    <%= log.TIMESTAMP_COL %>
+                                </td>
+                            </tr>
+                        <% });
+                        %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+    </div>  
+</body>
+
+</html>

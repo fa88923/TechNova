@@ -10,8 +10,20 @@ supplyRequestRouter.get("/", async (req, res) => {
         const searchkey=req.query.searchkey;
         //category wise filtering
 
-        
-        if (searchkey)
+        const branchId=req.query.branchId;
+
+        if(branchId)
+        {
+            supplyRequests = await req.db.execute(
+                `SELECT *
+                FROM SUPPLY_REQUESTS SR JOIN ORGANIZATIONS O ON O.ORGANIZATION_ID=SR.BRANCH_ID
+                WHERE O.ORGANIZATION_ID=:branchId
+                ORDER BY SR.PLACEMENT_DATE, SR.DEADLINE
+                `, 
+                { branchId }
+            );
+        }
+        else if (searchkey)
         {
             const searchPattern = `%${searchkey.toUpperCase()}%`;
         
