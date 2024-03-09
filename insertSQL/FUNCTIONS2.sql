@@ -27,8 +27,8 @@ BEGIN
         RETURN v_transaction_id;
 END ;
 /
-DECLARE transactionId NUMBER;
-BEGIN transactionId := INSERT_PRODUCT_TRANSACTIONS('CONFIRMED_SUPPLY', 12, '5/3/12' ); 
-DBMS_OUTPUT.PUT_LINE(transactionId);
-END;
-/
+-- DECLARE transactionId NUMBER;
+-- BEGIN transactionId := INSERT_PRODUCT_TRANSACTIONS('CONFIRMED_SUPPLY', 12, '5/3/12' ); 
+-- DBMS_OUTPUT.PUT_LINE(transactionId);
+-- END;
+-- /
