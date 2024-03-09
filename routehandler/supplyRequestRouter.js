@@ -30,7 +30,8 @@ supplyRequestRouter.get("/", async (req, res) => {
             supplyRequests = await req.db.execute(
                 `SELECT *
                 FROM SUPPLY_REQUESTS SR JOIN ORGANIZATIONS O ON O.ORGANIZATION_ID=SR.BRANCH_ID
-                WHERE UPPER(O.NAME) LIKE :searchPattern
+                WHERE UPPER(O.NAME) LIKE :searchPattern OR
+                UPPER(SR.STATUS) LIKE :searchPattern
                 ORDER BY SR.PLACEMENT_DATE, SR.DEADLINE
                 `, 
                 { searchPattern }
