@@ -39,6 +39,7 @@
                             <th>BRANCH NAME</th>
                             <th>MANAGER</th>
                             <th>ADDRESS</th>
+                            <th>LAST UPDATE</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -48,6 +49,7 @@
                             <td><a href="#" class="branch-details-button" data-branch-id="<%= branch.BRANCH_ID %>"><%= branch.NAME %></a></td> 
                             <td><%= branch.MANAGER %></td>
                             <td><%= branch.BRANCH_ADDRESS %></td>
+                            <td><%= branch.L_MSG %></td>
                             <td>
                                 <!-- Delete button with a link to /branches with the delete parameter -->
                                 <button class="delete-button" data-branch-id="<%= branch.BRANCH_ID %>">Delete</button>

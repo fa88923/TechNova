@@ -221,7 +221,7 @@ transportRoute.post("/edit/submit", async (req, res) => {
             // Commit the transaction
         if(errorflag===0)
            {
-            await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'TRANSPORT COMPANY '||:companyId ||' '|| :name || ' UPDATED','UPDATE')",{companyId,name});
+           
             await req.db.execute("COMMIT");
             res.redirect(`/transports/details?companyId=${companyId}`);
            }
@@ -229,13 +229,13 @@ transportRoute.post("/edit/submit", async (req, res) => {
         else
             {
                 await req.db.execute("ROLLBACK");
-                await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'TRANSPORT COMPANY '||:companyId ||' '|| :name || ' UPDATE FAILED','UPDATE')",{companyId,name});
+                await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE, TYPE, ACTION, OUTCOME) VALUES (CURRENT_TIMESTAMP, 'SHIPPING COMPANY ' ||:companyId|| ' '|| :name || ' UPDATE FAILED', 'ORGANIZATION', 'UPDATE', 'FAILED')", [name,companyId ]);
                 await req.db.execute("COMMIT");
+                res.status(500).send(message);
             }
 
             console.log(message);
             // Send a success response
-            res.status(200).send(message);
         } catch (error) {
             // Rollback the transaction in case of an error
 
@@ -243,13 +243,14 @@ transportRoute.post("/edit/submit", async (req, res) => {
             message = ` Internal Server Error: ${error.message}`;
             
             await req.db.execute("ROLLBACK");
-            await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'TRANSPORT COMPANY '||:companyId ||' '|| :name || ' UPDATE FAILED','UPDATE')",{companyId,name});
-            await req.db.execute("COMMIT");
+                await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE, TYPE, ACTION, OUTCOME) VALUES (CURRENT_TIMESTAMP, 'SHIPPING COMPANY ' ||:companyId|| ' '|| :name || ' UPDATE FAILED', 'ORGANIZATION', 'UPDATE', 'FAILED')", [name,companyId ]);
+                await req.db.execute("COMMIT");
             // Send an error response
             res.status(500).send(message);
         } 
     } catch (error) {
         console.error(error);
+        res.status(500).send('INTERNAL SERVER ERROR');
     }
 });
 

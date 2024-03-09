@@ -43,9 +43,12 @@ branchRoute.get("/", async (req, res) => {
         else
             {
                 branches = await req.db.execute(
-                `SELECT B.BRANCH_ID, O.NAME, B.MANAGER, STREET_ADDRESS||', '||CITY||'-'||POSTAL_CODE BRANCH_ADDRESS FROM
+                `SELECT B.BRANCH_ID, O.NAME, B.MANAGER, STREET_ADDRESS||', '||CITY||'-'||POSTAL_CODE BRANCH_ADDRESS,LOG.LOG_MESSAGE|| 'at' ||LOG.TIMESTAMP_COL L_MSG
+                 FROM
                 ORGANIZATIONS O JOIN BRANCHES B ON (O.ORGANIZATION_ID=B.BRANCH_ID)
                 LEFT OUTER JOIN LOCATIONS L ON (O.ORGANIZATION_ID=L.ORGANIZATION_ID)
+                LEFT OUTER JOIN (SELECT * FROM LOGS LO JOIN ORGANIZATION_LOGS OLO ON(LO.LOG_ID=OLO.LOG_ID)) LOG
+                ON (LOG.ORGANIZATION_ID=B.BRANCH_ID)
                 ORDER BY O.ORGANIZATION_ID`
             );
             }
@@ -274,7 +277,6 @@ branchRoute.post("/edit/submit", async (req, res) => {
             // Commit the transaction
         if(errorflag===0)
            {
-            await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'BRANCH '||:branchId ||' '|| :name || ' UPDATED','UPDATE')",{branchId,name});
             await req.db.execute("COMMIT");
             res.redirect(`/branches/details?branchId=${branchId}`);
            }
@@ -282,13 +284,13 @@ branchRoute.post("/edit/submit", async (req, res) => {
         else
             {
                 await req.db.execute("ROLLBACK");
-                await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'BRANCH '||:branchId ||' '|| :name || ' UPDATE FAILED','UPDATE')",{branchId,name});
-                await req.db.execute("COMMIT");
+            await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE, TYPE, ACTION, OUTCOME) VALUES (CURRENT_TIMESTAMP, 'BRANCH' ||:branchId|| ' '|| :name || ' UPDATE FAILED', 'ORGANIZATION', 'UPDATE', 'FAILED')", [name,branchId ]);
+            await req.db.execute("COMMIT");
+                res.status(500).send(message);
             }
 
             console.log(message);
             // Send a success response
-            res.status(200).send(message);
         } catch (error) {
             // Rollback the transaction in case of an error
 
@@ -296,13 +298,14 @@ branchRoute.post("/edit/submit", async (req, res) => {
             message = ` Internal Server Error: ${error.message}`;
             
             await req.db.execute("ROLLBACK");
-            await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE,TYPE) VALUES (CURRENT_TIMESTAMP,  'BRANCH '||:branchId ||' '|| :name || ' UPDATE FAILED','UPDATE')",{branchId,name});
+            await req.db.execute(" INSERT INTO LOGS (TIMESTAMP_COL, LOG_MESSAGE, TYPE, ACTION, OUTCOME) VALUES (CURRENT_TIMESTAMP, 'BRANCH' ||:branchId|| ' '|| :name || ' UPDATE FAILED', 'ORGANIZATION', 'UPDATE', 'FAILED')", [name,branchId ]);
             await req.db.execute("COMMIT");
             // Send an error response
             res.status(500).send(message);
         } 
     } catch (error) {
         console.error(error);
+        res.status(500).send('INTERNAL SERVER ERROR');
         // Send an error response
     }
 });
