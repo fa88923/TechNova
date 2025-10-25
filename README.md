@@ -1,6 +1,5 @@
 # TechNova
-BUET CSE 216 course project for Batch 21  
-hellooooo adriiii i am hereeeee
+BUET CSE 216 course project for Batch 
 
 *Create table first
 * in ctl, chnage the csv file path
